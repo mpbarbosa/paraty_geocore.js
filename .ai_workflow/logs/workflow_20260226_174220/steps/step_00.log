@@ -1,0 +1,22 @@
+[2026-02-26T20:42:20.503Z] 
+→ Starting: Pre-Analysis
+[2026-02-26T20:42:20.503Z] ════════════════════════════════════════════════════════════
+[2026-02-26T20:42:20.503Z] 🔷  Step 0: Pre-Analysis - Analyzing Recent Changes
+[2026-02-26T20:42:20.503Z] ════════════════════════════════════════════════════════════
+[2026-02-26T20:42:20.517Z] Commits ahead of remote: 0
+[2026-02-26T20:42:20.517Z] Modified files: 49
+[2026-02-26T20:42:20.520Z] ✓ Project kind from config: generic (configured)
+[2026-02-26T20:42:20.522Z] ✓ Pre-analysis complete:
+  • Commits ahead: 0
+  • Modified files: 49
+  • Change scope: code-and-docs
+  • Documentation: 5 files
+  • Tests: 0 files
+  • Source: 4 files
+  • Config: 1 files
+  • Project kind: generic (100% confidence)
+
+[2026-02-26T20:42:20.526Z] ✓ Step step_00 completed in 24ms
+[2026-02-26T20:42:20.526Z] [DEBUG] [Performance] step_00: 24ms
+[2026-02-26T20:42:20.527Z] [DEBUG] Recorded outcome for step_00: success
+[2026-02-26T20:42:20.527Z] ✓ Completed: Pre-Analysis (0s)

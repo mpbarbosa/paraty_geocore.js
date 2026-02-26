@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "partitionIndex": 0,
+  "totalPartitions": 1,
+  "filesHash": "81d5931e",
+  "partitionLabels": [
+    "src/core"
+  ],
+  "updatedAt": "2026-02-26T21:26:28.572Z"
+}

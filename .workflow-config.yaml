@@ -1,0 +1,56 @@
+project:
+  name: paraty_geocore.js
+  kind: generic
+  primary_language: typescript
+  description: paraty_geocore.js project
+tech_stack:
+  primary_language: typescript
+  build_system: none
+  test_framework: jest
+  test_command: npm test
+  lint_command: npm run lint
+structure:
+  source_dirs:
+    - src
+  test_dirs:
+    - test
+    - __tests__
+  docs_dirs:
+    - docs
+workflow:
+  stages:
+    quick:
+      enabled: true
+      steps:
+        - step_00
+        - step_01
+        - step_02
+    medium:
+      enabled: true
+      steps:
+        - step_00
+        - step_01
+        - step_02
+        - step_03
+        - step_04
+        - step_05
+    full:
+      enabled: true
+      steps:
+        - step_00
+        - step_01
+        - step_02
+        - step_03
+        - step_04
+        - step_05
+        - step_06
+        - step_07
+        - step_08
+        - step_0f
+validation:
+  documentation:
+    required: true
+    min_coverage: 80
+  testing:
+    required: true
+    min_coverage: 70
