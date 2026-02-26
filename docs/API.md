@@ -1,7 +1,7 @@
 # API Reference
 
-**Package:** `paraty_geocore.js`  
-**Language:** TypeScript (compiled to JavaScript)  
+**Package:** `paraty_geocore.js`
+**Language:** TypeScript (compiled to JavaScript)
 **Since:** 0.6.0-alpha
 
 ---
@@ -114,7 +114,7 @@ Returns a formatted string summary of the position for debugging.
 toString(): string
 ```
 
-**Returns:** `"GeoPosition: {latitude}, {longitude}, {accuracyQuality}, {altitude}, {speed}, {heading}, {timestamp}"`  
+**Returns:** `"GeoPosition: {latitude}, {longitude}, {accuracyQuality}, {altitude}, {speed}, {heading}, {timestamp}"`
 or `"GeoPosition: No position data"` when latitude/longitude are absent.
 
 ```javascript

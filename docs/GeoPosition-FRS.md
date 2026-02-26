@@ -1,8 +1,8 @@
 # Functional Requirements Specification
 ## `GeoPosition` — `src/core/GeoPosition.js`
 
-**Module:** `core/GeoPosition`  
-**Since:** 0.6.0-alpha  
+**Module:** `core/GeoPosition`
+**Since:** 0.6.0-alpha
 **Author:** Marcelo Pereira Barbosa
 
 ---

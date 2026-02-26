@@ -14,7 +14,7 @@ October 11, 2025
 
 The class is implemented in TypeScript with full type annotations and exported as the default export.
 
-#### Removed Side Effects:
+#### Removed Side Effects
 
 **Before:**
 ```javascript
@@ -61,7 +61,7 @@ constructor(position: object) {
 
 > **Note:** The spread operator (`{ ...coords }`) was insufficient because the browser's `GeolocationCoordinates` object exposes properties via non-enumerable getters. Explicit property extraction is required to handle both browser objects and plain test objects correctly.
 
-#### Removed Setter:
+#### Removed Setter
 
 **Before:**
 ```javascript
@@ -76,7 +76,7 @@ set accuracy(value) {  // ❌ Allows mutation after construction
 // ✅ No setter - properties are immutable after construction (Object.freeze)
 ```
 
-#### Deprecated Instance Method:
+#### Deprecated Instance Method
 
 ```typescript
 /**

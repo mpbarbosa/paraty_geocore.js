@@ -1,7 +1,7 @@
 # Architecture
 
-**Package:** `paraty_geocore.js`  
-**Language:** TypeScript → JavaScript (ESM)  
+**Package:** `paraty_geocore.js`
+**Language:** TypeScript → JavaScript (ESM)
 **License:** MIT
 
 ---

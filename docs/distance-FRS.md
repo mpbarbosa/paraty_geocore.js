@@ -1,8 +1,8 @@
 # Functional Requirements Specification
 ## `distance` — `src/utils/distance.ts`
 
-**Module:** `utils/distance`  
-**Since:** 0.9.0-alpha  
+**Module:** `utils/distance`
+**Since:** 0.9.0-alpha
 **Author:** Marcelo Pereira Barbosa
 
 ---
