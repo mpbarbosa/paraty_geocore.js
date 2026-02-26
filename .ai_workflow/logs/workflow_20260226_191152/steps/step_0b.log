@@ -1,0 +1,25 @@
+[2026-02-26T22:11:52.407Z] 
+→ Starting: Bootstrap Documentation
+[2026-02-26T22:11:52.407Z] [DEBUG] Step0bBootstrapDocs.execute()
+[2026-02-26T22:11:52.407Z] ════════════════════════════════════════════════════════════
+[2026-02-26T22:11:52.407Z] 🔷  Step 0b: Documentation Gap Analysis and Generation
+[2026-02-26T22:11:52.407Z] ════════════════════════════════════════════════════════════
+[2026-02-26T22:11:52.407Z] Phase 1: Gathering project statistics...
+[2026-02-26T22:11:52.407Z] [DEBUG] Gathering project statistics by scanning files...
+[2026-02-26T22:11:52.407Z] [DEBUG] Listing all files in the project directory...
+[2026-02-26T22:11:52.407Z] [DEBUG] Project root: /home/mpb/Documents/GitHub/paraty_geocore.js
+[2026-02-26T22:11:52.408Z] [DEBUG] Total files found: 19
+[2026-02-26T22:11:52.408Z] [DEBUG] Converting to relative paths...
+[2026-02-26T22:11:52.409Z] Project has 11 documentation files and 2 source files
+[2026-02-26T22:11:52.409Z] README.md size: 73 bytes, Has CHANGELOG: true, Has docs/ directory: true
+[2026-02-26T22:11:52.409Z] Phase 2: Evaluating documentation coverage...
+[2026-02-26T22:11:52.409Z] [DEBUG] Phase 3
+[2026-02-26T22:11:52.409Z] Phase 3: Identifying missing documentation...
+[2026-02-26T22:11:52.409Z] ⚠ Found 0 missing documentation files (0 critical)
+[2026-02-26T22:11:52.409Z] Phase 3: Generating gap analysis report...
+[2026-02-26T22:11:52.409Z] ✓ Step 0b: Documentation gap analysis completed
+[2026-02-26T22:11:52.409Z] Critical: 0, Important: 0, Optional: 0
+[2026-02-26T22:11:52.409Z] ✓ Step step_0b completed in 2ms
+[2026-02-26T22:11:52.409Z] [DEBUG] [Performance] step_0b: 2ms
+[2026-02-26T22:11:52.410Z] [DEBUG] Recorded outcome for step_0b: success
+[2026-02-26T22:11:52.410Z] ✓ Completed: Bootstrap Documentation (0s)
