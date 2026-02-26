@@ -1,0 +1,125 @@
+# Architecture
+
+**Package:** `paraty_geocore.js`  
+**Language:** TypeScript → JavaScript (ESM)  
+**License:** MIT
+
+---
+
+## 1. Purpose
+
+`paraty_geocore.js` is a lightweight, dependency-free core library for geolocation applications. It provides:
+
+- An immutable, normalised wrapper around the browser Geolocation API (`GeoPosition`)
+- Pure utility functions for geographic distance calculation (`utils/distance`)
+
+The library is designed to be consumed by higher-level geolocation applications, not used directly by end users.
+
+---
+
+## 2. Directory Structure
+
+```
+paraty_geocore.js/
+├── src/
+│   ├── core/
+│   │   └── GeoPosition.ts       # Immutable position wrapper class
+│   └── utils/
+│       └── distance.ts          # Haversine distance + async delay utilities
+├── docs/
+│   ├── API.md                   # Full API reference
+│   ├── ARCHITECTURE.md          # This file
+│   ├── GETTING_STARTED.md       # Installation and usage guide
+│   ├── GeoPosition-FRS.md       # Functional requirements spec — GeoPosition
+│   ├── distance-FRS.md          # Functional requirements spec — distance utils
+│   └── GEOPOSITION_REFACTORING_SUMMARY.md
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE
+└── README.md
+```
+
+---
+
+## 3. Module Dependency Graph
+
+```
+GeoPosition  ──imports──►  utils/distance  (calculateDistance)
+                                │
+                                └──► (no further dependencies)
+```
+
+Both modules have **zero external runtime dependencies**.
+
+---
+
+## 4. Design Principles
+
+### 4.1 Immutability
+
+`GeoPosition` instances are frozen with `Object.freeze()` immediately after construction. No property can be set or mutated after the object is created. This makes instances safe to share across asynchronous callbacks without defensive copying by the caller.
+
+### 4.2 Referential Transparency
+
+All functions in `utils/distance` and all methods on `GeoPosition` (except `calculateAccuracyQuality`, which is deprecated due to a bug) are **pure**:
+- Deterministic: same inputs always produce the same output.
+- No side effects: no logging, no mutation of external state, no I/O.
+
+### 4.3 Defensive Copying
+
+The `GeoPosition` constructor explicitly extracts each property from `position.coords` by name rather than using the spread operator (`{ ...coords }`). This is necessary because the browser's `GeolocationCoordinates` object exposes its properties through non-enumerable getters, which spread silently ignores.
+
+### 4.4 No Global State
+
+Neither module uses module-level mutable state, singletons, or global variables.
+
+---
+
+## 5. Key Algorithms
+
+### Haversine Formula (`calculateDistance`)
+
+Computes great-circle distance on a spherical Earth (radius = 6,371 km):
+
+```
+a = sin²(Δφ/2) + cos(φ₁) × cos(φ₂) × sin²(Δλ/2)
+c = 2 × atan2(√a, √(1−a))
+d = R × c
+```
+
+Maximum error vs. WGS-84 ellipsoid: < 0.5% for typical geolocation distances.
+
+### Accuracy Quality Classification (`GeoPosition.getAccuracyQuality`)
+
+A static threshold ladder maps GPS accuracy (meters) to a human-readable quality string:
+
+| Range (m) | Label      |
+|-----------|------------|
+| ≤ 10      | excellent  |
+| 11–30     | good       |
+| 31–100    | medium     |
+| 101–200   | bad        |
+| > 200     | very bad   |
+
+---
+
+## 6. Versioning
+
+The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
+
+| Version       | Milestone |
+|---------------|-----------|
+| 0.6.0-alpha   | `GeoPosition` class introduced |
+| 0.9.0-alpha   | `utils/distance` module introduced |
+
+---
+
+## 7. Build & Test Tooling
+
+| Tool  | Role |
+|-------|------|
+| TypeScript (`tsc`) | Compilation |
+| Jest   | Unit and integration testing |
+| npm    | Package management and scripts |
+
+Planned output target: **ESM** (`dist/`), with type declarations (`.d.ts`).

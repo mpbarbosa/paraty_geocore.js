@@ -12,58 +12,111 @@
 import { calculateDistance } from '../utils/distance.js';
 
 /**
+ * Coordinate properties extracted from a GeolocationCoordinates object.
+ * All fields are optional to accommodate missing or partial position data.
+ */
+export interface GeoCoords {
+	latitude?: number;
+	longitude?: number;
+	accuracy?: number;
+	altitude?: number | null;
+	altitudeAccuracy?: number | null;
+	heading?: number | null;
+	speed?: number | null;
+}
+
+/**
+ * Input shape accepted by the GeoPosition constructor.
+ * Compatible with the browser GeolocationPosition API and plain test objects.
+ */
+export interface GeoPositionInput {
+	timestamp?: number;
+	coords?: GeoCoords;
+}
+
+/** GPS accuracy quality classification. */
+export type AccuracyQuality = 'excellent' | 'good' | 'medium' | 'bad' | 'very bad';
+
+/** Normalised internal position shape stored on the instance. */
+interface NormalisedPosition {
+	readonly timestamp: number | undefined;
+	readonly coords: Readonly<GeoCoords>;
+}
+
+/**
  * Represents a geographic position with enhanced methods.
  * 
  * @class
- * @immutable All instances are frozen after creation
+ * @immutable All instances and their nested objects are frozen after creation
  */
 class GeoPosition {
-	geolocationPosition: object | null;
-	coords: object | null;
-	latitude: number;
-	longitude: number;
-	accuracy: number;
-	accuracyQuality: string;
-	altitude: number;
-	altitudeAccuracy: number;
-	heading: number;
-	speed: number;
-	timestamp: number;
+	readonly geolocationPosition: Readonly<NormalisedPosition> | null;
+	readonly coords: Readonly<GeoCoords> | null;
+	readonly latitude: number | undefined;
+	readonly longitude: number | undefined;
+	readonly accuracy: number | undefined;
+	readonly accuracyQuality: AccuracyQuality;
+	readonly altitude: number | null | undefined;
+	readonly altitudeAccuracy: number | null | undefined;
+	readonly heading: number | null | undefined;
+	readonly speed: number | null | undefined;
+	readonly timestamp: number | undefined;
 
-	constructor(position: any) {
-		// FIX: GeolocationCoordinates uses getters (not enumerable), spread operator creates empty object
-		// Extract properties manually to handle browser Geolocation API correctly
-		const rawCoords = position?.coords;
-		
-		// Create defensive copy with explicit property extraction
-		// This handles both plain objects (tests) and GeolocationCoordinates (browser)
-		const coords = rawCoords ? {
+	constructor(position: GeoPositionInput) {
+		const coords = GeoPosition.parseCoords(position?.coords);
+
+		this.geolocationPosition = position
+			? Object.freeze({ timestamp: position.timestamp, coords })
+			: null;
+		this.coords = Object.keys(coords).length > 0 ? coords : null;
+		this.latitude = coords.latitude;
+		this.longitude = coords.longitude;
+		this.accuracy = coords.accuracy;
+		this.accuracyQuality = GeoPosition.getAccuracyQuality(coords.accuracy ?? Infinity);
+		this.altitude = coords.altitude;
+		this.altitudeAccuracy = coords.altitudeAccuracy;
+		this.heading = coords.heading;
+		this.speed = coords.speed;
+		this.timestamp = position?.timestamp;
+		Object.freeze(this);
+	}
+
+	/**
+	 * Extracts and deeply freezes coordinate properties from a raw coords object.
+	 * 
+	 * GeolocationCoordinates exposes properties via non-enumerable getters, so the
+	 * spread operator produces an empty object. Explicit extraction is required.
+	 * 
+	 * @private
+	 * @param {GeoCoords} [rawCoords] - Raw coords from a GeolocationPosition or plain object
+	 * @returns {Readonly<GeoCoords>} Frozen defensive copy of the coordinate properties
+	 */
+	private static parseCoords(rawCoords?: GeoCoords): Readonly<GeoCoords> {
+		if (!rawCoords) return Object.freeze({});
+		return Object.freeze({
 			latitude: rawCoords.latitude,
 			longitude: rawCoords.longitude,
 			accuracy: rawCoords.accuracy,
 			altitude: rawCoords.altitude,
 			altitudeAccuracy: rawCoords.altitudeAccuracy,
 			heading: rawCoords.heading,
-			speed: rawCoords.speed
-		} : {};
-		
-		this.geolocationPosition = position ? { 
-			timestamp: position.timestamp,
-			coords: coords 
-		} : null;
-		this.coords = Object.keys(coords).length > 0 ? coords : null;
-		this.latitude = coords.latitude;
-		this.longitude = coords.longitude;
-		this.accuracy = coords.accuracy;
-		this.accuracyQuality = GeoPosition.getAccuracyQuality(
-			coords.accuracy,
-		);
-		this.altitude = coords.altitude;
-		this.altitudeAccuracy = coords.altitudeAccuracy;
-		this.heading = coords.heading;
-		this.speed = coords.speed;
-		this.timestamp = position?.timestamp;
-		Object.freeze(this); // Make the instance immutable
+			speed: rawCoords.speed,
+		});
+	}
+
+	/**
+	 * Factory method — creates a GeoPosition from a GeoPositionInput.
+	 * 
+	 * @param {GeoPositionInput} position - Raw position input
+	 * @returns {GeoPosition} New immutable GeoPosition instance
+	 * 
+	 * @example
+	 * const pos = GeoPosition.from(browserPosition);
+	 * 
+	 * @since 0.6.0-alpha
+	 */
+	static from(position: GeoPositionInput): GeoPosition {
+		return new GeoPosition(position);
 	}
 
 	/**
@@ -80,21 +133,21 @@ class GeoPosition {
 	 * - very bad: > 200 meters (very poor precision, should be rejected)
 	 * 
 	 * @static
-	 * @param {number} accuracy - GPS accuracy value in meters from GeolocationCoordinates
-	 * @returns {string} Quality classification: 'excellent'|'good'|'medium'|'bad'|'very bad'
+	 * @param {number} accuracy - GPS accuracy value in meters; pass `Infinity` for unknown/missing accuracy
+	 * @returns {AccuracyQuality} Quality classification
 	 * 
 	 * @example
-	 * // Classify different accuracy levels
-	 * log(GeoPosition.getAccuracyQuality(5));   // 'excellent'
-	 * log(GeoPosition.getAccuracyQuality(25));  // 'good'
-	 * log(GeoPosition.getAccuracyQuality(75));  // 'medium'
-	 * log(GeoPosition.getAccuracyQuality(150)); // 'bad'
-	 * log(GeoPosition.getAccuracyQuality(500)); // 'very bad'
+	 * GeoPosition.getAccuracyQuality(5);        // 'excellent'
+	 * GeoPosition.getAccuracyQuality(25);       // 'good'
+	 * GeoPosition.getAccuracyQuality(75);       // 'medium'
+	 * GeoPosition.getAccuracyQuality(150);      // 'bad'
+	 * GeoPosition.getAccuracyQuality(500);      // 'very bad'
+	 * GeoPosition.getAccuracyQuality(Infinity); // 'very bad'
 	 * 
 	 * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/GeolocationCoordinates/accuracy} GeolocationCoordinates.accuracy
 	 * @since 0.6.0-alpha
 	 */
-	static getAccuracyQuality(accuracy: number): string {
+	static getAccuracyQuality(accuracy: number): AccuracyQuality {
 		if (accuracy <= 10) {
 			return "excellent";
 		} else if (accuracy <= 30) {
@@ -111,20 +164,17 @@ class GeoPosition {
 	/**
 	 * Calculates the accuracy quality for the current position.
 	 * 
-	 * Convenience method that applies the static getAccuracyQuality() method
-	 * to this instance's accuracy value.
-	 * 
-	 * @returns {string} Quality classification for current position accuracy
+	 * @returns {AccuracyQuality} Quality classification for current position accuracy
 	 * 
 	 * @example
-	 * const manager = PositionManager.getInstance(position);
-	 * log(manager.calculateAccuracyQuality()); // 'good'
+	 * const pos = new GeoPosition(position);
+	 * pos.calculateAccuracyQuality(); // 'good'
 	 * 
 	 * @since 0.6.0-alpha
-	 * @deprecated Use accuracyQuality property instead - this method has a bug (calls undefined getAccuracyQuality)
+	 * @deprecated Use the `accuracyQuality` property instead.
 	 */
-	calculateAccuracyQuality(): string {
-		return GeoPosition.getAccuracyQuality(this.accuracy);
+	calculateAccuracyQuality(): AccuracyQuality {
+		return GeoPosition.getAccuracyQuality(this.accuracy ?? Infinity);
 	}
 
 	/**
@@ -137,18 +187,21 @@ class GeoPosition {
 	 * @param {Object} otherPosition - Other position to calculate distance to
 	 * @param {number} otherPosition.latitude - Latitude of other position in decimal degrees
 	 * @param {number} otherPosition.longitude - Longitude of other position in decimal degrees
-	 * @returns {number} Distance in meters between the two positions
+	 * @returns {number} Distance in meters, or `NaN` if this position has no coordinates
 	 * 
 	 * @example
-	 * const manager = PositionManager.getInstance(currentPosition);
+	 * const pos = new GeoPosition(currentPosition);
 	 * const restaurant = { latitude: -23.5489, longitude: -46.6388 };
-	 * const distance = manager.distanceTo(restaurant);
-	 * log(`Restaurant is ${Math.round(distance)} meters away`);
+	 * const distance = pos.distanceTo(restaurant);
+	 * console.log(`Restaurant is ${Math.round(distance)} meters away`);
 	 * 
 	 * @see {@link calculateDistance} - The underlying distance calculation function
 	 * @since 0.6.0-alpha
 	 */
-	distanceTo(otherPosition: {latitude: number, longitude: number}): number {
+	distanceTo(otherPosition: { latitude: number; longitude: number }): number {
+		if (this.latitude === undefined || this.longitude === undefined) {
+			return NaN;
+		}
 		return calculateDistance(
 			this.latitude,
 			this.longitude,
@@ -161,14 +214,13 @@ class GeoPosition {
 	 * Returns a string representation of the GeoPosition instance.
 	 * 
 	 * Provides a formatted summary of key position properties for debugging
-	 * and logging purposes. Includes class name and essential position data
-	 * following the same format as PositionManager.toString().
+	 * and logging purposes.
 	 * 
 	 * @returns {string} Formatted string with position details
 	 * 
 	 * @example
 	 * const position = new GeoPosition(geolocationPosition);
-	 * log(position.toString());
+	 * console.log(position.toString());
 	 * // Output: "GeoPosition: -23.5505, -46.6333, good, 760, 0, 0, 1634567890123"
 	 * 
 	 * @since 0.6.0-alpha
