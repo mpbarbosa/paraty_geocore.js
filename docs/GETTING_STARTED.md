@@ -91,7 +91,7 @@ console.log(EARTH_RADIUS_METERS); // 6371000
 ### Async Delay Utility
 
 ```javascript
-import { delay } from 'paraty_geocore.js/utils/distance';
+import { delay } from 'paraty_geocore.js/utils/async';
 
 async function pollPosition() {
     while (true) {

@@ -4,6 +4,8 @@
 **Language:** TypeScript (compiled to JavaScript)
 **Since:** 0.6.0-alpha
 
+> **See also:** [GeoPosition Functional Requirements](./GeoPosition-FRS.md) | [Refactoring Summary](./GEOPOSITION_REFACTORING_SUMMARY.md)
+
 ---
 
 ## Modules
@@ -11,7 +13,9 @@
 | Module | Path | Description |
 |--------|------|-------------|
 | `core/GeoPosition` | `src/core/GeoPosition.ts` | Immutable geographic position wrapper |
+| `core/errors` | `src/core/errors.ts` | Custom error classes |
 | `utils/distance` | `src/utils/distance.ts` | Pure distance calculation utilities |
+| `utils/async` | `src/utils/async.ts` | General-purpose async utilities |
 
 ---
 
@@ -194,6 +198,35 @@ export const delay = (ms: number): Promise<void>
 
 ```javascript
 import { delay } from 'paraty_geocore.js/utils/distance';
+
+await delay(1000); // pause 1 second
+```
+
+> **Moved in 0.10.0-alpha:** `delay` has been extracted to `utils/async`. Import it from there going forward:
+> ```javascript
+> import { delay } from 'paraty_geocore.js/utils/async';
+> ```
+
+---
+
+## `utils/async`
+
+### Function: `delay(ms)`
+
+Creates a `Promise` that resolves after the given number of milliseconds.
+
+```typescript
+export const delay = (ms: number): Promise<void>
+```
+
+| Parameter | Type     | Description |
+|-----------|----------|-------------|
+| `ms`      | `number` | Delay in milliseconds |
+
+**Returns:** `Promise<void>`
+
+```javascript
+import { delay } from 'paraty_geocore.js/utils/async';
 
 await delay(1000); // pause 1 second
 ```

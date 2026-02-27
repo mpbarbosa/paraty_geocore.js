@@ -2,7 +2,7 @@
 ## `distance` — `src/utils/distance.ts`
 
 **Module:** `utils/distance`
-**Since:** 0.9.0-alpha
+**Since:** 0.9.1-alpha
 **Author:** Marcelo Pereira Barbosa
 
 ---
@@ -104,47 +104,6 @@ console.log(zero); // 0
 
 ---
 
-### `delay(ms)`
-
-Creates a `Promise` that resolves after a specified number of milliseconds.
-
-#### Signature
-
-```typescript
-export const delay = (ms: number): Promise<void>
-```
-
-#### Parameters
-
-| Parameter | Type     | Required | Description                     |
-|-----------|----------|----------|---------------------------------|
-| `ms`      | `number` | Yes      | Delay duration in milliseconds  |
-
-#### Return Value
-
-| Type            | Description                                      |
-|-----------------|--------------------------------------------------|
-| `Promise<void>` | Resolves with no value after `ms` milliseconds   |
-
-#### Behaviour
-
-- Wraps `setTimeout` in a `Promise` for use with `async/await`.
-- Does not reject under normal conditions.
-- Passing `0` resolves on the next event-loop tick.
-
-#### Example
-
-```javascript
-import { delay } from './utils/distance.js';
-
-async function poll() {
-    await delay(1000); // Wait 1 second before next action
-    fetchPosition();
-}
-```
-
----
-
 ## 4. Purity & Design Constraints
 
 | Constraint              | Status |
@@ -153,7 +112,7 @@ async function poll() {
 | Referentially transparent | ✅   |
 | No external dependencies | ✅    |
 | No global state         | ✅     |
-| Deterministic output    | ✅ (`calculateDistance`) / ⏳ time-dependent (`delay`) |
+| Deterministic output    | ✅ (`calculateDistance`) |
 
 ---
 
@@ -163,4 +122,5 @@ async function poll() {
 |------------|--------|
 | Spherical Earth assumption | Uses mean radius 6,371 km. Does not implement WGS-84 ellipsoidal model; maximum error is < 0.5% for typical geolocation use cases. |
 | No input validation | Out-of-range latitude/longitude values are not validated or clamped; callers are responsible for providing valid coordinates. |
-| `delay` placement | `delay` is a general-purpose async utility co-located in this module for convenience; it has no mathematical relationship to distance calculation. |
+
+> **Note:** The `delay` utility previously co-located in this module has been extracted to `utils/async` (since 0.10.0-alpha). See [async-FRS.md](./async-FRS.md).

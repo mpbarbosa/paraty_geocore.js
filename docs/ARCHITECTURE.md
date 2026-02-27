@@ -12,6 +12,7 @@
 
 - An immutable, normalised wrapper around the browser Geolocation API (`GeoPosition`)
 - Pure utility functions for geographic distance calculation (`utils/distance`)
+- General-purpose async helpers for polling/throttling patterns (`utils/async`)
 
 The library is designed to be consumed by higher-level geolocation applications, not used directly by end users.
 
@@ -23,15 +24,18 @@ The library is designed to be consumed by higher-level geolocation applications,
 paraty_geocore.js/
 ├── src/
 │   ├── core/
-│   │   └── GeoPosition.ts       # Immutable position wrapper class
+│   │   ├── GeoPosition.ts       # Immutable position wrapper class
+│   │   └── errors.ts            # Custom error classes (GeoPositionError)
 │   └── utils/
-│       └── distance.ts          # Haversine distance + async delay utilities
+│       ├── distance.ts          # Haversine distance calculation utilities
+│       └── async.ts             # General-purpose async utilities (delay)
 ├── docs/
 │   ├── API.md                   # Full API reference
 │   ├── ARCHITECTURE.md          # This file
 │   ├── GETTING_STARTED.md       # Installation and usage guide
 │   ├── GeoPosition-FRS.md       # Functional requirements spec — GeoPosition
 │   ├── distance-FRS.md          # Functional requirements spec — distance utils
+│   ├── async-FRS.md             # Functional requirements spec — async utils
 │   └── GEOPOSITION_REFACTORING_SUMMARY.md
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
@@ -47,6 +51,8 @@ paraty_geocore.js/
 GeoPosition  ──imports──►  utils/distance  (calculateDistance)
                                 │
                                 └──► (no further dependencies)
+
+(utils/async is independent — no imports from core or other utils)
 ```
 
 Both modules have **zero external runtime dependencies**.
@@ -110,7 +116,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | Version       | Milestone |
 |---------------|-----------|
 | 0.6.0-alpha   | `GeoPosition` class introduced |
-| 0.9.0-alpha   | `utils/distance` module introduced |
+| 0.9.1-alpha   | `utils/distance` module introduced |
 
 ---
 
