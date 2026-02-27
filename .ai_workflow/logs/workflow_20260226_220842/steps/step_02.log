@@ -1,0 +1,32 @@
+[2026-02-27T01:09:39.494Z] 
+→ Starting: Consistency Analysis
+[2026-02-27T01:09:39.495Z] ════════════════════════════════════════════════════════════
+[2026-02-27T01:09:39.495Z] 🔷  Step 2: Documentation Consistency Analysis
+[2026-02-27T01:09:39.495Z] ════════════════════════════════════════════════════════════
+[2026-02-27T01:09:39.502Z] Found 8 documentation files
+[2026-02-27T01:09:39.503Z] Expected version: 1.0.0
+[2026-02-27T01:09:39.504Z] Version check: 9 issue(s) found
+[2026-02-27T01:09:39.507Z] Link check: 7 broken link(s) found
+[2026-02-27T01:09:40.742Z] ✓ GitHub Copilot SDK initialized successfully
+[2026-02-27T01:09:41.835Z] Available Copilot models (13): claude-sonnet-4.5, claude-haiku-4.5, claude-opus-4.5, claude-sonnet-4, gemini-3-pro-preview, gpt-5.2-codex, gpt-5.2, gpt-5.1-codex-max, gpt-5.1-codex, gpt-5.1, gpt-5.1-codex-mini, gpt-5-mini, gpt-4.1
+[2026-02-27T01:09:41.887Z] [DEBUG] AI cache initialized: .ai_workflow/.ai_cache
+[2026-02-27T01:09:41.891Z] [DEBUG] Cache miss: 1c75639f...
+[2026-02-27T01:09:41.891Z] [DEBUG] Request Options: {"model":"gpt-4.1","temperature":0.7,"maxTokens":4000,"stream":false,"persona":"code_quality_analyst","cache":true}
+[2026-02-27T01:09:41.891Z] [DEBUG] Persona: code_quality_analyst
+[2026-02-27T01:09:41.891Z] [DEBUG] Model: gpt-4.1
+[2026-02-27T01:09:41.891Z] [AI] SDK call starting — persona: code_quality_analyst, model: gpt-4.1, prompt_chars: 5100
+[2026-02-27T01:09:41.891Z] [DEBUG] Executing AI request (attempt 1/3)
+[2026-02-27T01:09:41.891Z] [DEBUG] AiHelper._sendRequest called
+[2026-02-27T01:09:41.891Z] [Copilot SDK] Calling sendMessage — model: gpt-4.1, prompt_length: 5100 chars
+[2026-02-27T01:09:41.891Z] [DEBUG] Sending prompt...
+[2026-02-27T01:10:27.922Z] [Copilot SDK] sendAndWait returned — model: gpt-4.1
+[2026-02-27T01:10:27.922Z] [AI] SDK call completed — persona: code_quality_analyst, model: gpt-4.1, response_chars: 5333, latency: 46031ms
+[2026-02-27T01:10:27.922Z] ✓ AI request completed successfully
+[2026-02-27T01:10:27.923Z] [DEBUG] Prompt logged to: 2026-02-27T01-10-27-923Z_0001_code_quality_analyst.md
+[2026-02-27T01:10:27.925Z] [DEBUG] Response cached: 1c75639f...
+[2026-02-27T01:10:27.926Z] ⚠ Step 2 completed - 16 issue(s) found
+[2026-02-27T01:10:27.926Z] ✓ Step step_02 completed in 48432ms
+[2026-02-27T01:10:27.926Z] [DEBUG] [Performance] step_02: 48.4s
+[2026-02-27T01:10:27.926Z] ✗ [CRITICAL] Operation 'step_02' took 48.4s (memory: 18.04MB)
+[2026-02-27T01:10:27.926Z] [DEBUG] Recorded outcome for step_02: success
+[2026-02-27T01:10:27.926Z] ✓ Completed: Consistency Analysis (48s)

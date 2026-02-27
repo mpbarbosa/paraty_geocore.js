@@ -1,0 +1,222 @@
+# Prompt Log
+
+**Timestamp:** 2026-02-27T01:11:03.455Z
+**Persona:** architecture_reviewer
+**Model:** gpt-4.1
+
+## Prompt
+
+```
+**Task**: **YOUR TASK**: Analyze existing requirements and determine if new requirements documentation is truly needed. Generate ONLY when necessary.
+
+**CRITICAL DECISION-MAKING FRAMEWORK**: You MUST evaluate necessity BEFORE generating requirements.
+
+**Project Context:**
+- Project: /home/mpb/Documents/GitHub/paraty_geocore.js ()
+- Primary Language: 
+- Current Requirements:  documents
+- Source Code:  files
+- Stakeholders: 
+
+**STEP 1: NECESSITY EVALUATION** (Answer these questions FIRST):
+
+Is new requirements documentation TRULY needed? Use this criteria suite:
+
+✅ **GENERATE Requirements if ANY of these are TRUE**:
+1. **No Requirements Foundation**: No requirements documents exist (user stories, use cases, BRD, SRS)
+2. **Ambiguous Scope**: Project goals are unclear or contradictory (leads to wasted development effort)
+3. **Missing Acceptance Criteria**: Features lack testable acceptance criteria (cannot verify completion)
+4. **Undocumented Features**: New features or changes lack requirements documentation
+5. **Stakeholder Conflicts**: Conflicting expectations exist without documented resolution
+6. **Traceability Gap**: Cannot trace features to requirements or requirements to tests
+7. **Compliance Requirements**: Regulatory/legal requirements lack formal documentation
+8. **Major Changes**: Significant feature changes or pivots without updated requirements
+9. **Explicit Request**: The task explicitly asks for specific requirements analysis or documentation
+
+❌ **DO NOT GENERATE if ALL of these are TRUE**:
+1. **Complete Coverage**: All features have documented requirements with acceptance criteria
+2. **Clear Scope**: Project scope is well-defined with priorities
+3. **Recent Updates**: Requirements modified within last sprint/iteration
+4. **Stakeholder Alignment**: All stakeholders agree on documented requirements
+5. **Full Traceability**: Requirements trace to design, code, and tests
+6. **Testable Criteria**: All requirements have verifiable acceptance criteria
+
+**STEP 2: REQUIREMENTS ANALYSIS** (Only if STEP 1 indicates requirements are needed):
+1. **Current State Assessment**:
+   - List all existing requirements documents (user stories, use cases, BRD, SRS, backlog)
+   - Identify documented vs undocumented features
+   - Check requirements quality (SMART criteria: Specific, Measurable, Achievable, Relevant, Testable)
+   - Assess traceability (requirements ↔ design ↔ code ↔ tests)
+
+2. **Gap Identification**:
+   - Missing functional requirements (features, behaviors, capabilities)
+   - Missing non-functional requirements (performance, security, usability, scalability)
+   - Incomplete acceptance criteria or testability issues
+   - Ambiguous or conflicting requirements
+   - Stakeholder needs not captured
+   - Missing constraints (technical, business, regulatory)
+
+3. **Stakeholder Analysis**:
+   - Identify all stakeholders and their needs
+   - Document conflicting expectations
+   - Prioritize requirements by stakeholder value
+   - Assess feasibility (technical, operational, economic)
+
+**REQUIREMENTS ENGINEERING ACTIVITIES TO PERFORM IF GAPS EXIST**:
+
+1. **Requirements Elicitation** (gathering requirements):
+   - Interview stakeholders to understand needs and pain points
+   - Conduct workshops or focus groups for collaborative requirements gathering
+   - Observe users to identify implicit requirements
+   - Create prototypes or mockups to validate understanding
+   - Analyze existing systems and documentation
+   - Review business goals and success criteria
+
+2. **Requirements Analysis & Refinement**:
+   - Resolve ambiguities and contradictions
+   - Decompose high-level requirements into detailed requirements
+   - Identify dependencies and conflicts
+   - Perform feasibility analysis (technical, operational, economic)
+   - Prioritize requirements (MoSCoW: Must have, Should have, Could have, Won't have)
+   - Assess risks and constraints
+
+3. **Requirements Specification** (documenting requirements):
+   - **User Stories** (Agile): "As a [role], I want [feature] so that [benefit]" with acceptance criteria
+   - **Use Cases**: Actor, preconditions, main flow, alternative flows, postconditions
+   - **Functional Requirements**: System behaviors, features, and capabilities
+   - **Non-Functional Requirements**: Performance, security, usability, reliability, scalability
+   - **Business Requirements**: Business goals, success metrics, stakeholder needs
+   - **Acceptance Criteria**: Testable conditions that define "done"
+   - **Gherkin/BDD Scenarios**: Given-When-Then format for behavior-driven development
+
+4. **Requirements Traceability**:
+   - Create traceability matrix (requirements ↔ design ↔ code ↔ tests)
+   - Map user stories to epics and themes
+   - Link requirements to architecture components
+   - Track requirements to test cases for coverage
+   - Document change history and rationale
+   - Identify impact of requirement changes
+
+5. **Requirements Validation & Verification**:
+   - Conduct requirements reviews with stakeholders
+   - Validate against business goals and user needs
+   - Verify requirements are SMART (Specific, Measurable, Achievable, Relevant, Testable)
+   - Check for completeness, consistency, and clarity
+   - Validate prototypes with users
+   - Assess testability of acceptance criteria
+   - Review for compliance with standards (IEEE 29148, BABOK)
+
+**STEP 3: PRIORITIZED ACTIONS** (Execute based on STEP 1 evaluation):
+
+**IF Requirements ARE Needed** (STEP 1 criteria met):
+1. **Analyze Current State**: List all existing requirements and assess completeness
+2. **Identify Specific Gaps**: Pinpoint EXACTLY what's missing (with evidence from criteria)
+3. **Elicit Missing Requirements**: Gather requirements from available context (code, docs, stakeholders)
+4. **Document Requirements**: Create formal requirements documentation in appropriate format
+5. **Establish Traceability**: Link requirements to design, code, and test cases
+6. **Validate Requirements**: Review for SMART criteria and stakeholder alignment
+
+**IF Requirements are NOT Needed** (STEP 1 criteria NOT met):
+1. **Confirm Coverage**: State "Requirements evaluation complete - no new requirements needed"
+2. **Provide Evidence**: List which criteria were evaluated (e.g., "✅ Complete user story coverage, ✅ Recent backlog grooming")
+3. **Optional Minor Improvements**: Suggest 1-2 small enhancements ONLY (clarifications, updated acceptance criteria)
+4. **Exit Cleanly**: Do NOT generate new requirements documents or major content
+
+**OUTPUT FORMAT**:
+- **Always start with**: "Requirements Necessity Evaluation" section with PASS/FAIL decision
+- **If PASS (needed)**: Show criteria met → "Requirements Gap Analysis" → generate missing requirements
+- **If FAIL (not needed)**: Show criteria evaluation → "No new requirements required" → exit with optional minor suggestions
+- **Never generate** "just in case" requirements - only when criteria clearly indicate need
+- NEVER end with questions or requests for input - always provide definitive decision
+
+
+**Approach**: **Requirements Engineering Necessity-First Strategy**:
+
+**Phase 0: Necessity Check** (REQUIRED FIRST STEP):
+- Apply the 9-point necessity criteria suite
+- If ANY criterion is TRUE → Proceed to Phase 1
+- If ALL criteria are FALSE → Output "No requirements work needed" and exit
+- **Default to NOT generating** unless clear need is demonstrated
+
+**Phase 1: Discovery & Analysis** (Only if Phase 0 indicates need):
+   - List all existing requirements artifacts (user stories, use cases, BRD, SRS, backlog, specifications)
+   - Identify which features/components have requirements documentation
+   - Check for outdated or incomplete requirements (> 1 sprint old with code changes)
+   - Identify undocumented features, APIs, or system behaviors
+   - Assess requirements quality using SMART criteria
+   - Map existing traceability (requirements ↔ design ↔ code ↔ tests)
+
+**Phase 2: Gap Identification & Prioritization** (Only for REAL gaps):
+   - **Critical Gaps** (immediate action): No requirements foundation, missing acceptance criteria, compliance requirements
+   - **High Priority Gaps** (generate if time permits): Undocumented features, ambiguous scope, stakeholder conflicts
+   - **Medium Priority Gaps** (defer): Incomplete traceability, missing non-functional requirements
+   - **Low Priority Gaps** (do not generate): Nice-to-have features, edge cases, future enhancements
+   - **Rule**: If no Critical or High Priority gaps exist, output "No new requirements needed"
+
+**Phase 3: Requirements Elicitation** (For identified Critical/High gaps):
+   - Analyze available context: code, documentation, comments, tests, commit messages
+   - Infer user needs from existing implementations
+   - Identify stakeholder groups and their needs
+   - Extract implicit requirements from system behavior
+   - Document assumptions and constraints
+   - **Stop eliciting** once sufficient context is gathered for gap-filling
+
+**Phase 4: Requirements Specification** (Generate missing requirements):
+   - **User Stories**: "As a [role], I want [feature] so that [benefit]" + acceptance criteria
+   - **Acceptance Criteria**: Testable conditions using Given-When-Then or bullet format
+   - **Use Cases**: For complex interactions (actor, flow, alternatives, exceptions)
+   - **Functional Requirements**: Clear, testable statements of system behavior
+   - **Non-Functional Requirements**: Performance, security, usability targets (measurable)
+   - **Traceability**: Link requirements to existing code/tests where applicable
+   - **Format**: Use appropriate format for project type (Agile: user stories, Waterfall: SRS)
+
+**Phase 5: Validation & Quality Assurance** (For generated requirements):
+   - **SMART Check**: Specific, Measurable, Achievable, Relevant, Testable
+   - **Completeness**: All necessary information included (actors, conditions, results)
+   - **Consistency**: No conflicts with existing requirements or system behavior
+   - **Clarity**: Unambiguous language, no jargon without definition
+   - **Traceability**: Links to design, code, tests clearly identified
+   - **Testability**: Acceptance criteria can be verified by tests
+
+**Output Format**:
+- Create complete, ready-to-use requirements documentation
+- Use appropriate format: User Stories, Use Cases, BRD, SRS, or Requirements List
+- Include acceptance criteria for all functional requirements
+- Add traceability links where applicable (to code, tests, design docs)
+- Use tables, lists, and clear formatting for readability
+- Include priority and rationale for requirements
+- Add examples and scenarios to clarify intent
+
+**Language-Specific Standards:** {language_specific_requirements}
+
+**Requirements Engineering Best Practices**:
+- **SMART Requirements**: Specific, Measurable, Achievable, Relevant, Testable
+- **Clear Actors**: Identify who benefits from each requirement
+- **Testable Criteria**: Every requirement has verifiable acceptance criteria
+- **Priority-Driven**: Use MoSCoW or similar prioritization framework
+- **Traceable**: Link requirements to design, code, and tests
+- **Version-Controlled**: Track changes and maintain history
+- **Stakeholder-Validated**: Confirm requirements with stakeholders
+- **Minimal Viable**: Focus on essential requirements first
+- **Avoid Gold-Plating**: Don't add requirements "just in case"
+
+```
+
+## Response
+
+```
+Requirements Necessity Evaluation
+
+**Decision: FAIL (No new requirements needed)**
+
+**Criteria Evaluation:**
+- ✅ Complete Coverage: Existing requirements documents found (`docs/FUNCTIONAL_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW_ENGINE_REQUIREMENTS.md`)
+- ✅ Clear Scope: Project scope and architecture are well-defined and documented
+- ✅ Recent Updates: Requirements and architecture docs are current and reflect recent changes
+- ✅ Stakeholder Alignment: No evidence of conflicting expectations or unresolved issues
+- ✅ Full Traceability: Requirements link to design, code, and tests in documentation
+- ✅ Testable Criteria: Acceptance criteria and testability are present in requirements docs
+
+No new requirements documentation is needed.  
+Optional minor improvement: Consider clarifying acceptance criteria for any newly added features in `docs/FUNCTIONAL_REQUIREMENTS.md` if recent code changes are not yet reflected.
+```

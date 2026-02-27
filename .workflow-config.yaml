@@ -1,10 +1,11 @@
 project:
   name: paraty_geocore.js
-  kind: generic
-  primary_language: typescript
+  type: nodejs-library
+  kind: location_based_service
+  version: '1.0.1'
   description: paraty_geocore.js project
 tech_stack:
-  primary_language: typescript
+  primary_language: javascript
   build_system: none
   test_framework: jest
   test_command: npm test
