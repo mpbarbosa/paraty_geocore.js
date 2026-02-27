@@ -2,9 +2,9 @@
 node_modules/
 
 # Build output
-dist/
 build/
 out/
+# dist/ is intentionally tracked for CDN delivery via jsDelivr
 
 # TypeScript cache
 *.tsbuildinfo

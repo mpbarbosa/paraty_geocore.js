@@ -1,12 +1,12 @@
 project:
   name: paraty_geocore.js
   type: nodejs-library
-  kind: location_based_service
+  kind: location_based_service  # domain classification: geolocation/LBS application
   version: '1.0.1'
   description: paraty_geocore.js project
 tech_stack:
   primary_language: javascript
-  build_system: none
+  build_system: none  # no transpilation step; source JS is shipped directly
   test_framework: jest
   test_command: npm test
   lint_command: npm run lint
@@ -15,7 +15,7 @@ structure:
     - src
   test_dirs:
     - test
-    - __tests__
+    - __tests__  # Jest default; kept for compatibility with jest --testPathPattern
   docs_dirs:
     - docs
 workflow:
@@ -23,35 +23,35 @@ workflow:
     quick:
       enabled: true
       steps:
-        - step_00
-        - step_01
-        - step_02
+        - step_00  # environment validation
+        - step_01  # dependency check
+        - step_02  # static analysis / lint
     medium:
       enabled: true
       steps:
-        - step_00
-        - step_01
-        - step_02
-        - step_03
-        - step_04
-        - step_05
+        - step_00  # environment validation
+        - step_01  # dependency check
+        - step_02  # static analysis / lint
+        - step_03  # unit tests
+        - step_04  # security scan
+        - step_05  # documentation check
     full:
       enabled: true
       steps:
-        - step_00
-        - step_01
-        - step_02
-        - step_03
-        - step_04
-        - step_05
-        - step_06
-        - step_07
-        - step_08
-        - step_0f
+        - step_00  # environment validation
+        - step_01  # dependency check
+        - step_02  # static analysis / lint
+        - step_03  # unit tests
+        - step_04  # security scan
+        - step_05  # documentation check
+        - step_06  # integration tests
+        - step_07  # coverage report generation
+        - step_08  # release readiness check
+        - step_0f  # artifact commit: versions and commits all workflow outputs to the repo
 validation:
   documentation:
     required: true
-    min_coverage: 80
+    min_coverage: 80  # 80% of public API surface must be documented
   testing:
     required: true
-    min_coverage: 70
+    min_coverage: 70  # 70% line coverage threshold; enforced by jest --coverage

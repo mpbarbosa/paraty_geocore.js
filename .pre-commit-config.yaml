@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 3.0.3
+    hooks:
+      - id: editorconfig-checker
+        exclude: |
+          (?x)^(
+            node_modules/|
+            \.ai_workflow/
+          )
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.43.0
+    hooks:
+      - id: markdownlint
+        args: [--config, .markdownlint.json]
+        exclude: |
+          (?x)^(
+            node_modules/|
+            \.ai_workflow/
+          )

@@ -1,9 +1,9 @@
 // src/core/GeoPosition.test.ts
 
-import GeoPosition, { GeoCoords, GeoPositionInput, AccuracyQuality } from './GeoPosition';
-import { calculateDistance } from '../utils/distance.js';
+import GeoPosition, { GeoCoords, GeoPositionInput, AccuracyQuality } from '../../src/core/GeoPosition';
+import { calculateDistance } from '../../src/utils/distance';
 
-jest.mock('../utils/distance.js', () => ({
+jest.mock('../../src/utils/distance', () => ({
 	calculateDistance: jest.fn(),
 }));
 

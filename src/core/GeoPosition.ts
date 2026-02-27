@@ -10,6 +10,7 @@
  */
 
 import { calculateDistance } from '../utils/distance.js';
+import { GeoPositionError } from './errors.js';
 
 /**
  * Coordinate properties extracted from a GeolocationCoordinates object.
@@ -62,7 +63,34 @@ class GeoPosition {
 	readonly speed: number | null | undefined;
 	readonly timestamp: number | undefined;
 
+	/**
+	 * Creates a new immutable GeoPosition instance from a raw position object.
+	 *
+	 * The constructor explicitly extracts each coordinate property by name rather
+	 * than relying on spread/Object.assign, because the browser's
+	 * `GeolocationCoordinates` exposes properties via non-enumerable getters that
+	 * spread silently ignores.
+	 *
+	 * @param {GeoPositionInput} position - A `GeolocationPosition`-compatible object
+	 *   or plain object with `coords` and `timestamp`. Must be a non-null object.
+	 * @throws {GeoPositionError} If `position` is a primitive (number, string, boolean, etc.)
+	 *
+	 * @example
+	 * // From browser Geolocation API
+	 * navigator.geolocation.getCurrentPosition((raw) => {
+	 *   const pos = new GeoPosition(raw);
+	 *   console.log(pos.accuracyQuality); // 'good'
+	 * });
+	 *
+	 * // From a plain test object
+	 * const pos = new GeoPosition({ timestamp: Date.now(), coords: { latitude: -23.5505, longitude: -46.6333, accuracy: 15 } });
+	 */
 	constructor(position: GeoPositionInput) {
+		if (position !== null && typeof position !== 'object') {
+			throw new GeoPositionError(
+				`GeoPosition: position must be an object, got ${typeof position}`,
+			);
+		}
 		const coords = GeoPosition.parseCoords(position?.coords);
 
 		this.geolocationPosition = position
@@ -83,10 +111,20 @@ class GeoPosition {
 
 	/**
 	 * Extracts and deeply freezes coordinate properties from a raw coords object.
-	 * 
-	 * GeolocationCoordinates exposes properties via non-enumerable getters, so the
-	 * spread operator produces an empty object. Explicit extraction is required.
-	 * 
+	 *
+	 * **Why explicit extraction instead of spread?**
+	 * The browser's `GeolocationCoordinates` exposes all properties (latitude,
+	 * longitude, accuracy, etc.) via non-enumerable getters. The spread operator
+	 * and `Object.assign` only copy enumerable own properties, so `{ ...rawCoords }`
+	 * silently produces `{}`. Explicit property access by name works regardless of
+	 * enumerability.
+	 *
+	 * **Why freeze the returned object?**
+	 * The coords object is referenced both from `this.coords` and from the nested
+	 * `geolocationPosition.coords`. Freezing at this level ensures immutability
+	 * is enforced on the shared reference before either property is assigned,
+	 * without requiring a second freeze pass later.
+	 *
 	 * @private
 	 * @param {GeoCoords} [rawCoords] - Raw coords from a GeolocationPosition or plain object
 	 * @returns {Readonly<GeoCoords>} Frozen defensive copy of the coordinate properties

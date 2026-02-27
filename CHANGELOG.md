@@ -17,13 +17,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.9.0-alpha] — 2025-10-11
+## [0.9.1-alpha] — 2025-10-11
 
 ### Added
 - `src/utils/distance.ts` — new `utils/distance` module
-  - `EARTH_RADIUS_METERS` constant (6,371,000 m)
-  - `calculateDistance(lat1, lon1, lat2, lon2)` — Haversine great-circle distance in meters
-  - `delay(ms)` — Promise-based async delay utility
+    - `EARTH_RADIUS_METERS` constant (6,371,000 m)
+    - `calculateDistance(lat1, lon1, lat2, lon2)` — Haversine great-circle distance in meters
+    - `delay(ms)` — Promise-based async delay utility (moved to `utils/async` in 0.10.0-alpha)
 - `docs/distance-FRS.md` — functional requirements specification for `utils/distance`
 
 ### Changed
@@ -35,13 +35,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ### Added
 - `src/core/GeoPosition.ts` — initial implementation of the `GeoPosition` class
-  - Immutable wrapper around the browser `GeolocationPosition` object
-  - Explicit property extraction from `GeolocationCoordinates` (handles non-enumerable browser getters)
-  - `Object.freeze()` enforces immutability after construction
-  - `accuracyQuality` property computed at construction time
-  - `GeoPosition.getAccuracyQuality(accuracy)` static method — classifies accuracy in meters to `excellent` / `good` / `medium` / `bad` / `very bad`
-  - `distanceTo(otherPosition)` — Haversine distance in meters
-  - `toString()` — formatted position summary for debugging
+    - Immutable wrapper around the browser `GeolocationPosition` object
+    - Explicit property extraction from `GeolocationCoordinates` (handles non-enumerable browser getters)
+    - `Object.freeze()` enforces immutability after construction
+    - `accuracyQuality` property computed at construction time
+    - `GeoPosition.getAccuracyQuality(accuracy)` static method — classifies accuracy in meters to `excellent` / `good` / `medium` / `bad` / `very bad`
+    - `distanceTo(otherPosition)` — Haversine distance in meters
+    - `toString()` — formatted position summary for debugging
 - `docs/GeoPosition-FRS.md` — functional requirements specification for `GeoPosition`
 - `docs/GEOPOSITION_REFACTORING_SUMMARY.md` — refactoring summary (referential transparency)
 

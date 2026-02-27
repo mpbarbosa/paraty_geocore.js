@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test & Coverage
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Type-check (tsc --noEmit)
+        run: npm run validate
+
+      - name: Lint Markdown
+        if: matrix.node-version == '20.x'
+        run: npx --yes markdownlint-cli "**/*.md" --ignore node_modules --ignore .ai_workflow --config .markdownlint.json
+
+      - name: Run unit & integration tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 14
+
+  benchmark:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    needs: test  # only run benchmarks if tests pass
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run performance benchmarks
+        run: npm run bench

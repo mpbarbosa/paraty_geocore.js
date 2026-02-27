@@ -1,0 +1,32 @@
+[2026-02-27T23:27:49.148Z] 
+→ Starting: Consistency Analysis
+[2026-02-27T23:27:49.148Z] ════════════════════════════════════════════════════════════
+[2026-02-27T23:27:49.148Z] 🔷  Step 2: Documentation Consistency Analysis
+[2026-02-27T23:27:49.148Z] ════════════════════════════════════════════════════════════
+[2026-02-27T23:27:49.154Z] Found 10 documentation files
+[2026-02-27T23:27:49.154Z] Expected version: 0.9.0-alpha
+[2026-02-27T23:27:49.156Z] Version check: 11 issue(s) found
+[2026-02-27T23:27:49.158Z] Link check: 3 broken link(s) found
+[2026-02-27T23:27:50.528Z] ✓ GitHub Copilot SDK initialized successfully
+[2026-02-27T23:27:51.774Z] Available Copilot models (13): claude-sonnet-4.5, claude-haiku-4.5, claude-opus-4.5, claude-sonnet-4, gemini-3-pro-preview, gpt-5.2-codex, gpt-5.2, gpt-5.1-codex-max, gpt-5.1-codex, gpt-5.1, gpt-5.1-codex-mini, gpt-5-mini, gpt-4.1
+[2026-02-27T23:27:51.815Z] [DEBUG] AI cache initialized: .ai_workflow/.ai_cache
+[2026-02-27T23:27:51.820Z] [DEBUG] Cache miss: 52aa57ea...
+[2026-02-27T23:27:51.820Z] [DEBUG] Request Options: {"model":"gpt-4.1","temperature":0.7,"maxTokens":4000,"stream":false,"persona":"documentation_expert","cache":true}
+[2026-02-27T23:27:51.820Z] [DEBUG] Persona: documentation_expert
+[2026-02-27T23:27:51.820Z] [DEBUG] Model: gpt-4.1
+[2026-02-27T23:27:51.820Z] [AI] SDK call starting — persona: documentation_expert, model: gpt-4.1, prompt_chars: 4930
+[2026-02-27T23:27:51.820Z] [DEBUG] Executing AI request (attempt 1/3)
+[2026-02-27T23:27:51.820Z] [DEBUG] AiHelper._sendRequest called
+[2026-02-27T23:27:51.820Z] [Copilot SDK] Calling sendMessage — model: gpt-4.1, prompt_length: 4930 chars
+[2026-02-27T23:27:51.820Z] [DEBUG] Sending prompt...
+[2026-02-27T23:28:18.611Z] [Copilot SDK] sendAndWait returned — model: gpt-4.1
+[2026-02-27T23:28:18.612Z] [AI] SDK call completed — persona: documentation_expert, model: gpt-4.1, response_chars: 4576, latency: 26792ms
+[2026-02-27T23:28:18.612Z] ✓ AI request completed successfully
+[2026-02-27T23:28:18.613Z] [DEBUG] Prompt logged to: 2026-02-27T23-28-18-612Z_0001_documentation_expert.md
+[2026-02-27T23:28:18.617Z] [DEBUG] Response cached: 52aa57ea...
+[2026-02-27T23:28:18.617Z] ⚠ Step 2 completed - 14 issue(s) found
+[2026-02-27T23:28:18.617Z] ✓ Step step_02 completed in 29469ms
+[2026-02-27T23:28:18.617Z] [DEBUG] [Performance] step_02: 29.5s
+[2026-02-27T23:28:18.618Z] ⚠ [WARNING] Operation 'step_02' took 29.5s (memory: 19.02MB)
+[2026-02-27T23:28:18.618Z] [DEBUG] Recorded outcome for step_02: success
+[2026-02-27T23:28:18.618Z] ✓ Completed: Consistency Analysis (29s)

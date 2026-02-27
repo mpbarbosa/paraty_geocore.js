@@ -5,7 +5,7 @@
  * All functions are referentially transparent with no side effects.
  * 
  * @module utils/distance
- * @since 0.9.0-alpha
+ * @since 0.9.1-alpha
  * @author Marcelo Pereira Barbosa
  */
 
@@ -46,7 +46,7 @@ export const EARTH_RADIUS_METERS = 6371e3;
  * @see {@link https://en.wikipedia.org/wiki/Haversine_formula} Haversine formula on Wikipedia
  * @see {@link https://www.movable-type.co.uk/scripts/latlong.html} Calculate distance, bearing and more
  * 
- * @since 0.9.0-alpha
+ * @since 0.9.1-alpha
  * @author Marcelo Pereira Barbosa
  */
 export const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -64,15 +64,3 @@ export const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2
 	return R * c; // Distance in meters
 };
 
-/**
- * Creates a promise that resolves after the specified delay.
- * 
- * @param {number} ms - Delay in milliseconds
- * @returns {Promise<void>} Promise that resolves after the delay
- * 
- * @example
- * await delay(1000); // Wait 1 second
- * 
- * @since 0.9.0-alpha
- */
-export const delay = (ms: number): Promise<void> => new Promise((res) => setTimeout(res, ms));
