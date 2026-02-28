@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ==============================================================================
 # jsDelivr CDN Delivery Script for paraty_geocore.js
 # ==============================================================================
@@ -6,7 +6,7 @@
 # from GitHub. Reference: https://www.jsdelivr.com/?docs=gh
 # ==============================================================================
 
-set -e
+set -euo pipefail
 
 # Colors for output
 RED='\033[0;31m'
@@ -21,6 +21,8 @@ GITHUB_REPO="paraty_geocore.js"
 PACKAGE_VERSION=$(node -p "require('./package.json').version")
 MAIN_FILE="dist/src/index.js"
 
+section() { echo -e "${YELLOW}${1}${NC}"; echo ""; }
+
 echo -e "${BLUE}╔════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║       jsDelivr CDN URLs for paraty_geocore.js              ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════════╝${NC}"
@@ -32,8 +34,7 @@ echo ""
 # ==============================================================================
 # 1. Load specific version
 # ==============================================================================
-echo -e "${YELLOW}📦 Version-Specific URLs:${NC}"
-echo ""
+section "📦 Version-Specific URLs:"
 echo "Load a specific version (recommended for production):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}"
 echo ""
@@ -45,8 +46,7 @@ echo ""
 # 2. Load from specific commit
 # ==============================================================================
 LATEST_COMMIT=$(git rev-parse HEAD)
-echo -e "${YELLOW}🔖 Commit-Specific URL:${NC}"
-echo ""
+section "🔖 Commit-Specific URL:"
 echo "Load from specific commit (${LATEST_COMMIT:0:7}):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${LATEST_COMMIT}/${MAIN_FILE}"
 echo ""
@@ -55,8 +55,7 @@ echo ""
 # 3. Load latest from branch
 # ==============================================================================
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-echo -e "${YELLOW}🌿 Branch URLs:${NC}"
-echo ""
+section "🌿 Branch URLs:"
 echo "Load latest from ${CURRENT_BRANCH} branch (auto-updates):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${CURRENT_BRANCH}/${MAIN_FILE}"
 echo ""
@@ -67,8 +66,7 @@ echo ""
 # ==============================================================================
 # 4. Load with version ranges
 # ==============================================================================
-echo -e "${YELLOW}🎯 Version Range URLs (SemVer):${NC}"
-echo ""
+section "🎯 Version Range URLs (SemVer):"
 echo "Load latest v0.9.x (patch updates):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@0.9/${MAIN_FILE}"
 echo ""
@@ -79,8 +77,7 @@ echo ""
 # ==============================================================================
 # 5. Minified files (if available)
 # ==============================================================================
-echo -e "${YELLOW}⚡ Optimized URLs:${NC}"
-echo ""
+section "⚡ Optimized URLs:"
 echo "Auto-minified version (adds .min.js automatically):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/dist/src/index.min.js"
 echo ""
@@ -88,8 +85,7 @@ echo ""
 # ==============================================================================
 # 6. Load multiple files (combine)
 # ==============================================================================
-echo -e "${YELLOW}📚 Combine Multiple Files:${NC}"
-echo ""
+section "📚 Combine Multiple Files:"
 echo "Combine and minify multiple files:"
 echo "https://cdn.jsdelivr.net/combine/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/dist/src/core/GeoPosition.js,gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/dist/src/utils/distance.js"
 echo ""
@@ -97,8 +93,7 @@ echo ""
 # ==============================================================================
 # 7. Load entire package with /npm (if published to npm)
 # ==============================================================================
-echo -e "${YELLOW}📦 NPM CDN URLs (if published):${NC}"
-echo ""
+section "📦 NPM CDN URLs (if published):"
 echo "Load from npm registry:"
 echo "https://cdn.jsdelivr.net/npm/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}"
 echo ""
@@ -109,8 +104,7 @@ echo ""
 # ==============================================================================
 # 8. HTML Usage Examples
 # ==============================================================================
-echo -e "${YELLOW}🌐 HTML Usage Examples:${NC}"
-echo ""
+section "🌐 HTML Usage Examples:"
 echo "<!-- Load specific version -->"
 echo "<script src=\"https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}\"></script>"
 echo ""
@@ -129,8 +123,7 @@ echo ""
 # ==============================================================================
 # 9. Additional Features
 # ==============================================================================
-echo -e "${YELLOW}🔧 Additional Features:${NC}"
-echo ""
+section "🔧 Additional Features:"
 echo "Add .map to get source maps:"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}.map"
 echo ""
@@ -144,8 +137,7 @@ echo ""
 # ==============================================================================
 # 10. Performance Tips
 # ==============================================================================
-echo -e "${YELLOW}⚡ Performance Tips:${NC}"
-echo ""
+section "⚡ Performance Tips:"
 echo "1. Always use specific versions in production (not @latest or branch names)"
 echo "2. Enable SRI for security and cache validation"
 echo "3. jsDelivr automatically serves from 750+ CDN locations worldwide"
