@@ -20,7 +20,7 @@ The library is designed to be consumed by higher-level geolocation applications,
 
 ## 2. Directory Structure
 
-```
+```text
 paraty_geocore.js/
 ├── src/
 │   ├── core/
@@ -47,7 +47,7 @@ paraty_geocore.js/
 
 ## 3. Module Dependency Graph
 
-```
+```text
 GeoPosition  ──imports──►  utils/distance  (calculateDistance)
                                 │
                                 └──► (no further dependencies)
@@ -87,7 +87,7 @@ Neither module uses module-level mutable state, singletons, or global variables.
 
 Computes great-circle distance on a spherical Earth (radius = 6,371 km):
 
-```
+```text
 a = sin²(Δφ/2) + cos(φ₁) × cos(φ₂) × sin²(Δλ/2)
 c = 2 × atan2(√a, √(1−a))
 d = R × c
@@ -116,7 +116,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | Version       | Milestone |
 |---------------|-----------|
 | 0.6.0-alpha   | `GeoPosition` class introduced |
-| 0.9.1-alpha   | `utils/distance` module introduced |
+| 0.9.2-alpha   | `utils/distance` module introduced |
 
 ---
 

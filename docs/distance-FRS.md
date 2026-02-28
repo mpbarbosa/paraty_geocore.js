@@ -2,7 +2,7 @@
 ## `distance` — `src/utils/distance.ts`
 
 **Module:** `utils/distance`
-**Since:** 0.9.1-alpha
+**Since:** 0.9.2-alpha
 **Author:** Marcelo Pereira Barbosa
 
 ---
@@ -62,7 +62,7 @@ export const calculateDistance = (
 
 Implements the Haversine formula for spherical Earth geometry:
 
-```
+```text
 a = sin²(Δφ/2) + cos(φ₁) × cos(φ₂) × sin²(Δλ/2)
 c = 2 × atan2(√a, √(1−a))
 d = R × c

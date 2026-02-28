@@ -1,7 +1,7 @@
 # Functional Requirements — paraty_geocore.js
 
 **Project:** paraty_geocore.js
-**Current version:** 0.9.1-alpha
+**Current version:** 0.9.2-alpha
 **Author:** Marcelo Pereira Barbosa
 
 This document defines the top-level functional requirements and acceptance criteria for the library. Detailed per-module specifications are maintained separately and linked below.
@@ -12,10 +12,10 @@ This document defines the top-level functional requirements and acceptance crite
 
 | Module | Source | Detailed FRS |
 |--------|--------|-------------|
-| `core/GeoPosition` | `src/core/GeoPosition.js` | [GeoPosition-FRS.md](./GeoPosition-FRS.md) |
-| `core/errors` | `src/core/errors.js` | (see §3 below) |
-| `utils/distance` | `src/utils/distance.js` | [distance-FRS.md](./distance-FRS.md) |
-| `utils/async` | `src/utils/async.js` | [async-FRS.md](./async-FRS.md) |
+| `core/GeoPosition` | `src/core/GeoPosition.ts` | [GeoPosition-FRS.md](./GeoPosition-FRS.md) |
+| `core/errors` | `src/core/errors.ts` | (see §3 below) |
+| `utils/distance` | `src/utils/distance.ts` | [distance-FRS.md](./distance-FRS.md) |
+| `utils/async` | `src/utils/async.ts` | [async-FRS.md](./async-FRS.md) |
 
 ---
 
@@ -94,7 +94,7 @@ This document defines the top-level functional requirements and acceptance crite
 
 ---
 
-## 4. `utils/distance` *(since 0.9.1-alpha)*
+## 4. `utils/distance` *(since 0.9.2-alpha)*
 
 ### 4.1 Acceptance Criteria
 
@@ -164,7 +164,7 @@ This document defines the top-level functional requirements and acceptance crite
 
 ## 7. Out of Scope
 
-The following are explicitly **not** required for 0.9.1-alpha:
+The following are explicitly **not** required for 0.9.2-alpha:
 
 - npm package publication
 - TypeScript compilation / `dist/` output
