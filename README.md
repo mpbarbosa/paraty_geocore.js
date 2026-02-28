@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.9.2-alpha
+**Version:** 0.9.3-alpha
 
 **Status:** 🚧 Early Development
 
@@ -38,27 +38,25 @@ navigator.geolocation.getCurrentPosition((rawPosition) => {
 
 Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
-### HTML Script Tag
-
-```html
-<!-- Load specific version (recommended for production) -->
-<!-- Note: CDN serves published releases only; @0.9.2-alpha requires the tag to be published on npm/GitHub. -->
-<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha/src/index.js"></script>
-```
-
-### ES Module Import
+### ES Module Import (browsers — recommended)
 
 ```html
 <script type="module">
-  import { } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha/src/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/esm/index.js';
+
+  navigator.geolocation.getCurrentPosition((rawPosition) => {
+    const pos = new GeoPosition(rawPosition);
+    console.log(pos.toString());
+  });
 </script>
 ```
 
+> ⚠️ **Use the ESM build** (`dist/esm/index.js`) for native browser ES module imports.
+> The CJS build (`dist/src/index.js`) is for Node.js/CommonJS only — browsers **cannot** load it as an ES module.
+
 ### Version Options
 
-- **Specific version:** `@0.9.2-alpha` (recommended for production)
-- **Latest patch:** `@0.1` (auto-updates to latest 0.1.x)
-- **Latest minor:** `@0` (auto-updates to latest 0.x.x)
+- **Specific version:** `@0.9.3-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities

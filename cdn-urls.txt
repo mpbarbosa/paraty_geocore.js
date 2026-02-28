@@ -1,28 +1,38 @@
-jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.9.2-alpha
-Generated: Fri Feb 27 20:13:20 -03 2026
+jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.9.3-alpha
+Generated: $(date)
 =============================================================================
 
-PRODUCTION (Recommended - Specific Version):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha/dist/src/index.js
+ESM BUILD (for browsers / native ES modules — RECOMMENDED):
+
+PRODUCTION (Specific Version):
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/esm/index.js
+
+DEVELOPMENT (Latest from branch):
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/esm/index.js
+
+HTML ES MODULE USAGE:
+<script type="module">
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/esm/index.js';
+  const pos = new GeoPosition(rawPosition);
+</script>
+
+=============================================================================
+
+CJS BUILD (for Node.js / CommonJS — NOT for browsers):
+
+PRODUCTION (Specific Version):
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/src/index.js
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
 
-VERSION RANGE (Auto-update patches):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9/dist/src/index.js
-
-NPM CDN (if published to npm):
-https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.9.2-alpha/dist/src/index.js
-
-HTML USAGE:
-<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha/dist/src/index.js"></script>
-
-ES MODULE:
-<script type="module">
-  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha/dist/src/index.js';
-</script>
+=============================================================================
 
 PACKAGE INFO API:
-https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha
+https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha
 
+=============================================================================
+NOTE: Use the ESM build (dist/esm/) for browser imports via <script type="module">.
+      The CJS build (dist/src/) is for Node.js/CommonJS environments only.
+      Browsers CANNOT load CJS files as ES modules.
 =============================================================================
