@@ -3,7 +3,7 @@
  * paraty_geocore.js — Core JavaScript classes for geolocation applications.
  *
  * @module paraty_geocore
- * @since 0.9.1-alpha
+ * @since 0.9.2-alpha
  * @author Marcelo Pereira Barbosa
  * @license MIT
  */
