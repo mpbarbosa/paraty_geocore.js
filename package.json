@@ -1,6 +1,6 @@
 {
   "name": "paraty_geocore.js",
-  "version": "0.9.2-alpha",
+  "version": "0.9.3-alpha",
   "description": "Core JavaScript classes for geolocation applications",
   "main": "dist/src/index.js",
   "exports": {
@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.json",
+    "build:esm": "tsc --project tsconfig.esm.json",
     "test": "jest --testPathPattern='test/(core|integration|utils|index)' --passWithNoTests",
     "test:watch": "jest --watch --testPathPattern='test/(core|integration|utils|index)'",
     "test:coverage": "jest --coverage --testPathPattern='test/(core|integration|utils|index)'",
