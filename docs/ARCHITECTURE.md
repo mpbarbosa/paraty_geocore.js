@@ -29,6 +29,9 @@ paraty_geocore.js/
 │   └── utils/
 │       ├── distance.ts          # Haversine distance calculation utilities
 │       └── async.ts             # General-purpose async utilities (delay)
+├── .github/
+│   └── workflows/
+│       └── ci.yml               # CI/CD pipeline (Node.js 18.x, 20.x matrix)
 ├── docs/
 │   ├── API.md                   # Full API reference
 │   ├── ARCHITECTURE.md          # This file
@@ -37,6 +40,16 @@ paraty_geocore.js/
 │   ├── distance-FRS.md          # Functional requirements spec — distance utils
 │   ├── async-FRS.md             # Functional requirements spec — async utils
 │   └── GEOPOSITION_REFACTORING_SUMMARY.md
+├── test/
+│   ├── core/                    # Unit tests for src/core/ (GeoPosition, errors)
+│   ├── utils/                   # Unit tests for src/utils/ (distance, async)
+│   ├── integration/             # Integration tests — browser Geolocation API simulation
+│   ├── benchmarks/              # Performance benchmarks (excluded from coverage)
+│   └── index.test.ts            # Smoke tests for the public re-export surface
+├── scripts/
+│   └── deploy.sh                # Build, tag, push, and generate CDN URLs
+├── .markdownlint.json           # Markdownlint configuration
+├── .pre-commit-config.yaml      # Pre-commit hook configuration
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── LICENSE
@@ -117,6 +130,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 |---------------|-----------|
 | 0.6.0-alpha   | `GeoPosition` class introduced |
 | 0.9.2-alpha   | `utils/distance` module introduced |
+| 0.9.4-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
 
 ---
 
@@ -127,5 +141,8 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | TypeScript (`tsc`) | Compilation |
 | Jest   | Unit and integration testing |
 | npm    | Package management and scripts |
+| GitHub Actions (`ci.yml`) | CI/CD — runs tests on Node.js 18.x and 20.x |
+| pre-commit | Automated hooks: private-key detection, EditorConfig, markdownlint |
+| markdownlint | Documentation quality enforcement |
 
-Planned output target: **ESM** (`dist/`), with type declarations (`.d.ts`).
+Output targets: **CJS** (`dist/src/`) and **ESM** (`dist/esm/`), with type declarations (`.d.ts`). Produced by `npm run build` / `scripts/deploy.sh`.
