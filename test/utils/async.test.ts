@@ -14,12 +14,11 @@ describe('utils/async delay', () => {
     expect(Date.now() - start).toBeLessThan(20); // event-loop tick; allow up to 20ms
   });
 
-  it('should throw if ms is negative', async () => {
-    // The implementation does not throw, but setTimeout with negative ms acts as 0.
-    // This test documents the current behavior.
+  it('should resolve immediately for negative ms (clamped to 0)', async () => {
+    // Negative values are clamped to 0; resolves on the next event-loop tick.
     const start = Date.now();
     await delay(-10);
-    expect(Date.now() - start).toBeLessThan(20); // negative ms acts like 0; allow up to 20ms
+    expect(Date.now() - start).toBeLessThan(20);
   });
 
   it('should work with large ms values', async () => {

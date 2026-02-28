@@ -38,6 +38,15 @@ export interface GeoPositionInput {
 /** GPS accuracy quality classification. */
 export type AccuracyQuality = 'excellent' | 'good' | 'medium' | 'bad' | 'very bad';
 
+/** Accuracy threshold boundaries (meters) used by {@link GeoPosition.getAccuracyQuality}. */
+const ACCURACY_THRESHOLDS = Object.freeze({
+	EXCELLENT: 10,   // ≤ 10 m
+	GOOD:      30,   // ≤ 30 m
+	MEDIUM:   100,   // ≤ 100 m
+	BAD:      200,   // ≤ 200 m
+	// > 200 m → 'very bad'
+} as const);
+
 /** Normalised internal position shape stored on the instance. */
 interface NormalisedPosition {
 	readonly timestamp: number | undefined;
@@ -186,13 +195,13 @@ class GeoPosition {
 	 * @since 0.6.0-alpha
 	 */
 	static getAccuracyQuality(accuracy: number): AccuracyQuality {
-		if (accuracy <= 10) {
+		if (accuracy <= ACCURACY_THRESHOLDS.EXCELLENT) {
 			return "excellent";
-		} else if (accuracy <= 30) {
+		} else if (accuracy <= ACCURACY_THRESHOLDS.GOOD) {
 			return "good";
-		} else if (accuracy <= 100) {
+		} else if (accuracy <= ACCURACY_THRESHOLDS.MEDIUM) {
 			return "medium";
-		} else if (accuracy <= 200) {
+		} else if (accuracy <= ACCURACY_THRESHOLDS.BAD) {
 			return "bad";
 		} else {
 			return "very bad";

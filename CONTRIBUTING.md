@@ -109,6 +109,23 @@ npx markdownlint-cli "**/*.md" --ignore node_modules --config .markdownlint.json
 
 Fix all type errors and markdown lint errors before submitting a pull request.
 
+## Pre-commit Hooks
+
+This project uses [pre-commit](https://pre-commit.com/) to automate code quality checks. Install and activate once after cloning:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+Run manually against all files:
+
+```bash
+pre-commit run --all-files
+```
+
+Hooks enforce: private key detection, EditorConfig rules, and markdownlint.
+
 ---
 
 ## Submitting Changes

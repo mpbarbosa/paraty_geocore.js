@@ -1,6 +1,6 @@
 {
   "name": "paraty_geocore.js",
-  "version": "0.9.3-alpha",
+  "version": "0.9.4-alpha",
   "description": "Core JavaScript classes for geolocation applications",
   "main": "dist/src/index.js",
   "exports": {
@@ -30,6 +30,14 @@
   ],
   "author": "Marcelo Pereira Barbosa",
   "license": "MIT",
+  "engines": {
+    "node": ">=18",
+    "npm": ">=9"
+  },
+  "homepage": "https://github.com/mpbarbosa/paraty_geocore.js#readme",
+  "bugs": {
+    "url": "https://github.com/mpbarbosa/paraty_geocore.js/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mpbarbosa/paraty_geocore.js.git"

@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.9.3-alpha
+**Version:** 0.9.4-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,7 +42,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/esm/index.js';
 
   navigator.geolocation.getCurrentPosition((rawPosition) => {
     const pos = new GeoPosition(rawPosition);
@@ -56,7 +56,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ### Version Options
 
-- **Specific version:** `@0.9.3-alpha` (recommended for production)
+- **Specific version:** `@0.9.4-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities
@@ -83,6 +83,47 @@ npm run validate
 npm run test:all
 ```
 
+## 🚢 Release & Automation Scripts
+
+### `scripts/deploy.sh` — Build, tag, and publish a release
+
+Automates the full release workflow: TypeScript build → commit artifacts → create git tag → push to GitHub → generate CDN URLs.
+
+**Prerequisites:** Node.js, npm, git (must be run from a valid git repo with a clean working tree)
+
+```bash
+bash scripts/deploy.sh
+```
+
+**Steps performed:**
+
+1. Reads version from `package.json`
+2. Runs `npm run build` (TypeScript compilation)
+3. Commits `dist/` and `cdn-delivery.sh` as build artifacts
+4. Creates git tag `v<version>` (skips if already exists)
+5. Pulls and pushes current branch + tags to `origin`
+6. Runs `cdn-delivery.sh` to generate CDN URL list
+
+**Output:** console status messages, committed artifacts, git tag, updated `cdn-urls.txt`
+
+---
+
+### `cdn-delivery.sh` — Generate jsDelivr CDN URLs
+
+Generates and prints jsDelivr CDN URLs for the current package version, commit, and branch. Saves all URLs to `cdn-urls.txt` and optionally tests CDN availability with `curl`.
+
+**Prerequisites:** Node.js (for version read), git; `curl` optional (for CDN availability test)
+
+```bash
+bash cdn-delivery.sh
+# or via npm script (also runs build first):
+npm run cdn
+```
+
+**Output:** CDN URLs printed to console (version-pinned, commit-pinned, branch, semver range, npm, HTML snippets) and saved to `cdn-urls.txt`
+
+---
+
 ## 📖 Key Resources
 
 - **[API Reference](./docs/API.md)** - All guides and documentation
@@ -91,9 +132,10 @@ npm run test:all
 
 Please read our comprehensive guides before contributing:
 
-1. [JavaScript Best Practices](./.github/JAVASCRIPT_BEST_PRACTICES.md)
-2. [TDD Guide](./.github/TDD_GUIDE.md)
-3. [Code Review Guide](./.github/CODE_REVIEW_GUIDE.md)
+1. [CONTRIBUTING.md](./CONTRIBUTING.md) - Setup, code standards, and submission process
+2. [JavaScript Best Practices](./.github/JAVASCRIPT_BEST_PRACTICES.md)
+3. [TDD Guide](./.github/TDD_GUIDE.md)
+4. [Code Review Guide](./.github/CODE_REVIEW_GUIDE.md)
 
 See the full [API Reference](./docs/API.md) for all available resources.
 

@@ -1,18 +1,18 @@
-jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.9.3-alpha
+jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.9.4-alpha
 Generated: $(date)
 =============================================================================
 
 ESM BUILD (for browsers / native ES modules — RECOMMENDED):
 
 PRODUCTION (Specific Version):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/esm/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/esm/index.js
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/esm/index.js
 
 HTML ES MODULE USAGE:
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/esm/index.js';
   const pos = new GeoPosition(rawPosition);
 </script>
 
@@ -21,7 +21,7 @@ HTML ES MODULE USAGE:
 CJS BUILD (for Node.js / CommonJS — NOT for browsers):
 
 PRODUCTION (Specific Version):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/src/index.js
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
@@ -29,7 +29,7 @@ https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
 =============================================================================
 
 PACKAGE INFO API:
-https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.9.3-alpha
+https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha
 
 =============================================================================
 NOTE: Use the ESM build (dist/esm/) for browser imports via <script type="module">.
