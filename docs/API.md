@@ -4,7 +4,7 @@
 **Language:** TypeScript (compiled to JavaScript)
 **Since:** 0.6.0-alpha
 
-> **See also:** [GeoPosition Functional Requirements](./GeoPosition-FRS.md) | [Refactoring Summary](./GEOPOSITION_REFACTORING_SUMMARY.md)
+> **See also:** [GeoPosition Docs](./GEO_POSITION.md) | [GeoPosition API](./GEO_POSITION_API.md) | [Functional Spec](./GEO_POSITION_FUNC_SPEC.md) | [FRS](./GeoPosition-FRS.md) | [Refactoring Summary](./GEOPOSITION_REFACTORING_SUMMARY.md)
 
 ---
 
