@@ -1,5 +1,5 @@
-// src/core/errors.test.ts
-import { GeoPositionError } from './errors';
+// test/core/errors.test.ts
+import { GeoPositionError } from '../../src/core/errors';
 
 describe('GeoPositionError', () => {
   it('should be instance of Error', () => {

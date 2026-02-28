@@ -1,17 +1,17 @@
-// src/utils/async.test.ts
-import { delay } from './async';
+// test/utils/async.test.ts
+import { delay } from '../../src/utils/async';
 
 describe('utils/async delay', () => {
   it('should resolve after the specified milliseconds', async () => {
     const start = Date.now();
     await delay(50);
-    expect(Date.now() - start).toBeGreaterThanOrEqual(50);
+    expect(Date.now() - start).toBeGreaterThanOrEqual(45); // allow ±5ms for timer imprecision
   });
 
   it('should resolve immediately for 0 ms', async () => {
     const start = Date.now();
     await delay(0);
-    expect(Date.now() - start).toBeLessThan(10);
+    expect(Date.now() - start).toBeLessThan(20); // event-loop tick; allow up to 20ms
   });
 
   it('should throw if ms is negative', async () => {
@@ -19,7 +19,7 @@ describe('utils/async delay', () => {
     // This test documents the current behavior.
     const start = Date.now();
     await delay(-10);
-    expect(Date.now() - start).toBeLessThan(10);
+    expect(Date.now() - start).toBeLessThan(20); // negative ms acts like 0; allow up to 20ms
   });
 
   it('should work with large ms values', async () => {

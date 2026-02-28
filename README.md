@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.9.1-alpha
+**Version:** 0.9.2-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,21 +42,21 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <!-- Load specific version (recommended for production) -->
-<!-- Note: CDN serves published releases only; @0.9.1-alpha requires the tag to be published on npm/GitHub. -->
-<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.1-alpha/src/index.js"></script>
+<!-- Note: CDN serves published releases only; @0.9.2-alpha requires the tag to be published on npm/GitHub. -->
+<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha/src/index.js"></script>
 ```
 
 ### ES Module Import
 
 ```html
 <script type="module">
-  import { } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.1-alpha/src/index.js';
+  import { } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.2-alpha/src/index.js';
 </script>
 ```
 
 ### Version Options
 
-- **Specific version:** `@0.9.1-alpha` (recommended for production)
+- **Specific version:** `@0.9.2-alpha` (recommended for production)
 - **Latest patch:** `@0.1` (auto-updates to latest 0.1.x)
 - **Latest minor:** `@0` (auto-updates to latest 0.x.x)
 - **Latest from branch:** `@main` (development, auto-updates)
@@ -105,6 +105,6 @@ MIT License - Copyright (c) 2025 Marcelo Pereira Barbosa
 
 ## 🔗 Links
 
-- **Repository:** https://github.com/mpbarbosa/paraty_geocore.js
+- **Repository:** [github.com/mpbarbosa/paraty_geocore.js](https://github.com/mpbarbosa/paraty_geocore.js)
 - **Documentation:** [API Reference](./docs/API.md)
 

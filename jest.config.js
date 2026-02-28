@@ -7,9 +7,11 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+  cacheDirectory: '.jest-cache',  // persisted across runs; cached in CI for faster startup
+  maxWorkers: '50%',              // cap parallelism to leave headroom on CI runners
   collectCoverageFrom: ['src/**/*.ts'],
   coverageThreshold: {
-    global: { lines: 70, branches: 70, functions: 70, statements: 70 },
+    global: { lines: 80, branches: 80, functions: 80, statements: 80 },
   },
   coverageReporters: ['text', 'lcov'],
 };

@@ -17,7 +17,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.9.1-alpha] — 2025-10-11
+## [0.9.2-alpha] — 2025-10-11
 
 ### Added
 - `src/utils/distance.ts` — new `utils/distance` module

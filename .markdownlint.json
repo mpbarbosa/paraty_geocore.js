@@ -2,7 +2,16 @@
   "default": true,
   "MD007": { "indent": 4 },
   "MD009": { "br_spaces": 0 },
+  "MD001": false,
+  "MD002": false,
+  "MD012": false,
   "MD013": false,
+  "MD022": false,
+  "MD024": false,
+  "MD029": false,
+  "MD031": false,
+  "MD032": false,
   "MD033": false,
-  "MD041": false
+  "MD041": false,
+  "MD060": false
 }

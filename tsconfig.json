@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "lib": ["ES2020", "DOM"],
-    "strict": true,
+    "target": "ES2020",           // emit ES2020-compatible output (Node 14+ and modern browsers)
+    "module": "commonjs",         // CJS output consumed by Jest and Node without ESM flag
+    "lib": ["ES2020", "DOM"],     // include DOM types for GeolocationPosition etc.
+    "strict": true,               // enables all strict type-checking flags
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationDir": "./dist/types",
+    "skipLibCheck": true,         // skip type-checking of declaration files in node_modules
+    "outDir": "./dist",           // compiled JS output root
+    "declaration": true,          // emit .d.ts alongside each .js file
+    "declarationDir": "./dist/types", // keep type declarations separate from JS output
     "rootDir": ".",
     "baseUrl": "."
   },

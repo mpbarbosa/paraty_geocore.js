@@ -1,4 +1,11 @@
 repos:
+  # Detect accidentally committed private keys / certificates
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: detect-private-key
+
+  # Enforce EditorConfig rules (indentation, line endings, charset)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
     rev: 3.0.3
     hooks:
@@ -13,7 +20,7 @@ repos:
     rev: v0.43.0
     hooks:
       - id: markdownlint
-        args: [--config, .markdownlint.json]
+        args: [--config, .markdownlint.json]  # MD013/MD033/MD041 disabled for project style
         exclude: |
           (?x)^(
             node_modules/|

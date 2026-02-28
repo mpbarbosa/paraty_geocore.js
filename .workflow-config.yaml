@@ -2,11 +2,11 @@ project:
   name: paraty_geocore.js
   type: nodejs-library
   kind: location_based_service  # domain classification: geolocation/LBS application
-  version: '1.0.1'
+  version: '0.9.2-alpha'  # keep in sync with package.json
   description: paraty_geocore.js project
 tech_stack:
-  primary_language: javascript
-  build_system: none  # no transpilation step; source JS is shipped directly
+  primary_language: typescript
+  build_system: tsc  # tsc compiles src/**/*.ts → dist/
   test_framework: jest
   test_command: npm test
   lint_command: npm run lint
@@ -55,3 +55,8 @@ validation:
   testing:
     required: true
     min_coverage: 70  # 70% line coverage threshold; enforced by jest --coverage
+
+deploy:
+  enabled: true
+  script: "scripts/deploy.sh"
+  description: "Build TypeScript, commit artifacts, tag release, push, and generate jsDelivr CDN URLs"
