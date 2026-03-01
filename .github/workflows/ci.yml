@@ -1,3 +1,5 @@
+# CI workflow — runs tests, coverage, linting, and benchmarks on push/PR.
+# Matrix tests Node.js 18.x and 20.x; benchmarks run only on 20.x after tests pass.
 name: CI
 
 on:

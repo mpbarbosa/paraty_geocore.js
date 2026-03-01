@@ -1,3 +1,5 @@
+# Dependabot configuration — automated dependency updates for npm packages
+# and GitHub Actions. Updates are grouped into single PRs to reduce review noise.
 version: 2
 updates:
   - package-ecosystem: "npm"

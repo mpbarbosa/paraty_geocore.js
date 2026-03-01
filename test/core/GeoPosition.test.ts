@@ -12,6 +12,9 @@ describe('GeoPosition', () => {
 	beforeEach(() => {
 		(calculateDistance as jest.Mock).mockReturnValue(mockDistance);
 	});
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
 
 	describe('constructor', () => {
 		it('should create a GeoPosition with full data', () => {

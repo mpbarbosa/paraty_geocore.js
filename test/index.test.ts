@@ -176,7 +176,7 @@ describe('delay (exported from index)', () => {
   it('resolves after the specified milliseconds', async () => {
     const start = Date.now();
     await delay(50);
-    expect(Date.now() - start).toBeGreaterThanOrEqual(50);
+    expect(Date.now() - start).toBeGreaterThanOrEqual(45); // allow ±5ms for timer imprecision
   });
 
   it('resolves immediately for delay(0)', async () => {

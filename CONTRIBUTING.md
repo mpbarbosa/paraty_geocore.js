@@ -26,6 +26,7 @@ test/
   utils/        # Unit tests for src/utils/
   integration/  # Integration tests (browser Geolocation API simulation)
   benchmarks/   # Performance benchmarks (excluded from coverage run)
+  helpers/      # Shared test fixtures and constants (e.g. TEST_TIMESTAMP)
   index.test.ts # Smoke tests for the public re-export surface
 docs/           # Functional requirements specs, API reference, architecture
 ```

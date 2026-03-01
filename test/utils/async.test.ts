@@ -32,7 +32,7 @@ describe('utils/async delay', () => {
     }
   });
 
-  it('should be a Promise', () => {
+  it('delay() returns a Promise', () => {
     const result = delay(10);
     expect(result).toBeInstanceOf(Promise);
   });

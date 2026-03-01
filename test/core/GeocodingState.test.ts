@@ -88,10 +88,13 @@ it('should handle observer errors gracefully', () => {
 const state = new GeocodingState();
 const errorObserver = jest.fn(() => { throw new Error('boom'); });
 const successObserver = jest.fn();
+const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 state.subscribe(errorObserver);
 state.subscribe(successObserver);
 expect(() => state.setPosition(new GeoPosition(mockPos(0, 0)))).not.toThrow();
 expect(successObserver).toHaveBeenCalled();
+expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Error notifying observer'), expect.any(Error));
+warnSpy.mockRestore();
 });
 
 it('should allow chaining by returning this', () => {

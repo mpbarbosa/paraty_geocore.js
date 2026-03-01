@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.9.5-alpha
+**Version:** 0.9.6-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,7 +42,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.5-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.6-alpha/dist/esm/index.js';
 
   navigator.geolocation.getCurrentPosition((rawPosition) => {
     const pos = new GeoPosition(rawPosition);
@@ -56,7 +56,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ### Version Options
 
-- **Specific version:** `@0.9.5-alpha` (recommended for production)
+- **Specific version:** `@0.9.6-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities
@@ -121,6 +121,19 @@ npm run cdn
 ```
 
 **Output:** CDN URLs printed to console (version-pinned, commit-pinned, branch, semver range, npm, HTML snippets) and saved to `cdn-urls.txt`
+
+---
+
+### `scripts/colors.sh` — Shared ANSI color definitions
+
+A helper library sourced by other shell scripts to provide consistent terminal color output. **Not intended to be run directly.**
+
+```bash
+# Source from another script:
+source "$(dirname "${BASH_SOURCE[0]}")/colors.sh"
+```
+
+Exports: `RED`, `GREEN`, `YELLOW`, `BLUE`, `NC` (no color/reset).
 
 ---
 
