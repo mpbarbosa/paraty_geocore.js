@@ -1,0 +1,18 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/api",
+  "name": "paraty_geocore.js",
+  "readme": "README.md",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "hideGenerator": true,
+  "validation": {
+    "notExported": false
+  },
+  "blockTags": ["@param", "@returns", "@throws", "@example", "@since", "@author", "@see", "@module", "@template", "@deprecated", "@pure", "@immutable", "@constant"],
+  "modifierTags": ["@internal", "@override", "@static", "@class", "@extends", "@private", "@constructor", "@license"],
+  "navigationLinks": {
+    "GitHub": "https://github.com/mpbarbosa/paraty_geocore.js"
+  }
+}

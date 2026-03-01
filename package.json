@@ -1,6 +1,6 @@
 {
   "name": "paraty_geocore.js",
-  "version": "0.9.8-alpha",
+  "version": "0.9.9-alpha",
   "description": "Core JavaScript classes for geolocation applications",
   "main": "dist/src/index.js",
   "exports": {
@@ -13,12 +13,21 @@
     "build": "tsc --project tsconfig.json",
     "build:esm": "tsc --project tsconfig.esm.json",
     "test": "jest --testPathPattern='test/(core|integration|utils|index)' --passWithNoTests",
+    "test:core": "jest --testPathPattern='test/(core|index)' --passWithNoTests",
+    "test:utils": "jest --testPathPattern='test/utils' --passWithNoTests",
+    "test:integration": "jest --testPathPattern='test/integration' --passWithNoTests",
     "test:watch": "jest --watch --testPathPattern='test/(core|integration|utils|index)'",
     "test:coverage": "jest --coverage --testPathPattern='test/(core|integration|utils|index)'",
     "test:verbose": "jest --verbose --testPathPattern='test/(core|integration|utils|index)'",
     "bench": "jest --testPathPattern='test/benchmarks' --verbose --passWithNoTests",
+    "test:flaky": "for i in 1 2 3; do npm test -- --forceExit --randomize || exit 1; done",
     "test:all": "npm run test:coverage && npm run bench",
     "validate": "tsc --noEmit",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix",
+    "lint:md": "markdownlint --config .markdownlint.json \"**/*.md\" --ignore node_modules --ignore .ai_workflow --ignore docs/api",
+    "lint:md:fix": "markdownlint --fix --config .markdownlint.json \"**/*.md\" --ignore node_modules --ignore .ai_workflow --ignore docs/api",
+    "docs:generate": "typedoc",
     "cdn": "npm run build && bash cdn-delivery.sh"
   },
   "keywords": [
@@ -44,8 +53,13 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "eslint": "^10.0.2",
     "jest": "^29.7.0",
+    "markdownlint-cli": "^0.47.0",
     "ts-jest": "^29.1.0",
+    "typedoc": "^0.28.17",
     "typescript": "^5.4.0"
   }
 }

@@ -47,3 +47,5 @@ yarn.lock
 pnpm-lock.yaml
 
 .ai_workflow/
+# TypeDoc generated API reference
+docs/api/

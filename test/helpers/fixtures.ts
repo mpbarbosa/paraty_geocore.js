@@ -4,8 +4,36 @@
  * Import these instead of repeating magic values across test files.
  */
 
+import type { GeoPositionInput } from '../../src/core/GeoPosition';
+
 /**
  * A stable, well-known Unix timestamp used across unit and integration tests.
  * Corresponds to 2023-11-14T22:13:20.000Z — arbitrary but consistent.
  */
 export const TEST_TIMESTAMP = 1_700_000_000_000;
+
+/**
+ * Creates a minimal {@link GeoPositionInput} for use in unit tests.
+ *
+ * All optional coord fields default to `null`; `timestamp` is always
+ * {@link TEST_TIMESTAMP} to prevent non-deterministic `Date.now()` values
+ * from leaking into test output.
+ *
+ * @param lat - Latitude in decimal degrees
+ * @param lon - Longitude in decimal degrees
+ * @param accuracy - GPS accuracy in metres (default: 10)
+ */
+export function makeGeoPositionInput(lat: number, lon: number, accuracy = 10): GeoPositionInput {
+  return {
+    coords: {
+      latitude: lat,
+      longitude: lon,
+      accuracy,
+      altitude: null,
+      altitudeAccuracy: null,
+      heading: null,
+      speed: null,
+    },
+    timestamp: TEST_TIMESTAMP,
+  };
+}

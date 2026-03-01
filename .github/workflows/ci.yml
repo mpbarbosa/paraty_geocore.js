@@ -9,6 +9,38 @@ on:
     branches: [main]
 
 jobs:
+  test-split:
+    name: Test (${{ matrix.group }})
+    runs-on: ubuntu-latest
+    # Runs in parallel with the main `test` job for fast per-group feedback
+    strategy:
+      fail-fast: false  # let all groups report independently
+      matrix:
+        group: [core, utils, integration]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Jest transform cache
+        uses: actions/cache@v4
+        with:
+          path: .jest-cache
+          key: jest-20.x-split-${{ matrix.group }}-${{ hashFiles('jest.config.js', 'tsconfig.json') }}
+          restore-keys: jest-20.x-split-${{ matrix.group }}-
+
+      - name: Run ${{ matrix.group }} tests
+        run: npm run test:${{ matrix.group }}
+
   test:
     name: Test & Coverage
     runs-on: ubuntu-latest
@@ -37,6 +69,11 @@ jobs:
 
       - name: Type-check (tsc --noEmit)
         run: npm run validate
+
+      - name: Lint TypeScript
+        # Run only once (not per Node version) to avoid duplicate lint reports
+        if: matrix.node-version == '20.x'
+        run: npm run lint
 
       - name: Lint Markdown
         # Run only once (not per Node version) to avoid duplicate lint reports
@@ -82,3 +119,33 @@ jobs:
 
       - name: Run performance benchmarks
         run: npm run bench
+
+  flaky-detection:
+    name: Flaky Test Detection
+    runs-on: ubuntu-latest
+    needs: test  # only run if baseline tests pass
+    # Run on push to main and on PRs — catches async leaks and order-dependent failures
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests 3× with randomised order and forceExit
+        # --randomize: shuffles test order within each suite (detects state-leak dependencies)
+        # --forceExit: exits after all tests complete (detects async resource leaks / open handles)
+        # Three sequential runs amplify the chance of catching non-deterministic failures
+        run: |
+          for i in 1 2 3; do
+            echo "--- Flaky detection run $i/3 ---"
+            npm test -- --forceExit --randomize || exit 1
+          done

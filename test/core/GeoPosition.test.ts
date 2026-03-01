@@ -81,6 +81,15 @@ describe('GeoPosition', () => {
 			});
 		});
 
+		it('should set geolocationPosition to null when position is null', () => {
+			const pos = new GeoPosition(null as any);
+			expect(pos.geolocationPosition).toBeNull();
+			expect(pos.coords).toBeNull();
+			expect(pos.latitude).toBeUndefined();
+			expect(pos.longitude).toBeUndefined();
+			expect(pos.accuracyQuality).toBe('very bad');
+		});
+
 		it('should handle partial coords', () => {
 			const input: GeoPositionInput = {
 				coords: { latitude: 10.5 },

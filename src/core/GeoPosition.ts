@@ -47,7 +47,10 @@ const ACCURACY_THRESHOLDS = Object.freeze({
 	// > 200 m → 'very bad'
 } as const);
 
-/** Normalised internal position shape stored on the instance. */
+/**
+ * Normalised internal position shape stored on the instance.
+ * @internal
+ */
 interface NormalisedPosition {
 	readonly timestamp: number | undefined;
 	readonly coords: Readonly<GeoCoords>;

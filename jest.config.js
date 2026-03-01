@@ -7,6 +7,7 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+  randomize: true,                // shuffle test order within each file to catch state-leak flakiness
   cacheDirectory: '.jest-cache',  // persisted across runs; cached in CI for faster startup
   maxWorkers: '50%',              // cap parallelism to leave headroom on CI runners
   collectCoverageFrom: ['src/**/*.ts'],

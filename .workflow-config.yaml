@@ -2,7 +2,7 @@ project:
   name: paraty_geocore.js
   type: nodejs-library
   kind: location_based_service  # domain classification: geolocation/LBS application
-  version: '0.9.8-alpha'  # keep in sync with package.json
+  version: '0.9.9-alpha'  # keep in sync with package.json
   description: paraty_geocore.js project
 tech_stack:
   primary_language: typescript
@@ -25,27 +25,27 @@ workflow:
     quick:
       enabled: true
       steps:
-        - step_00  # environment validation
-        - step_01  # dependency check
-        - step_02  # static analysis / lint
+        - step_00  # pre-analysis / environment scan
+        - step_01  # documentation analysis
+        - step_02  # consistency analysis
     medium:
       enabled: true
       steps:
-        - step_00  # environment validation
-        - step_01  # dependency check
-        - step_02  # static analysis / lint
-        - step_03  # unit tests
-        - step_04  # security scan
-        - step_05  # documentation check
+        - step_00  # pre-analysis / environment scan
+        - step_01  # documentation analysis
+        - step_02  # consistency analysis
+        - step_03  # script reference analysis
+        - step_04  # config validation
+        - step_05  # directory structure validation
     full:
       enabled: true
       steps:
-        - step_00  # environment validation
-        - step_01  # dependency check
-        - step_02  # static analysis / lint
-        - step_03  # unit tests
-        - step_04  # security scan
-        - step_05  # documentation check
+        - step_00  # pre-analysis / environment scan
+        - step_01  # documentation analysis
+        - step_02  # consistency analysis
+        - step_03  # script reference analysis
+        - step_04  # config validation
+        - step_05  # directory structure validation
         - step_06  # integration tests
         - step_07  # coverage report generation
         - step_08  # release readiness check

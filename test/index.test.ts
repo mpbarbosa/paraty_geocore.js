@@ -7,22 +7,14 @@
 import {
   GeoPosition,
   GeoPositionError,
+  GeocodingState,
   ObserverSubject,
   calculateDistance,
   EARTH_RADIUS_METERS,
   delay,
 } from '../src/index';
 import type { GeoCoords, GeoPositionInput, AccuracyQuality } from '../src/index';
-import { TEST_TIMESTAMP } from './helpers/fixtures';
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/** Minimal valid GeoPositionInput using the coords-wrapper shape. */
-function makeInput(lat: number, lon: number, accuracy = 10): GeoPositionInput {
-  return { coords: { latitude: lat, longitude: lon, accuracy }, timestamp: TEST_TIMESTAMP };
-}
+import { TEST_TIMESTAMP, makeGeoPositionInput } from './helpers/fixtures';
 
 // ---------------------------------------------------------------------------
 // GeoPosition
@@ -34,7 +26,7 @@ describe('GeoPosition (exported from index)', () => {
   });
 
   it('creates an instance from a valid GeoPositionInput', () => {
-    const pos = new GeoPosition(makeInput(40.7128, -74.006, 5));
+    const pos = new GeoPosition(makeGeoPositionInput(40.7128, -74.006, 5));
     expect(pos.latitude).toBe(40.7128);
     expect(pos.longitude).toBe(-74.006);
     expect(pos.accuracy).toBe(5);
@@ -42,7 +34,7 @@ describe('GeoPosition (exported from index)', () => {
   });
 
   it('instance is frozen (immutable)', () => {
-    const pos = new GeoPosition(makeInput(0, 0));
+    const pos = new GeoPosition(makeGeoPositionInput(0, 0));
     expect(Object.isFrozen(pos)).toBe(true);
   });
 
@@ -57,7 +49,7 @@ describe('GeoPosition (exported from index)', () => {
     [90, 180],
     [0, 0],
   ])('does NOT throw for extreme-but-valid coordinates: %p, %p', (lat, lon) => {
-    expect(() => new GeoPosition(makeInput(lat, lon))).not.toThrow();
+    expect(() => new GeoPosition(makeGeoPositionInput(lat, lon))).not.toThrow();
   });
 
   it('returns no-position string from toString() when coords are absent', () => {
@@ -67,7 +59,7 @@ describe('GeoPosition (exported from index)', () => {
 
   describe('GeoPosition.from() factory', () => {
     it('returns a GeoPosition equal to new GeoPosition()', () => {
-      const input = makeInput(-23.5505, -46.6333, 12);
+      const input = makeGeoPositionInput(-23.5505, -46.6333, 12);
       const a = new GeoPosition(input);
       const b = GeoPosition.from(input);
       expect(b.latitude).toBe(a.latitude);
@@ -192,6 +184,34 @@ describe('delay (exported from index)', () => {
     jest.advanceTimersByTime(5000);
     await expect(p).resolves.toBeUndefined();
     jest.useRealTimers();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// GeocodingState
+// ---------------------------------------------------------------------------
+
+describe('GeocodingState (exported from index)', () => {
+  it('is a named export and is a constructor', () => {
+    expect(typeof GeocodingState).toBe('function');
+  });
+
+  it('creates an instance with no position', () => {
+    const state = new GeocodingState();
+    expect(state.hasPosition()).toBe(false);
+    expect(state.getCurrentPosition()).toBeNull();
+    expect(state.getCurrentCoordinates()).toBeNull();
+  });
+
+  it('accepts a GeoPosition and notifies observers', () => {
+    const state = new GeocodingState();
+    const pos = new GeoPosition({ coords: { latitude: -23.5505, longitude: -46.6333, accuracy: 10 }, timestamp: 1000 });
+    const cb = jest.fn();
+    state.subscribe(cb);
+    state.setPosition(pos);
+    expect(state.hasPosition()).toBe(true);
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb.mock.calls[0][0].position).toBe(pos);
   });
 });
 

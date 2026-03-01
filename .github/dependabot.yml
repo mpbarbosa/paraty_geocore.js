@@ -7,6 +7,11 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore"         # conventional commit prefix for dependency bumps
+      include: "scope"        # e.g. "chore(deps): bump jest from 29.7.0 to 29.8.0"
     groups:
       dev-dependencies:
         # Group all npm updates into a single PR to reduce review noise
@@ -18,3 +23,9 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "chore"
+      include: "scope"        # e.g. "chore(ci): bump actions/checkout from 4.1.0 to 4.2.0"

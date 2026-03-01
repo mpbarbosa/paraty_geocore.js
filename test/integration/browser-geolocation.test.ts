@@ -29,7 +29,7 @@ interface FakeCoords {
  * Creates a GeolocationPosition-like object whose coords properties are
  * exposed as non-enumerable getters — identical to Chrome / Firefox behaviour.
  */
-function makeBrowserPosition(coords: FakeCoords, timestamp = Date.now()): object {
+function makeBrowserPosition(coords: FakeCoords, timestamp = TEST_TIMESTAMP): object {
   const coordsObj = Object.create(null);
   for (const [key, value] of Object.entries(coords) as [keyof FakeCoords, unknown][]) {
     Object.defineProperty(coordsObj, key, {
