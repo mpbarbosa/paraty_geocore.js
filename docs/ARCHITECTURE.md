@@ -140,7 +140,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | 0.9.0-alpha   | `GeocodingState` introduced |
 | 0.9.1-alpha   | `ObserverSubject<T>` extracted from `GeocodingState` |
 | 0.9.2-alpha   | `utils/distance` module introduced |
-| 0.9.7-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
+| 0.9.8-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
 
 ---
 

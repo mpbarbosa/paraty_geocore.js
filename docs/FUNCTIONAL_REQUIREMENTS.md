@@ -1,7 +1,7 @@
 # Functional Requirements — paraty_geocore.js
 
 **Project:** paraty_geocore.js
-**Current version:** 0.9.7-alpha
+**Current version:** 0.9.8-alpha
 **Author:** Marcelo Pereira Barbosa
 
 This document defines the top-level functional requirements and acceptance criteria for the library. Detailed per-module specifications are maintained separately and linked below.
@@ -164,7 +164,7 @@ This document defines the top-level functional requirements and acceptance crite
 
 ## 7. Out of Scope
 
-The following are explicitly **not** required for 0.9.7-alpha:
+The following are explicitly **not** required for 0.9.8-alpha:
 
 - npm package publication
 - Input validation for coordinate ranges in `calculateDistance`
