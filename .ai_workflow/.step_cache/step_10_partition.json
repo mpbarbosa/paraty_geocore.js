@@ -2,9 +2,9 @@
   "version": 1,
   "partitionIndex": 0,
   "totalPartitions": 1,
-  "filesHash": "c46d47b4",
+  "filesHash": "8c52cc37",
   "partitionLabels": [
-    "test, test/utils, test/integration, test/helpers, test/core, test/benchmarks, src, src/utils, src/core, package-lock.json, package.json, tsconfig.esm.json, tsconfig.json, jest.config.js, cdn-delivery.sh, scripts"
+    "test, test/utils, test/integration, test/helpers, test/core, test/benchmarks, src, src/utils, src/core, eslint.config.js, jest.config.js, docs/api, package-lock.json, package.json, tsconfig.esm.json, tsconfig.json, typedoc.json, cdn-delivery.sh, scripts"
   ],
-  "updatedAt": "2026-03-01T17:00:14.800Z"
+  "updatedAt": "2026-03-01T19:04:40.370Z"
 }

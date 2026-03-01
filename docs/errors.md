@@ -62,6 +62,67 @@ inputs, `Promise` rejection for async failures).
 
 ---
 
+## `TypeError` (standard)
+
+Two library methods throw the built-in `TypeError` for programming errors — i.e., when the *type* of an argument is fundamentally wrong.
+
+### `GeocodingState.setPosition(position)`
+
+| Scenario | Message |
+|---|---|
+| `position` is not a `GeoPosition` instance or `null` | `"GeocodingState: position must be a GeoPosition instance or null"` |
+
+```ts
+import { GeocodingState, GeoPosition } from 'paraty_geocore.js';
+
+const state = new GeocodingState();
+
+try {
+  state.setPosition('invalid' as any);
+} catch (err) {
+  if (err instanceof TypeError) {
+    console.error(err.message); // "GeocodingState: position must be a GeoPosition instance or null"
+  }
+}
+```
+
+### `ObserverSubject.subscribe(callback)`
+
+| Scenario | Message |
+|---|---|
+| `callback` is not a function | `"ObserverSubject: callback must be a function"` |
+
+```ts
+import { GeocodingState } from 'paraty_geocore.js';
+
+const state = new GeocodingState();
+
+try {
+  state.subscribe('not-a-function' as any);
+} catch (err) {
+  if (err instanceof TypeError) {
+    console.error(err.message); // "ObserverSubject: callback must be a function"
+  }
+}
+```
+
+> **Why `TypeError` and not a custom error class?**
+> `TypeError` is the appropriate built-in for argument-type contract violations. Custom error classes (like `GeoPositionError`) are reserved for domain-specific failures where callers may need to distinguish the error in catch blocks.
+
+---
+
+## Error message convention
+
+All error messages follow the format `"ClassName: human-readable description"`:
+
+| Class | Pattern |
+|-------|---------|
+| `GeoPositionError` | `"GeoPosition: ..."` |
+| `TypeError` (GeocodingState) | `"GeocodingState: ..."` |
+| `TypeError` (ObserverSubject) | `"ObserverSubject: ..."` |
+
+---
+
 ## See Also
 
 - [GeoPosition API Reference](GEO_POSITION_API.md)

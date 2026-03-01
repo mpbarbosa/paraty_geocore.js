@@ -3,11 +3,11 @@
 ## Source & Location
 
 **Source file:** `src/core/GeoPosition.ts`
-**Version:** 0.9.8-alpha
+**Version:** 0.9.9-alpha
 
 **CDN (ESM — for browsers):**
 ```ts
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.8-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.9-alpha/dist/esm/index.js';
 ```
 
 **Node.js / npm:**
@@ -63,7 +63,7 @@ Previously, developers had to work directly with the browser's `GeolocationPosit
 ### Basic Usage
 
 ```javascript
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.8-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.9-alpha/dist/esm/index.js';
 
 // Simulate browser GeolocationPosition object
 const geolocationPosition = {
@@ -213,7 +213,7 @@ console.log(position.altitude);   // null
 Here's a complete example of tracking a user's movement while driving:
 
 ```javascript
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.8-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.9-alpha/dist/esm/index.js';
 
 let lastPosition = null;
 
