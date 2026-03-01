@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const GeoPosition_1 = __importDefault(require("../../src/core/GeoPosition"));
 const distance_1 = require("../../src/utils/distance");
+const fixtures_1 = require("../helpers/fixtures");
 const ITERATIONS = 100000;
 // Increase Jest timeout for benchmark tests
 jest.setTimeout(30000);
@@ -44,7 +45,7 @@ describe('Performance Benchmarks', () => {
     });
     describe('core/GeoPosition', () => {
         const input = {
-            timestamp: 1700000000000,
+            timestamp: fixtures_1.TEST_TIMESTAMP,
             coords: {
                 latitude: -23.5505,
                 longitude: -46.6333,

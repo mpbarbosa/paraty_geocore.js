@@ -13,11 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const GeoPosition_1 = __importDefault(require("../../src/core/GeoPosition"));
 const distance_1 = require("../../src/utils/distance");
+const fixtures_1 = require("../helpers/fixtures");
 /**
  * Creates a GeolocationPosition-like object whose coords properties are
  * exposed as non-enumerable getters — identical to Chrome / Firefox behaviour.
  */
-function makeBrowserPosition(coords, timestamp = Date.now()) {
+function makeBrowserPosition(coords, timestamp = fixtures_1.TEST_TIMESTAMP) {
     const coordsObj = Object.create(null);
     for (const [key, value] of Object.entries(coords)) {
         Object.defineProperty(coordsObj, key, {
@@ -43,12 +44,12 @@ const EXPECTED_SP_RIO_METERS = 360748; // Haversine result for the given coordin
 describe('Integration: browser GeolocationPosition → GeoPosition', () => {
     describe('non-enumerable coords extraction', () => {
         it('reads latitude and longitude from non-enumerable getters', () => {
-            const raw = makeBrowserPosition(SAO_PAULO, 1700000000000);
+            const raw = makeBrowserPosition(SAO_PAULO, fixtures_1.TEST_TIMESTAMP);
             const pos = new GeoPosition_1.default(raw);
             expect(pos.latitude).toBe(SAO_PAULO.latitude);
             expect(pos.longitude).toBe(SAO_PAULO.longitude);
             expect(pos.accuracy).toBe(SAO_PAULO.accuracy);
-            expect(pos.timestamp).toBe(1700000000000);
+            expect(pos.timestamp).toBe(fixtures_1.TEST_TIMESTAMP);
         });
         it('spread of raw coords is empty (confirming non-enumerable behaviour)', () => {
             const raw = makeBrowserPosition(SAO_PAULO);
@@ -116,7 +117,7 @@ describe('Integration: browser GeolocationPosition → GeoPosition', () => {
     });
     describe('toString — full position string', () => {
         it('produces correct format from browser position', () => {
-            const raw = makeBrowserPosition({ latitude: -23.5505, longitude: -46.6333, accuracy: 12, altitude: 760, altitudeAccuracy: null, heading: null, speed: 0 }, 1700000000000);
+            const raw = makeBrowserPosition({ latitude: -23.5505, longitude: -46.6333, accuracy: 12, altitude: 760, altitudeAccuracy: null, heading: null, speed: 0 }, fixtures_1.TEST_TIMESTAMP);
             const pos = new GeoPosition_1.default(raw);
             expect(pos.toString()).toBe('GeoPosition: -23.5505, -46.6333, good, 760, 0, null, 1700000000000');
         });

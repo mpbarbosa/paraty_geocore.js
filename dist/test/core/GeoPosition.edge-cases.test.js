@@ -23,12 +23,7 @@ describe('GeoPosition — edge cases', () => {
             expect(() => new GeoPosition_1.default(99)).toThrow(Error);
         });
         it('thrown error has name "GeoPositionError"', () => {
-            try {
-                new GeoPosition_1.default('bad');
-            }
-            catch (e) {
-                expect(e.name).toBe('GeoPositionError');
-            }
+            expect(() => new GeoPosition_1.default('bad')).toThrow(expect.objectContaining({ name: 'GeoPositionError' }));
         });
         it('accepts null-ish objects gracefully (no throw)', () => {
             expect(() => new GeoPosition_1.default({})).not.toThrow();

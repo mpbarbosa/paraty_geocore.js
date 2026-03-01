@@ -21,13 +21,9 @@ describe('GeoPositionError', () => {
         expect(Object.getPrototypeOf(err)).toBe(errors_1.GeoPositionError.prototype);
     });
     it('should be catchable as GeoPositionError', () => {
-        try {
-            throw new errors_1.GeoPositionError('Catch test');
-        }
-        catch (e) {
-            expect(e).toBeInstanceOf(errors_1.GeoPositionError);
-            expect(e.message).toBe('Catch test');
-        }
+        const err = new errors_1.GeoPositionError('Catch test');
+        expect(err).toBeInstanceOf(errors_1.GeoPositionError);
+        expect(err.message).toBe('Catch test');
     });
     it('should allow custom properties', () => {
         const err = new errors_1.GeoPositionError('Custom');

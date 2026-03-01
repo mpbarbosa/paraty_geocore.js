@@ -14,6 +14,9 @@ describe('GeoPosition', () => {
     beforeEach(() => {
         distance_1.calculateDistance.mockReturnValue(mockDistance);
     });
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
     describe('constructor', () => {
         it('should create a GeoPosition with full data', () => {
             const input = {
@@ -75,6 +78,14 @@ describe('GeoPosition', () => {
                 timestamp: undefined,
                 coords: {},
             });
+        });
+        it('should set geolocationPosition to null when position is null', () => {
+            const pos = new GeoPosition_1.default(null);
+            expect(pos.geolocationPosition).toBeNull();
+            expect(pos.coords).toBeNull();
+            expect(pos.latitude).toBeUndefined();
+            expect(pos.longitude).toBeUndefined();
+            expect(pos.accuracyQuality).toBe('very bad');
         });
         it('should handle partial coords', () => {
             const input = {

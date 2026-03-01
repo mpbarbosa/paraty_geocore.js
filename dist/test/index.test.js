@@ -7,13 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * is exported, has the correct shape, and behaves as documented.
  */
 const index_1 = require("../src/index");
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-/** Minimal valid GeoPositionInput using the coords-wrapper shape. */
-function makeInput(lat, lon, accuracy = 10) {
-    return { coords: { latitude: lat, longitude: lon, accuracy }, timestamp: 1700000000000 };
-}
+const fixtures_1 = require("./helpers/fixtures");
 // ---------------------------------------------------------------------------
 // GeoPosition
 // ---------------------------------------------------------------------------
@@ -22,14 +16,14 @@ describe('GeoPosition (exported from index)', () => {
         expect(typeof index_1.GeoPosition).toBe('function');
     });
     it('creates an instance from a valid GeoPositionInput', () => {
-        const pos = new index_1.GeoPosition(makeInput(40.7128, -74.006, 5));
+        const pos = new index_1.GeoPosition((0, fixtures_1.makeGeoPositionInput)(40.7128, -74.006, 5));
         expect(pos.latitude).toBe(40.7128);
         expect(pos.longitude).toBe(-74.006);
         expect(pos.accuracy).toBe(5);
-        expect(pos.timestamp).toBe(1700000000000);
+        expect(pos.timestamp).toBe(fixtures_1.TEST_TIMESTAMP);
     });
     it('instance is frozen (immutable)', () => {
-        const pos = new index_1.GeoPosition(makeInput(0, 0));
+        const pos = new index_1.GeoPosition((0, fixtures_1.makeGeoPositionInput)(0, 0));
         expect(Object.isFrozen(pos)).toBe(true);
     });
     it('throws GeoPositionError when given a primitive', () => {
@@ -37,10 +31,12 @@ describe('GeoPosition (exported from index)', () => {
         expect(() => new index_1.GeoPosition('string')).toThrow(index_1.GeoPositionError);
         expect(() => new index_1.GeoPosition(true)).toThrow(index_1.GeoPositionError);
     });
-    it('does NOT throw for extreme-but-valid coordinates', () => {
-        expect(() => new index_1.GeoPosition(makeInput(-90, -180))).not.toThrow();
-        expect(() => new index_1.GeoPosition(makeInput(90, 180))).not.toThrow();
-        expect(() => new index_1.GeoPosition(makeInput(0, 0))).not.toThrow();
+    it.each([
+        [-90, -180],
+        [90, 180],
+        [0, 0],
+    ])('does NOT throw for extreme-but-valid coordinates: %p, %p', (lat, lon) => {
+        expect(() => new index_1.GeoPosition((0, fixtures_1.makeGeoPositionInput)(lat, lon))).not.toThrow();
     });
     it('returns no-position string from toString() when coords are absent', () => {
         const pos = new index_1.GeoPosition({});
@@ -48,7 +44,7 @@ describe('GeoPosition (exported from index)', () => {
     });
     describe('GeoPosition.from() factory', () => {
         it('returns a GeoPosition equal to new GeoPosition()', () => {
-            const input = makeInput(-23.5505, -46.6333, 12);
+            const input = (0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333, 12);
             const a = new index_1.GeoPosition(input);
             const b = index_1.GeoPosition.from(input);
             expect(b.latitude).toBe(a.latitude);
@@ -140,7 +136,7 @@ describe('delay (exported from index)', () => {
     it('resolves after the specified milliseconds', async () => {
         const start = Date.now();
         await (0, index_1.delay)(50);
-        expect(Date.now() - start).toBeGreaterThanOrEqual(50);
+        expect(Date.now() - start).toBeGreaterThanOrEqual(45); // allow ±5ms for timer imprecision
     });
     it('resolves immediately for delay(0)', async () => {
         const start = Date.now();
@@ -153,6 +149,52 @@ describe('delay (exported from index)', () => {
         jest.advanceTimersByTime(5000);
         await expect(p).resolves.toBeUndefined();
         jest.useRealTimers();
+    });
+});
+// ---------------------------------------------------------------------------
+// GeocodingState
+// ---------------------------------------------------------------------------
+describe('GeocodingState (exported from index)', () => {
+    it('is a named export and is a constructor', () => {
+        expect(typeof index_1.GeocodingState).toBe('function');
+    });
+    it('creates an instance with no position', () => {
+        const state = new index_1.GeocodingState();
+        expect(state.hasPosition()).toBe(false);
+        expect(state.getCurrentPosition()).toBeNull();
+        expect(state.getCurrentCoordinates()).toBeNull();
+    });
+    it('accepts a GeoPosition and notifies observers', () => {
+        const state = new index_1.GeocodingState();
+        const pos = new index_1.GeoPosition({ coords: { latitude: -23.5505, longitude: -46.6333, accuracy: 10 }, timestamp: 1000 });
+        const cb = jest.fn();
+        state.subscribe(cb);
+        state.setPosition(pos);
+        expect(state.hasPosition()).toBe(true);
+        expect(cb).toHaveBeenCalledTimes(1);
+        expect(cb.mock.calls[0][0].position).toBe(pos);
+    });
+});
+// ---------------------------------------------------------------------------
+// ObserverSubject
+// ---------------------------------------------------------------------------
+describe('ObserverSubject (exported from index)', () => {
+    it('is a named export and is a constructor', () => {
+        expect(typeof index_1.ObserverSubject).toBe('function');
+    });
+    it('creates an instance with zero observers', () => {
+        const subject = new index_1.ObserverSubject();
+        expect(subject.getObserverCount()).toBe(0);
+    });
+    it('subscribe/notify/unsubscribe lifecycle works', () => {
+        const subject = new index_1.ObserverSubject();
+        const cb = jest.fn();
+        const unsub = subject.subscribe(cb);
+        subject._notifyObservers(7);
+        expect(cb).toHaveBeenCalledWith(7);
+        unsub();
+        subject._notifyObservers(8);
+        expect(cb).toHaveBeenCalledTimes(1);
     });
 });
 // ---------------------------------------------------------------------------

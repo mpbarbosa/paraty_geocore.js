@@ -20,6 +20,9 @@ exports.GeoPositionError = void 0;
  * }
  */
 class GeoPositionError extends Error {
+    /**
+     * @param message - Human-readable description of the invalid argument
+     */
     constructor(message) {
         super(message);
         this.name = 'GeoPositionError';

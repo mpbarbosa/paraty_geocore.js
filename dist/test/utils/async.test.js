@@ -21,12 +21,16 @@ describe('utils/async delay', () => {
     });
     it('should work with large ms values', async () => {
         jest.useFakeTimers();
-        const promise = (0, async_1.delay)(1000);
-        jest.advanceTimersByTime(1000);
-        await expect(promise).resolves.toBeUndefined();
-        jest.useRealTimers();
+        try {
+            const promise = (0, async_1.delay)(1000);
+            jest.advanceTimersByTime(1000);
+            await expect(promise).resolves.toBeUndefined();
+        }
+        finally {
+            jest.useRealTimers();
+        }
     });
-    it('should be a Promise', () => {
+    it('delay() returns a Promise', () => {
         const result = (0, async_1.delay)(10);
         expect(result).toBeInstanceOf(Promise);
     });
