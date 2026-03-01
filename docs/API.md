@@ -13,6 +13,8 @@
 | Module | Path | Description |
 |--------|------|-------------|
 | `core/GeoPosition` | `src/core/GeoPosition.ts` | Immutable geographic position wrapper |
+| `core/ObserverSubject` | `src/core/ObserverSubject.ts` | Generic concrete Observer/Subject base class |
+| `core/GeocodingState` | `src/core/GeocodingState.ts` | Geocoding state manager (extends `ObserverSubject`) |
 | `core/errors` | `src/core/errors.ts` | Custom error classes |
 | `utils/distance` | `src/utils/distance.ts` | Pure distance calculation utilities |
 | `utils/async` | `src/utils/async.ts` | General-purpose async utilities |
@@ -134,6 +136,115 @@ calculateAccuracyQuality(): string
 ```
 
 > **Deprecated** — contains a scoping bug (`getAccuracyQuality` is not in scope). Use the `accuracyQuality` property instead.
+
+---
+
+## `core/ObserverSubject`
+
+### Class: `ObserverSubject<T>`
+
+Concrete generic implementation of the Observer/Subject pattern. Manages a typed list of observer callbacks and notifies them with a snapshot value whenever the subject state changes.
+
+Can be used directly or extended by specialised subclasses (e.g., `GeocodingState`).
+
+**Since:** 0.9.1-alpha
+
+**Type parameter:** `T` — shape of the snapshot object forwarded to observers.
+
+#### Constructor
+
+```typescript
+new ObserverSubject<T>()
+```
+
+Initialises with an empty observer list.
+
+#### Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `subscribe(callback)` | `() => void` | Register an observer; returns an unsubscribe function |
+| `unsubscribe(callback)` | `boolean` | Remove an observer by reference; returns `true` if found |
+| `getObserverCount()` | `number` | Number of currently registered observers |
+| `clearObservers()` | `void` | Remove all observers |
+| `_notifyObservers(snapshot)` | `void` | Call all observers with `snapshot`; errors are caught and logged |
+
+```typescript
+import ObserverSubject from 'paraty_geocore.js/core/ObserverSubject';
+
+const subject = new ObserverSubject<{ value: number }>();
+
+const unsub = subject.subscribe((snap) => console.log(snap.value));
+subject._notifyObservers({ value: 42 }); // logs: 42
+unsub();
+```
+
+---
+
+## `core/GeocodingState`
+
+### Class: `GeocodingState`
+
+Centralized state manager for geocoding position data. Extends `ObserverSubject<GeocodingStateSnapshot>` to inherit observer management and adds geocoding-specific state: the current `GeoPosition` and extracted coordinates.
+
+**Since:** 0.9.0-alpha
+
+**Extends:** `ObserverSubject<GeocodingStateSnapshot>`
+
+#### Type: `GeocodingStateSnapshot`
+
+```typescript
+interface GeocodingStateSnapshot {
+  position: GeoPosition | null;
+  coordinates: { latitude: number; longitude: number } | null;
+}
+```
+
+#### Constructor
+
+```typescript
+new GeocodingState()
+```
+
+Initialises with `null` position and no observers.
+
+#### Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `setPosition(position)` | `GeocodingState` | Set/clear position; notifies observers on non-null set |
+| `getCurrentPosition()` | `GeoPosition \| null` | Current position |
+| `getCurrentCoordinates()` | `object \| null` | Defensive copy of `{ latitude, longitude }` |
+| `hasPosition()` | `boolean` | Whether a position is currently set |
+| `clear()` | `void` | Clear position without notifying observers |
+| *(inherited)* `subscribe`, `unsubscribe`, `getObserverCount`, `clearObservers` | — | Observer management from `ObserverSubject` |
+
+```typescript
+import GeocodingState from 'paraty_geocore.js/core/GeocodingState';
+
+const state = new GeocodingState();
+
+const unsub = state.subscribe(({ position, coordinates }) => {
+  console.log(coordinates.latitude, coordinates.longitude);
+});
+
+state.setPosition(new GeoPosition(browserPosition));
+unsub();
+```
+
+---
+
+## `core/errors`
+
+### Class: `GeoPositionError`
+
+Custom error class thrown by `GeoPosition` for invalid input.
+
+```typescript
+new GeoPositionError(message: string)
+```
+
+`GeoPositionError` extends `Error` with `name` set to `'GeoPositionError'`.
 
 ---
 

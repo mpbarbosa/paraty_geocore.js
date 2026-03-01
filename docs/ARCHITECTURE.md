@@ -25,6 +25,8 @@ paraty_geocore.js/
 ├── src/
 │   ├── core/
 │   │   ├── GeoPosition.ts       # Immutable position wrapper class
+│   │   ├── ObserverSubject.ts   # Generic concrete Observer/Subject base class
+│   │   ├── GeocodingState.ts    # Geocoding state manager (extends ObserverSubject)
 │   │   └── errors.ts            # Custom error classes (GeoPositionError)
 │   └── utils/
 │       ├── distance.ts          # Haversine distance calculation utilities
@@ -35,13 +37,15 @@ paraty_geocore.js/
 ├── docs/
 │   ├── API.md                   # Full API reference
 │   ├── ARCHITECTURE.md          # This file
+│   ├── GEOCODING_STATE_API.md   # GeocodingState API reference
+│   ├── OBSERVER_SUBJECT_API.md  # ObserverSubject API reference
 │   ├── GETTING_STARTED.md       # Installation and usage guide
 │   ├── GeoPosition-FRS.md       # Functional requirements spec — GeoPosition
 │   ├── distance-FRS.md          # Functional requirements spec — distance utils
 │   ├── async-FRS.md             # Functional requirements spec — async utils
 │   └── GEOPOSITION_REFACTORING_SUMMARY.md
 ├── test/
-│   ├── core/                    # Unit tests for src/core/ (GeoPosition, errors)
+│   ├── core/                    # Unit tests for src/core/ (GeoPosition, ObserverSubject, GeocodingState, errors)
 │   ├── utils/                   # Unit tests for src/utils/ (distance, async)
 │   ├── integration/             # Integration tests — browser Geolocation API simulation
 │   ├── benchmarks/              # Performance benchmarks (excluded from coverage)
@@ -62,6 +66,9 @@ paraty_geocore.js/
 ## 3. Module Dependency Graph
 
 ```text
+ObserverSubject<T>
+  └── GeocodingState  ──imports──►  GeoPosition
+
 GeoPosition  ──imports──►  utils/distance  (calculateDistance)
                                 │
                                 └──► (no further dependencies)
@@ -130,8 +137,10 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | Version       | Milestone |
 |---------------|-----------|
 | 0.6.0-alpha   | `GeoPosition` class introduced |
+| 0.9.0-alpha   | `GeocodingState` introduced |
+| 0.9.1-alpha   | `ObserverSubject<T>` extracted from `GeocodingState` |
 | 0.9.2-alpha   | `utils/distance` module introduced |
-| 0.9.6-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
+| 0.9.7-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
 
 ---
 

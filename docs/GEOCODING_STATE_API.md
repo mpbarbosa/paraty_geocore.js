@@ -1,32 +1,55 @@
 # GeocodingState API Documentation
 
-**Version:** 0.9.6-alpha
+**Version:** 0.9.7-alpha
 **Module:** `src/core/GeocodingState.ts`
-**Pattern:** Observer (State Management)
+**Pattern:** Observer/Subject (via `ObserverSubject`)
 **Author:** Marcelo Pereira Barbosa
 
 ## Overview
 
-Centralized state management for geocoding position data. Implements the Observer pattern to notify subscribers of state changes, following the Single Responsibility Principle by focusing solely on state management.
+Centralized state management for geocoding position data. `GeocodingState` extends
+[`ObserverSubject<GeocodingStateSnapshot>`](./OBSERVER_SUBJECT_API.md) to inherit the
+Observer/Subject pattern and adds geocoding-specific state: the current `GeoPosition`
+instance and extracted coordinates.
 
 ## Purpose and Responsibility
 
 - **Position State:** Tracks the current `GeoPosition` instance
 - **Coordinate Extraction:** Exposes `{latitude, longitude}` without requiring consumers to know `GeoPosition` internals
-- **Observer Pattern:** Notifies registered callbacks whenever position changes
+- **Observer Pattern:** Inherited from `ObserverSubject` — notifies registered callbacks whenever position changes
 - **Defensive Copies:** Returns copies of coordinate data to prevent external mutation
-- **Error Isolation:** Catches and logs observer errors so one failing subscriber cannot break others
+- **Error Isolation:** Observer errors are caught and logged in `ObserverSubject._notifyObservers()`
+
+## Class Hierarchy
+
+```text
+ObserverSubject<GeocodingStateSnapshot>
+  └── GeocodingState
+```
 
 ## Location in Codebase
 
 ```text
-src/core/GeocodingState.ts
+src/core/ObserverSubject.ts   ← base class (Observer/Subject pattern)
+src/core/GeocodingState.ts    ← this class (geocoding state)
 ```
 
 ## Dependencies
 
 ```typescript
-import { GeoPosition } from './GeoPosition.js';
+import GeoPosition from './GeoPosition.js';
+import ObserverSubject from './ObserverSubject.js';
+```
+
+## Snapshot Type
+
+When observers are notified, they receive a `GeocodingStateSnapshot` object:
+
+```typescript
+interface GeocodingStateSnapshot {
+  position: GeoPosition | null;
+  coordinates: { latitude: number; longitude: number } | null;
+}
 ```
 
 ## Constructor
@@ -40,6 +63,10 @@ const state = new GeocodingState();
 ```
 
 ## Methods
+
+> Observer-management methods (`subscribe`, `unsubscribe`, `getObserverCount`,
+> `clearObservers`) are inherited from `ObserverSubject`.
+> See [ObserverSubject API](./OBSERVER_SUBJECT_API.md) for their documentation.
 
 ### `setPosition(position)`
 
@@ -114,13 +141,13 @@ if (state.hasPosition()) {
 
 ---
 
-### `subscribe(callback)`
+### `subscribe(callback)` *(inherited)*
 
-Registers a callback to receive state change notifications.
+Registers a callback to receive `GeocodingStateSnapshot` notifications.
 
 **Parameters:**
 
-- `callback` (`(snapshot: { position: GeoPosition, coordinates: { latitude, longitude } }) => void`)
+- `callback` (`(snapshot: GeocodingStateSnapshot) => void`)
 
 **Returns:** `() => void` — unsubscribe function
 
@@ -138,7 +165,7 @@ unsubscribe();
 
 ---
 
-### `unsubscribe(callback)`
+### `unsubscribe(callback)` *(inherited)*
 
 Removes a previously registered callback.
 
@@ -156,7 +183,7 @@ state.unsubscribe(handler); // returns true
 
 ---
 
-### `getObserverCount()`
+### `getObserverCount()` *(inherited)*
 
 Returns the number of currently registered observers.
 
@@ -168,7 +195,7 @@ console.log(`Active observers: ${state.getObserverCount()}`);
 
 ---
 
-### `clearObservers()`
+### `clearObservers()` *(inherited)*
 
 Removes all registered observers. Useful for cleanup or testing.
 
@@ -202,21 +229,23 @@ console.log(state.toString());
 
 ## Observer Snapshot
 
-When observers are notified, they receive a snapshot object:
+The `GeocodingStateSnapshot` interface (exported from `src/core/GeocodingState.ts`) defines
+the value passed to every observer on notification:
 
 ```typescript
-{
-  position: GeoPosition;                            // current GeoPosition instance
+interface GeocodingStateSnapshot {
+  position: GeoPosition | null;                            // current GeoPosition instance
   coordinates: { latitude: number; longitude: number } | null;  // defensive copy
 }
 ```
 
 ## Error Handling
 
-Observer errors are caught internally and logged via `console.warn`, so a failing observer does not prevent other observers from being notified:
+Observer errors are caught and logged via `console.warn` inside `ObserverSubject._notifyObservers()`,
+so a failing observer does not prevent others from being notified:
 
 ```typescript
-state.subscribe(() => { throw new Error('boom'); }); // caught
+state.subscribe(() => { throw new Error('boom'); }); // caught, logged
 state.subscribe((snap) => doWork(snap));              // still called
 ```
 
@@ -258,19 +287,23 @@ mockState.setPosition(new GeoPosition(mockBrowserPosition));
 
 ## Design Notes
 
-- **Single Responsibility:** State management only — no API calls, no UI interaction
+- **Single Responsibility:** Geocoding state only — observer management is delegated to `ObserverSubject`
 - **Immutability:** `getCurrentCoordinates()` always returns a fresh copy
-- **Observer isolation:** Errors in one observer do not affect others
+- **Observer isolation:** Errors in one observer do not affect others (handled by `ObserverSubject`)
 - **Chaining:** `setPosition()` returns `this` for fluent usage
 
 ## Tests
 
-Tests are located at `test/core/GeocodingState.test.ts` and cover:
+Tests are located at `test/core/GeocodingState.test.ts` and `test/core/ObserverSubject.test.ts`.
 
-- Constructor initialisation
+`GeocodingState.test.ts` covers:
+
+- Constructor initialisation and `instanceof ObserverSubject` assertion
 - `setPosition()` with valid, null, and invalid inputs
 - `getCurrentPosition()` and `getCurrentCoordinates()` state accuracy and defensive copy behaviour
 - `hasPosition()` across state transitions
 - `subscribe()` / `unsubscribe()` lifecycle and error isolation
 - Observer error handling and memory management
 - Integration scenarios with multiple observers and rapid updates
+
+`ObserverSubject.test.ts` covers the base class in isolation.
