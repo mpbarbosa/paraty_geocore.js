@@ -7,6 +7,7 @@
 import {
   GeoPosition,
   GeoPositionError,
+  ObserverSubject,
   calculateDistance,
   EARTH_RADIUS_METERS,
   delay,
@@ -191,6 +192,32 @@ describe('delay (exported from index)', () => {
     jest.advanceTimersByTime(5000);
     await expect(p).resolves.toBeUndefined();
     jest.useRealTimers();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ObserverSubject
+// ---------------------------------------------------------------------------
+
+describe('ObserverSubject (exported from index)', () => {
+  it('is a named export and is a constructor', () => {
+    expect(typeof ObserverSubject).toBe('function');
+  });
+
+  it('creates an instance with zero observers', () => {
+    const subject = new ObserverSubject();
+    expect(subject.getObserverCount()).toBe(0);
+  });
+
+  it('subscribe/notify/unsubscribe lifecycle works', () => {
+    const subject = new ObserverSubject<number>();
+    const cb = jest.fn();
+    const unsub = subject.subscribe(cb);
+    subject._notifyObservers(7);
+    expect(cb).toHaveBeenCalledWith(7);
+    unsub();
+    subject._notifyObservers(8);
+    expect(cb).toHaveBeenCalledTimes(1);
   });
 });
 

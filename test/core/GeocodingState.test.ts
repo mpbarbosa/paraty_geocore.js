@@ -1,6 +1,7 @@
 // test/core/GeocodingState.test.ts
 
 import GeocodingState from '../../src/core/GeocodingState';
+import ObserverSubject from '../../src/core/ObserverSubject';
 import GeoPosition from '../../src/core/GeoPosition';
 import type { GeoPositionInput } from '../../src/core/GeoPosition';
 
@@ -24,6 +25,7 @@ describe('constructor', () => {
 it('should create instance with null initial state', () => {
 const state = new GeocodingState();
 expect(state).toBeInstanceOf(GeocodingState);
+expect(state).toBeInstanceOf(ObserverSubject);
 expect(state.getCurrentPosition()).toBeNull();
 expect(state.getCurrentCoordinates()).toBeNull();
 });

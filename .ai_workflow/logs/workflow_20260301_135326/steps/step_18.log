@@ -1,0 +1,30 @@
+[2026-03-01T16:55:27.140Z] 
+→ Starting: Debugging Analysis
+[2026-03-01T16:55:27.141Z] ════════════════════════════════════════════════════════════
+[2026-03-01T16:55:27.141Z] 🔷  Step 18: Debugging Analysis
+[2026-03-01T16:55:27.141Z] ════════════════════════════════════════════════════════════
+[2026-03-01T16:55:27.148Z] Analyzing 7 source file(s) for debugging patterns
+[2026-03-01T16:55:27.150Z] Selected debugger persona: async_flow_debugger_prompt
+[2026-03-01T16:55:29.055Z] ✓ GitHub Copilot SDK initialized successfully
+[2026-03-01T16:55:30.159Z] Available Copilot models (13): claude-sonnet-4.5, claude-haiku-4.5, claude-opus-4.5, claude-sonnet-4, gemini-3-pro-preview, gpt-5.2-codex, gpt-5.2, gpt-5.1-codex-max, gpt-5.1-codex, gpt-5.1, gpt-5.1-codex-mini, gpt-5-mini, gpt-4.1
+[2026-03-01T16:55:30.271Z] [DEBUG] AI cache initialized: .ai_workflow/.ai_cache
+[2026-03-01T16:55:30.280Z] [DEBUG] Cache miss: a1c94589...
+[2026-03-01T16:55:30.280Z] [DEBUG] Request Options: {"model":"gpt-4.1","temperature":0.7,"maxTokens":4000,"stream":false,"persona":"code_quality_analyst","cache":true}
+[2026-03-01T16:55:30.280Z] [DEBUG] Persona: code_quality_analyst
+[2026-03-01T16:55:30.280Z] [DEBUG] Model: gpt-4.1
+[2026-03-01T16:55:30.280Z] [AI] SDK call starting — persona: code_quality_analyst, model: gpt-4.1, prompt_chars: 834
+[2026-03-01T16:55:30.280Z] [DEBUG] Executing AI request (attempt 1/3)
+[2026-03-01T16:55:30.280Z] [DEBUG] AiHelper._sendRequest called
+[2026-03-01T16:55:30.280Z] [Copilot SDK] Calling sendMessage — model: gpt-4.1, prompt_length: 834 chars
+[2026-03-01T16:55:30.280Z] [DEBUG] Sending prompt...
+[2026-03-01T16:55:40.776Z] [Copilot SDK] sendAndWait returned — model: gpt-4.1
+[2026-03-01T16:55:40.776Z] [AI] SDK call completed — persona: code_quality_analyst, model: gpt-4.1, response_chars: 411, latency: 10496ms
+[2026-03-01T16:55:40.777Z] ✓ AI request completed successfully
+[2026-03-01T16:55:40.778Z] [DEBUG] Prompt logged to: 2026-03-01T16-55-40-777Z_0001_code_quality_analyst.md
+[2026-03-01T16:55:40.783Z] [DEBUG] Response cached: a1c94589...
+[2026-03-01T16:55:40.784Z] ✓ Step 18 completed - debugging analysis report generated
+[2026-03-01T16:55:40.784Z] ✓ Step step_18 completed in 13644ms
+[2026-03-01T16:55:40.784Z] [DEBUG] [Performance] step_18: 13.6s
+[2026-03-01T16:55:40.784Z] ⚠ [WARNING] Operation 'step_18' took 13.6s (memory: 20.49MB)
+[2026-03-01T16:55:40.784Z] [DEBUG] Recorded outcome for step_18: success
+[2026-03-01T16:55:40.784Z] ✓ Completed: Debugging Analysis (14s)

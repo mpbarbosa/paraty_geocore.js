@@ -1,64 +1,76 @@
 /**
  * GeocodingState - Centralized state management for geocoding data
- * 
+ *
  * @fileoverview Manages the current position and coordinate state for the geocoding workflow.
- * Implements the Observer pattern to notify subscribers of state changes.
- * This class follows the Single Responsibility Principle by focusing solely on state management.
- * 
+ * Extends {@link ObserverSubject} to notify subscribers of state changes.
+ * This class follows the Single Responsibility Principle by focusing solely on geocoding state.
+ *
  * **Design Principles:**
- * - **Single Responsibility:** State management only
+ * - **Single Responsibility:** Geocoding state management only
  * - **Immutability:** Returns defensive copies of state
- * - **Observer Pattern:** Notify observers of state changes
+ * - **Observer Pattern:** Inherited from ObserverSubject
  * - **Encapsulation:** Private state with public accessors
- * 
+ *
  * @module core/GeocodingState
  * @since 0.9.0-alpha - Extracted from WebGeocodingManager during Phase 17 refactoring
  * @author Marcelo Pereira Barbosa
- * 
+ *
  * @requires core/GeoPosition
- * 
+ * @requires core/ObserverSubject
+ *
  * @example
  * // Basic usage
  * import GeocodingState from './core/GeocodingState.js';
- * 
+ *
  * const state = new GeocodingState();
- * 
+ *
  * // Subscribe to state changes
  * state.subscribe((stateSnapshot) => {
  *   console.log('Position updated:', stateSnapshot.position);
  * });
- * 
+ *
  * // Set position (triggers notification)
  * const position = new GeoPosition(browserPosition);
  * state.setPosition(position);
- * 
+ *
  * @example
  * // Get current state
  * const coords = state.getCurrentCoordinates();
  * console.log(coords.latitude, coords.longitude);
- * 
+ *
  * const position = state.getCurrentPosition();
  * console.log(position.accuracy, position.accuracyQuality);
  */
 
 import GeoPosition from './GeoPosition.js';
+import ObserverSubject from './ObserverSubject.js';
+
+/**
+ * Snapshot object passed to observers when geocoding state changes.
+ */
+export interface GeocodingStateSnapshot {
+    position: GeoPosition | null;
+    coordinates: { latitude: number; longitude: number } | null;
+}
 
 /**
  * GeocodingState class - Manages position and coordinate state
- * 
+ *
  * @class
+ * @extends ObserverSubject<GeocodingStateSnapshot>
  */
-class GeocodingState {
+class GeocodingState extends ObserverSubject<GeocodingStateSnapshot> {
     _currentPosition: GeoPosition | null;
     _currentCoordinates: {latitude: number, longitude: number} | null;
-    _observers: ((snapshot: object) => void)[];
 
     /**
      * Creates a new GeocodingState instance
-     * 
+     *
      * @constructor
      */
     constructor() {
+        super();
+
         /**
          * Current position (GeoPosition instance)
          * @type {GeoPosition|null}
@@ -72,13 +84,6 @@ class GeocodingState {
          * @private
          */
         this._currentCoordinates = null;
-
-        /**
-         * State change observers (callbacks)
-         * @type {Function[]}
-         * @private
-         */
-        this._observers = [];
     }
 
     /**
@@ -107,9 +112,12 @@ class GeocodingState {
         } : null;
 
         if (position !== null) {
-            this._notifyObservers();
+            this._notifyObservers({
+                position: this._currentPosition,
+                coordinates: this.getCurrentCoordinates()
+            });
         }
-        
+
         return this;
     }
 
@@ -159,86 +167,8 @@ class GeocodingState {
     }
 
     /**
-     * Subscribe to state changes
-     * 
-     * Callback receives a state snapshot object with position and coordinates.
-     * 
-     * @param {Function} callback - Called when state changes: (stateSnapshot) => void
-     * @returns {Function} Unsubscribe function
-     * @throws {TypeError} If callback is not a function
-     * 
-     * @example
-     * const unsubscribe = state.subscribe((stateSnapshot) => {
-     *   console.log('New position:', stateSnapshot.position);
-     *   console.log('Coordinates:', stateSnapshot.coordinates);
-     * });
-     * 
-     * // Later, unsubscribe
-     * unsubscribe();
-     */
-    subscribe(callback: (snapshot: object) => void): () => void {
-        if (typeof callback !== 'function') {
-            throw new TypeError('GeocodingState: callback must be a function');
-        }
-        this._observers.push(callback);
-        
-        // Return unsubscribe function
-        return () => {
-            const index = this._observers.indexOf(callback);
-            if (index > -1) {
-                this._observers.splice(index, 1);
-            }
-        };
-    }
-
-    /**
-     * Unsubscribe from state changes
-     * 
-     * @param {Function} callback - The callback to remove
-     * @returns {boolean} True if callback was found and removed
-     * 
-     * @example
-     * const handler = (state) => console.log(state);
-     * state.subscribe(handler);
-     * // Later...
-     * state.unsubscribe(handler);
-     */
-    unsubscribe(callback: (snapshot: object) => void): boolean {
-        const index = this._observers.indexOf(callback);
-        if (index > -1) {
-            this._observers.splice(index, 1);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Get number of active observers
-     * 
-     * @returns {number} Number of subscribed observers
-     * 
-     * @example
-     * console.log(`Active observers: ${state.getObserverCount()}`);
-     */
-    getObserverCount(): number {
-        return this._observers.length;
-    }
-
-    /**
-     * Clear all observers
-     * 
-     * Useful for cleanup or testing.
-     * 
-     * @example
-     * state.clearObservers();
-     */
-    clearObservers(): void {
-        this._observers = [];
-    }
-
-    /**
      * Clear current position state
-     * 
+     *
      * @example
      * state.clear();
      * console.log(state.hasPosition()); // false
@@ -246,29 +176,6 @@ class GeocodingState {
     clear(): void {
         this._currentPosition = null;
         this._currentCoordinates = null;
-    }
-
-    /**
-     * Notify all observers of state change
-     * 
-     * Observers receive a state snapshot with position and coordinates.
-     * Errors in observer callbacks are caught and logged.
-     * 
-     * @private
-     */
-    _notifyObservers(): void {
-        const stateSnapshot = {
-            position: this._currentPosition,
-            coordinates: this.getCurrentCoordinates()
-        };
-
-        this._observers.forEach(callback => {
-            try {
-                callback(stateSnapshot);
-            } catch (error) {
-                console.warn('GeocodingState: Error notifying observer', error);
-            }
-        });
     }
 
     /**
