@@ -45,6 +45,7 @@ paraty_geocore.js/
 │   ├── utils/                   # Unit tests for src/utils/ (distance, async)
 │   ├── integration/             # Integration tests — browser Geolocation API simulation
 │   ├── benchmarks/              # Performance benchmarks (excluded from coverage)
+│   ├── helpers/                 # Shared test fixtures and constants (TEST_TIMESTAMP, etc.)
 │   └── index.test.ts            # Smoke tests for the public re-export surface
 ├── scripts/
 │   └── deploy.sh                # Build, tag, push, and generate CDN URLs
@@ -130,7 +131,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 |---------------|-----------|
 | 0.6.0-alpha   | `GeoPosition` class introduced |
 | 0.9.2-alpha   | `utils/distance` module introduced |
-| 0.9.5-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
+| 0.9.6-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
 
 ---
 

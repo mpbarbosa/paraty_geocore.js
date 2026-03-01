@@ -1,6 +1,6 @@
 # GeocodingState API Documentation
 
-**Version:** 0.9.5-alpha
+**Version:** 0.9.6-alpha
 **Module:** `src/core/GeocodingState.ts`
 **Pattern:** Observer (State Management)
 **Author:** Marcelo Pereira Barbosa
