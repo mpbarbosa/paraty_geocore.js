@@ -1,0 +1,19 @@
+[2026-03-01T16:59:08.696Z] 
+→ Starting: Consistency Analysis
+[2026-03-01T16:59:08.697Z] ════════════════════════════════════════════════════════════
+[2026-03-01T16:59:08.697Z] 🔷  Step 2: Documentation Consistency Analysis
+[2026-03-01T16:59:08.697Z] ════════════════════════════════════════════════════════════
+[2026-03-01T16:59:08.721Z] Found 16 documentation files
+[2026-03-01T16:59:08.722Z] Expected version: 0.9.7-alpha
+[2026-03-01T16:59:08.732Z] Version check: 25 issue(s) found
+[2026-03-01T16:59:08.751Z] Link check: 0 broken link(s) found
+[2026-03-01T16:59:10.703Z] ✓ GitHub Copilot SDK initialized successfully
+[2026-03-01T16:59:11.807Z] Available Copilot models (13): claude-sonnet-4.5, claude-haiku-4.5, claude-opus-4.5, claude-sonnet-4, gemini-3-pro-preview, gpt-5.2-codex, gpt-5.2, gpt-5.1-codex-max, gpt-5.1-codex, gpt-5.1, gpt-5.1-codex-mini, gpt-5-mini, gpt-4.1
+[2026-03-01T16:59:11.918Z] [DEBUG] AI cache initialized: .ai_workflow/.ai_cache
+[2026-03-01T16:59:11.928Z] [step_02] Running AI analysis in 1 partition(s) of ≤50 files
+[2026-03-01T16:59:11.930Z] [DEBUG] Cache hit: 7f0178b5...
+[2026-03-01T16:59:11.933Z] ⚠ Step 2 completed - 25 issue(s) found
+[2026-03-01T16:59:11.933Z] ✓ Step step_02 completed in 3237ms
+[2026-03-01T16:59:11.934Z] [DEBUG] [Performance] step_02: 3.2s
+[2026-03-01T16:59:11.934Z] [DEBUG] Recorded outcome for step_02: success
+[2026-03-01T16:59:11.934Z] ✓ Completed: Consistency Analysis (3s)

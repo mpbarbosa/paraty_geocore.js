@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.9.7-alpha
+**Version:** 0.9.8-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,7 +42,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.7-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.8-alpha/dist/esm/index.js';
 
   navigator.geolocation.getCurrentPosition((rawPosition) => {
     const pos = new GeoPosition(rawPosition);
@@ -56,7 +56,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ### Version Options
 
-- **Specific version:** `@0.9.7-alpha` (recommended for production)
+- **Specific version:** `@0.9.8-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities
