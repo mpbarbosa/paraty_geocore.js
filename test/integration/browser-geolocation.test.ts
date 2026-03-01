@@ -9,6 +9,7 @@
 
 import GeoPosition from '../../src/core/GeoPosition';
 import { calculateDistance } from '../../src/utils/distance';
+import { TEST_TIMESTAMP } from '../helpers/fixtures';
 
 // ---------------------------------------------------------------------------
 // Browser GeolocationPosition factory
@@ -59,13 +60,13 @@ const EXPECTED_SP_RIO_METERS = 360_748; // Haversine result for the given coordi
 describe('Integration: browser GeolocationPosition → GeoPosition', () => {
   describe('non-enumerable coords extraction', () => {
     it('reads latitude and longitude from non-enumerable getters', () => {
-      const raw = makeBrowserPosition(SAO_PAULO, 1_700_000_000_000);
+      const raw = makeBrowserPosition(SAO_PAULO, TEST_TIMESTAMP);
       const pos = new GeoPosition(raw as any);
 
       expect(pos.latitude).toBe(SAO_PAULO.latitude);
       expect(pos.longitude).toBe(SAO_PAULO.longitude);
       expect(pos.accuracy).toBe(SAO_PAULO.accuracy);
-      expect(pos.timestamp).toBe(1_700_000_000_000);
+      expect(pos.timestamp).toBe(TEST_TIMESTAMP);
     });
 
     it('spread of raw coords is empty (confirming non-enumerable behaviour)', () => {
@@ -153,7 +154,7 @@ describe('Integration: browser GeolocationPosition → GeoPosition', () => {
     it('produces correct format from browser position', () => {
       const raw = makeBrowserPosition(
         { latitude: -23.5505, longitude: -46.6333, accuracy: 12, altitude: 760, altitudeAccuracy: null, heading: null, speed: 0 },
-        1_700_000_000_000,
+        TEST_TIMESTAMP,
       );
       const pos = new GeoPosition(raw as any);
       expect(pos.toString()).toBe(

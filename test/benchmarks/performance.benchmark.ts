@@ -10,6 +10,7 @@
 
 import GeoPosition from '../../src/core/GeoPosition';
 import { calculateDistance } from '../../src/utils/distance';
+import { TEST_TIMESTAMP } from '../helpers/fixtures';
 
 const ITERATIONS = 100_000;
 
@@ -53,7 +54,7 @@ describe('Performance Benchmarks', () => {
 
   describe('core/GeoPosition', () => {
     const input = {
-      timestamp: 1_700_000_000_000,
+      timestamp: TEST_TIMESTAMP,
       coords: {
         latitude: -23.5505,
         longitude: -46.6333,

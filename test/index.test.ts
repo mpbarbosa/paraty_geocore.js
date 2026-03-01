@@ -12,6 +12,7 @@ import {
   delay,
 } from '../src/index';
 import type { GeoCoords, GeoPositionInput, AccuracyQuality } from '../src/index';
+import { TEST_TIMESTAMP } from './helpers/fixtures';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -19,7 +20,7 @@ import type { GeoCoords, GeoPositionInput, AccuracyQuality } from '../src/index'
 
 /** Minimal valid GeoPositionInput using the coords-wrapper shape. */
 function makeInput(lat: number, lon: number, accuracy = 10): GeoPositionInput {
-  return { coords: { latitude: lat, longitude: lon, accuracy }, timestamp: 1_700_000_000_000 };
+  return { coords: { latitude: lat, longitude: lon, accuracy }, timestamp: TEST_TIMESTAMP };
 }
 
 // ---------------------------------------------------------------------------
@@ -36,7 +37,7 @@ describe('GeoPosition (exported from index)', () => {
     expect(pos.latitude).toBe(40.7128);
     expect(pos.longitude).toBe(-74.006);
     expect(pos.accuracy).toBe(5);
-    expect(pos.timestamp).toBe(1_700_000_000_000);
+    expect(pos.timestamp).toBe(TEST_TIMESTAMP);
   });
 
   it('instance is frozen (immutable)', () => {
@@ -50,10 +51,12 @@ describe('GeoPosition (exported from index)', () => {
     expect(() => new GeoPosition(true as any)).toThrow(GeoPositionError);
   });
 
-  it('does NOT throw for extreme-but-valid coordinates', () => {
-    expect(() => new GeoPosition(makeInput(-90, -180))).not.toThrow();
-    expect(() => new GeoPosition(makeInput(90, 180))).not.toThrow();
-    expect(() => new GeoPosition(makeInput(0, 0))).not.toThrow();
+  it.each<[number, number]>([
+    [-90, -180],
+    [90, 180],
+    [0, 0],
+  ])('does NOT throw for extreme-but-valid coordinates: %p, %p', (lat, lon) => {
+    expect(() => new GeoPosition(makeInput(lat, lon))).not.toThrow();
   });
 
   it('returns no-position string from toString() when coords are absent', () => {

@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.9.4-alpha
+**Version:** 0.9.5-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,7 +42,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.5-alpha/dist/esm/index.js';
 
   navigator.geolocation.getCurrentPosition((rawPosition) => {
     const pos = new GeoPosition(rawPosition);
@@ -56,7 +56,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ### Version Options
 
-- **Specific version:** `@0.9.4-alpha` (recommended for production)
+- **Specific version:** `@0.9.5-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities
@@ -124,6 +124,27 @@ npm run cdn
 
 ---
 
+### Script Permissions
+
+If the scripts are not executable, grant permissions first:
+
+```bash
+chmod +x scripts/deploy.sh cdn-delivery.sh
+```
+
+### Error Handling
+
+Both scripts use `set -euo pipefail` for robust error handling. Exit code `0` indicates success; any nonzero exit code indicates an error and the script will abort immediately.
+
+### Troubleshooting
+
+- **Missing dependencies:** Ensure Node.js, npm, and git are installed. `curl` is optional but required for CDN availability testing in `cdn-delivery.sh`.
+- **Git tag already exists:** The deploy script skips tag creation if the tag exists. To re-tag, delete the existing tag: `git tag -d v<version> && git push origin :refs/tags/v<version>`
+- **Permission denied:** Ensure scripts are executable (`chmod +x scripts/deploy.sh cdn-delivery.sh`).
+- **Unclean working tree:** `scripts/deploy.sh` requires a clean git working tree. Commit or stash changes before running.
+
+---
+
 ## 📖 Key Resources
 
 - **[API Reference](./docs/API.md)** - All guides and documentation
@@ -133,9 +154,6 @@ npm run cdn
 Please read our comprehensive guides before contributing:
 
 1. [CONTRIBUTING.md](./CONTRIBUTING.md) - Setup, code standards, and submission process
-2. [JavaScript Best Practices](./.github/JAVASCRIPT_BEST_PRACTICES.md)
-3. [TDD Guide](./.github/TDD_GUIDE.md)
-4. [Code Review Guide](./.github/CODE_REVIEW_GUIDE.md)
 
 See the full [API Reference](./docs/API.md) for all available resources.
 

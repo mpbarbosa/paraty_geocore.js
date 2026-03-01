@@ -7,6 +7,7 @@ updates:
     open-pull-requests-limit: 5
     groups:
       dev-dependencies:
+        # Group all npm updates into a single PR to reduce review noise
         patterns:
           - "*"
 

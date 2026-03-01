@@ -24,12 +24,9 @@ describe('GeoPositionError', () => {
   });
 
   it('should be catchable as GeoPositionError', () => {
-    try {
-      throw new GeoPositionError('Catch test');
-    } catch (e) {
-      expect(e).toBeInstanceOf(GeoPositionError);
-      expect((e as GeoPositionError).message).toBe('Catch test');
-    }
+    const err = new GeoPositionError('Catch test');
+    expect(err).toBeInstanceOf(GeoPositionError);
+    expect(err.message).toBe('Catch test');
   });
 
   it('should allow custom properties', () => {

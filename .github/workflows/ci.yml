@@ -26,7 +26,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # clean install for reproducible builds
 
       - name: Audit dependencies
         # Run only once (not per Node version) to avoid duplicate reports
@@ -76,7 +76,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # clean install for reproducible builds
 
       - name: Run performance benchmarks
         run: npm run bench
