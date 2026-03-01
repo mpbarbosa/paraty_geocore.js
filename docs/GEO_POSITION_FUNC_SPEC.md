@@ -52,15 +52,15 @@ The GeoPosition class addresses these issues by:
 **Input**:
 
 - A position object containing:
-  - `coords` (object): Nested coordinates object with:
-    - `latitude` (number): Latitude in decimal degrees (-90 to 90)
-    - `longitude` (number): Longitude in decimal degrees (-180 to 180)
-    - `accuracy` (number): Horizontal accuracy in meters (≥ 0)
-    - `altitude` (number or null): Altitude in meters above sea level
-    - `altitudeAccuracy` (number or null): Vertical accuracy in meters
-    - `heading` (number or null): Direction of travel in degrees (0-360, null if stationary)
-    - `speed` (number or null): Speed in meters per second (≥ 0, null if stationary)
-  - `timestamp` (number): Unix timestamp in milliseconds when position was acquired
+    - `coords` (object): Nested coordinates object with:
+        - `latitude` (number): Latitude in decimal degrees (-90 to 90)
+        - `longitude` (number): Longitude in decimal degrees (-180 to 180)
+        - `accuracy` (number): Horizontal accuracy in meters (≥ 0)
+        - `altitude` (number or null): Altitude in meters above sea level
+        - `altitudeAccuracy` (number or null): Vertical accuracy in meters
+        - `heading` (number or null): Direction of travel in degrees (0-360, null if stationary)
+        - `speed` (number or null): Speed in meters per second (≥ 0, null if stationary)
+    - `timestamp` (number): Unix timestamp in milliseconds when position was acquired
 
 **Output**:
 
@@ -100,11 +100,11 @@ The GeoPosition class addresses these issues by:
 **Output**:
 
 - `string`: One of five quality classifications:
-  - "excellent"
-  - "good"
-  - "medium"
-  - "bad"
-  - "very bad"
+    - "excellent"
+    - "good"
+    - "medium"
+    - "bad"
+    - "very bad"
 
 **Classification Logic**:
 
@@ -118,7 +118,7 @@ The GeoPosition class addresses these issues by:
 
 **Algorithm**:
 
-```
+```text
 function classifyAccuracy(accuracy):
     if accuracy <= 10:
         return "excellent"
@@ -148,11 +148,11 @@ function classifyAccuracy(accuracy):
 **Input**:
 
 - Current position:
-  - `latitude` (number): Latitude of current position in decimal degrees
-  - `longitude` (number): Longitude of current position in decimal degrees
+    - `latitude` (number): Latitude of current position in decimal degrees
+    - `longitude` (number): Longitude of current position in decimal degrees
 - Other position (object):
-  - `latitude` (number): Latitude of target position in decimal degrees
-  - `longitude` (number): Longitude of target position in decimal degrees
+    - `latitude` (number): Latitude of target position in decimal degrees
+    - `longitude` (number): Longitude of target position in decimal degrees
 
 **Output**:
 
@@ -160,7 +160,7 @@ function classifyAccuracy(accuracy):
 
 **Algorithm - Haversine Formula**:
 
-```
+```text
 Given:
 - lat1, lon1: coordinates of position 1 (in decimal degrees)
 - lat2, lon2: coordinates of position 2 (in decimal degrees)
@@ -251,13 +251,13 @@ Return: distance (in meters)
 
 **Format Specification**:
 
-```
+```text
 "ClassName: latitude, longitude, accuracyQuality, altitude, speed, heading, timestamp"
 ```
 
 **Examples**:
 
-```
+```text
 Valid position:
 "GeoPosition: -23.5505, -46.6333, good, 760, 0, 0, 1634567890123"
 
@@ -432,11 +432,11 @@ Missing coordinates:
 
 - **Design Decision**: GeoPosition IS immutable and referentially transparent
 - **Rationale**:
-  - Pure functions are easier to test, reason about, and debug
-  - Immutability prevents bugs from shared mutable state
-  - Referential transparency enables better optimization and caching
-  - Compatible with functional programming patterns
-  - For position updates, create new instances instead of mutating existing ones
+    - Pure functions are easier to test, reason about, and debug
+    - Immutability prevents bugs from shared mutable state
+    - Referential transparency enables better optimization and caching
+    - Compatible with functional programming patterns
+    - For position updates, create new instances instead of mutating existing ones
 
 ### No Side Effects
 
@@ -520,7 +520,7 @@ Missing coordinates:
 
 **Valid Position** (São Paulo, Brazil):
 
-```
+```js
 {
   coords: {
     latitude: -23.5505,
@@ -537,7 +537,7 @@ Missing coordinates:
 
 **Invalid/Missing Position**:
 
-```
+```js
 {
   coords: {
     latitude: null,
@@ -568,9 +568,9 @@ Missing coordinates:
 ### Required External Functions
 
 - `calculateDistance(lat1, lon1, lat2, lon2)`: Haversine distance calculation
-  - Must be implemented separately as utility function
-  - Returns distance in meters
-  - **Must be pure**: No side effects, deterministic output
+    - Must be implemented separately as utility function
+    - Returns distance in meters
+    - **Must be pure**: No side effects, deterministic output
 
 ### Mathematical Dependencies
 
@@ -583,14 +583,14 @@ Missing coordinates:
 ## Version History
 
 - **Version 0.9.0-alpha**: Referentially transparent implementation
-  - **Breaking change**: Removed accuracy setter (immutability)
-  - **Breaking change**: Constructor no longer mutates input objects
-  - **Breaking change**: Constructor no longer logs (pure function)
-  - Constructor with defensive copying and property extraction
-  - Static getAccuracyQuality() method (pure function)
-  - Instance methods: distanceTo() (pure), toString() (pure)
-  - All methods are referentially transparent
-  - Deprecated calculateAccuracyQuality() method (contains bug, use property instead)
+    - **Breaking change**: Removed accuracy setter (immutability)
+    - **Breaking change**: Constructor no longer mutates input objects
+    - **Breaking change**: Constructor no longer logs (pure function)
+    - Constructor with defensive copying and property extraction
+    - Static getAccuracyQuality() method (pure function)
+    - Instance methods: distanceTo() (pure), toString() (pure)
+    - All methods are referentially transparent
+    - Deprecated calculateAccuracyQuality() method (contains bug, use property instead)
 
 ## References
 
@@ -615,10 +615,10 @@ Missing coordinates:
 
 ### Development Guidelines
 
-- [REFERENTIAL_TRANSPARENCY.md](../../.github/REFERENTIAL_TRANSPARENCY.md): Pure functions and immutability principles
-- [TDD_GUIDE.md](../../.github/TDD_GUIDE.md): Test-driven development approach
-- [UNIT_TEST_GUIDE.md](../../.github/UNIT_TEST_GUIDE.md): Unit testing best practices
-- [CODE_REVIEW_GUIDE.md](../../.github/CODE_REVIEW_GUIDE.md): Code review standards
+- REFERENTIAL_TRANSPARENCY: Pure functions and immutability principles
+- TDD_GUIDE: Test-driven development approach
+- UNIT_TEST_GUIDE: Unit testing best practices
+- CODE_REVIEW_GUIDE: Code review standards
 
 ## Glossary
 

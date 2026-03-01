@@ -3,11 +3,11 @@
 ## Source & Location
 
 **Source file:** `src/core/GeoPosition.ts`
-**Version:** 0.9.4-alpha
+**Version:** 0.9.5-alpha
 
 **CDN (ESM — for browsers):**
 ```ts
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.5-alpha/dist/esm/index.js';
 ```
 
 **Node.js / npm:**
@@ -63,7 +63,7 @@ Previously, developers had to work directly with the browser's `GeolocationPosit
 ### Basic Usage
 
 ```javascript
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.5-alpha/dist/esm/index.js';
 
 // Simulate browser GeolocationPosition object
 const geolocationPosition = {
@@ -213,7 +213,7 @@ console.log(position.altitude);   // null
 Here's a complete example of tracking a user's movement while driving:
 
 ```javascript
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.4-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9.5-alpha/dist/esm/index.js';
 
 let lastPosition = null;
 
@@ -265,15 +265,15 @@ new GeoPosition(position)
 **Parameters:**
 
 - `position` (Object): GeolocationPosition object from browser's Geolocation API
-  - `coords` (Object): Coordinates object
-    - `latitude` (number): Latitude in decimal degrees
-    - `longitude` (number): Longitude in decimal degrees
-    - `accuracy` (number): Accuracy in meters
-    - `altitude` (number|null): Altitude in meters above sea level
-    - `altitudeAccuracy` (number|null): Altitude accuracy in meters
-    - `heading` (number|null): Direction of travel in degrees (0-360)
-    - `speed` (number|null): Speed in meters per second
-  - `timestamp` (number): Timestamp when the position was acquired
+    - `coords` (Object): Coordinates object
+        - `latitude` (number): Latitude in decimal degrees
+        - `longitude` (number): Longitude in decimal degrees
+        - `accuracy` (number): Accuracy in meters
+        - `altitude` (number|null): Altitude in meters above sea level
+        - `altitudeAccuracy` (number|null): Altitude accuracy in meters
+        - `heading` (number|null): Direction of travel in degrees (0-360)
+        - `speed` (number|null): Speed in meters per second
+    - `timestamp` (number): Timestamp when the position was acquired
 
 **Pure and Immutable:**
 
@@ -365,8 +365,8 @@ Calculates the distance between this position and another position using the Hav
 **Parameters:**
 
 - `otherPosition` (Object): Other position to calculate distance to
-  - `latitude` (number): Latitude of other position in decimal degrees
-  - `longitude` (number): Longitude of other position in decimal degrees
+    - `latitude` (number): Latitude of other position in decimal degrees
+    - `longitude` (number): Longitude of other position in decimal degrees
 
 **Returns:** `number` - Distance in meters between the two positions
 
@@ -548,7 +548,7 @@ npm test -- __tests__/unit/GeoPosition.immutability.test.js
 
 All tests pass:
 
-```
+```text
 ✓ 24 existing GeoPosition tests
 ✓ 13 new immutability tests
 ✓ 25 integration tests
@@ -616,9 +616,9 @@ navigator.geolocation.watchPosition((browserPos) => {
 
 ## Related Classes
 
-- **[PositionManager](./POSITION_MANAGER.md)**: Singleton that uses GeoPosition to manage current device position
-- **[GeolocationService](./CLASS_DIAGRAM.md)**: Wraps browser Geolocation API and creates GeoPosition instances
-- **[ReverseGeocoder](./CLASS_DIAGRAM.md)**: Uses position coordinates to fetch address information
+- **PositionManager**: Singleton that uses GeoPosition to manage current device position
+- **GeolocationService**: Wraps browser Geolocation API and creates GeoPosition instances
+- **ReverseGeocoder**: Uses position coordinates to fetch address information
 
 ## Common Patterns
 
@@ -684,7 +684,7 @@ The `GeoPosition` class has been stable since version 0.9.0-alpha with no breaki
 
 ### Version Timeline
 
-```
+```text
 0.5.x-alpha (Pre-October 2025)
     └─> Mutable implementation with side effects
 
@@ -757,21 +757,19 @@ Marcelo Pereira Barbosa
 
 ### Related Architecture Documentation
 
-- [Class Diagram](./CLASS_DIAGRAM.md) - Overall system architecture
+- Class Diagram - Overall system architecture
 - [GEO_POSITION_FUNC_SPEC.md](./GEO_POSITION_FUNC_SPEC.md) - Functional specification for GeoPosition
-- [WEB_GEOCODING_MANAGER.md](./WEB_GEOCODING_MANAGER.md) - Main geocoding coordination layer
+- WEB_GEOCODING_MANAGER - Main geocoding coordination layer
 
 ### Testing and Quality
 
-- [Testing Documentation](../TESTING.md) - Test suite and coverage
-- [Device Detection](../DEVICE_DETECTION.md) - How accuracy quality affects position acceptance
-- [TDD_GUIDE.md](../../.github/TDD_GUIDE.md) - Test-driven development
-- [UNIT_TEST_GUIDE.md](../../.github/UNIT_TEST_GUIDE.md) - Unit testing practices
+- Testing Documentation - Test suite and coverage
+- Device Detection - How accuracy quality affects position acceptance
 
 ### Development Guidelines
 
-- [REFERENTIAL_TRANSPARENCY.md](../../.github/REFERENTIAL_TRANSPARENCY.md) - Pure functions and immutability
-- [CODE_REVIEW_GUIDE.md](../../.github/CODE_REVIEW_GUIDE.md) - Code review standards
+- Referential Transparency - Pure functions and immutability
+- Code Review Guide - Code review standards
 
 ### External References
 

@@ -1,6 +1,6 @@
 # GeoPosition API Documentation
 
-**Version:** 0.9.4-alpha
+**Version:** 0.9.5-alpha
 **Module:** `src/core/GeoPosition.ts`
 **Pattern:** Value Object (Immutable)
 **Author:** Marcelo Pereira Barbosa
@@ -19,7 +19,7 @@ Geographic position data wrapper with convenience methods. Provides an immutable
 
 ## Location in Codebase
 
-```
+```text
 src/core/GeoPosition.ts
 ```
 
@@ -39,15 +39,15 @@ Creates a new immutable GeoPosition instance.
 **Parameters:**
 
 - `position` (GeolocationPosition): Browser Geolocation API position object
-  - `position.coords` (GeolocationCoordinates): Coordinate information
-    - `latitude` (number): Latitude in decimal degrees
-    - `longitude` (number): Longitude in decimal degrees
-    - `accuracy` (number): Accuracy in meters
-    - `altitude` (number, nullable): Altitude in meters
-    - `altitudeAccuracy` (number, nullable): Altitude accuracy in meters
-    - `heading` (number, nullable): Compass heading in degrees
-    - `speed` (number, nullable): Speed in meters/second
-  - `position.timestamp` (number): Timestamp when position was acquired
+    - `position.coords` (GeolocationCoordinates): Coordinate information
+        - `latitude` (number): Latitude in decimal degrees
+        - `longitude` (number): Longitude in decimal degrees
+        - `accuracy` (number): Accuracy in meters
+        - `altitude` (number, nullable): Altitude in meters
+        - `altitudeAccuracy` (number, nullable): Altitude accuracy in meters
+        - `heading` (number, nullable): Compass heading in degrees
+        - `speed` (number, nullable): Speed in meters/second
+    - `position.timestamp` (number): Timestamp when position was acquired
 
 **Returns:** Immutable `GeoPosition` instance
 
@@ -141,8 +141,8 @@ Calculates the distance between this position and another position using the Hav
 **Parameters:**
 
 - `otherPosition` (Object): Other position to calculate distance to
-  - `latitude` (number): Latitude of other position in decimal degrees
-  - `longitude` (number): Longitude of other position in decimal degrees
+    - `latitude` (number): Latitude of other position in decimal degrees
+    - `longitude` (number): Longitude of other position in decimal degrees
 
 **Returns:** `number` - Distance in meters between the two positions
 
@@ -356,10 +356,10 @@ navigator.geolocation.watchPosition(onPositionUpdate);
 
 ## Related Classes
 
-- **[PositionManager](./POSITION_MANAGER.md)** - Uses GeoPosition for position tracking
+- **PositionManager** - Uses GeoPosition for position tracking
 - **calculateDistance** (`src/utils/distance.js`) - Haversine distance calculation
-- **[ObserverSubject](./OBSERVER_SUBJECT.md)** - Observer pattern for position updates
-- **[GeocodingState](./GEOCODING_STATE.md)** - State management for geocoding
+- **ObserverSubject** - Observer pattern for position updates
+- **GeocodingState** - State management for geocoding
 
 ## Design Patterns
 
