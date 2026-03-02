@@ -1,0 +1,39 @@
+[2026-03-02T17:00:01.637Z] 
+→ Starting: Version Update
+[2026-03-02T17:00:01.638Z] ════════════════════════════════════════════════════════════
+[2026-03-02T17:00:01.638Z] 🔷  Step 16: Version Update
+[2026-03-02T17:00:01.638Z] ════════════════════════════════════════════════════════════
+[2026-03-02T17:00:01.638Z] Phase 1: Detecting current version...
+[2026-03-02T17:00:01.638Z] ✓ Current version: 0.9.10-alpha
+[2026-03-02T17:00:01.638Z] Phase 2: Determining bump type...
+[2026-03-02T17:00:01.638Z] Heuristic bump type: patch
+[2026-03-02T17:00:03.069Z] ✓ GitHub Copilot SDK initialized successfully
+[2026-03-02T17:00:04.188Z] Available Copilot models (13): claude-sonnet-4.5, claude-haiku-4.5, claude-opus-4.5, claude-sonnet-4, gemini-3-pro-preview, gpt-5.2-codex, gpt-5.2, gpt-5.1-codex-max, gpt-5.1-codex, gpt-5.1, gpt-5.1-codex-mini, gpt-5-mini, gpt-4.1
+[2026-03-02T17:00:04.235Z] Cleaned up 2 expired cache entries
+[2026-03-02T17:00:04.235Z] [DEBUG] AI cache initialized: .ai_workflow/.ai_cache
+[2026-03-02T17:00:04.292Z] [DEBUG] Cache miss: 05901170...
+[2026-03-02T17:00:04.292Z] [DEBUG] Request Options: {"model":"gpt-4.1","temperature":0.7,"maxTokens":4000,"stream":false,"persona":"devops_engineer","cache":true}
+[2026-03-02T17:00:04.292Z] [DEBUG] Persona: devops_engineer
+[2026-03-02T17:00:04.292Z] [DEBUG] Model: gpt-4.1
+[2026-03-02T17:00:04.292Z] [AI] SDK call starting — persona: devops_engineer, model: gpt-4.1, prompt_chars: 2089
+[2026-03-02T17:00:04.292Z] [DEBUG] Executing AI request (attempt 1/3)
+[2026-03-02T17:00:04.292Z] [DEBUG] AiHelper._sendRequest called
+[2026-03-02T17:00:04.292Z] [Copilot SDK] Calling sendMessage — model: gpt-4.1, prompt_length: 2089 chars
+[2026-03-02T17:00:04.292Z] [DEBUG] Sending prompt...
+[2026-03-02T17:00:08.903Z] [Copilot SDK] sendAndWait returned — model: gpt-4.1
+[2026-03-02T17:00:08.903Z] [AI] SDK call completed — persona: devops_engineer, model: gpt-4.1, response_chars: 399, latency: 4611ms
+[2026-03-02T17:00:08.903Z] ✓ AI request completed successfully
+[2026-03-02T17:00:08.904Z] [DEBUG] Prompt logged to: 2026-03-02T17-00-08-903Z_0001_devops_engineer.md
+[2026-03-02T17:00:08.908Z] [DEBUG] Response cached: 05901170...
+[2026-03-02T17:00:08.909Z] AI refined bump type: minor (was: patch, confidence: high)
+[2026-03-02T17:00:08.909Z] [VERSION BUMP] previous: 0.9.10-alpha → next: 0.10.0-alpha (minor)
+[2026-03-02T17:00:08.909Z] ✓ New version: 0.9.10-alpha → 0.10.0-alpha
+[2026-03-02T17:00:08.909Z] Phase 3: Updating versions in files...
+[2026-03-02T17:00:08.972Z] Version scan found 29 file(s) referencing 0.9.10-alpha
+[2026-03-02T17:00:08.984Z] ✓ Updated 29 files, skipped 16, failed 0
+[2026-03-02T17:00:08.985Z] ✓ Step 16: Version update completed
+[2026-03-02T17:00:08.985Z] ✓ Step step_16 completed in 7348ms
+[2026-03-02T17:00:08.985Z] [DEBUG] [Performance] step_16: 7.3s
+[2026-03-02T17:00:08.985Z] ⚠ [WARNING] Operation 'step_16' took 7.3s (memory: 19.99MB)
+[2026-03-02T17:00:08.985Z] [DEBUG] Recorded outcome for step_16: success
+[2026-03-02T17:00:08.985Z] ✓ Completed: Version Update (7s)

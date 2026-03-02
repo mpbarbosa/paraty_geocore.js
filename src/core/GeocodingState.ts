@@ -60,8 +60,8 @@ export interface GeocodingStateSnapshot {
  * @extends ObserverSubject<GeocodingStateSnapshot>
  */
 class GeocodingState extends ObserverSubject<GeocodingStateSnapshot> {
-    _currentPosition: GeoPosition | null;
-    _currentCoordinates: {latitude: number, longitude: number} | null;
+    private _currentPosition: GeoPosition | null;
+    private _currentCoordinates: {latitude: number, longitude: number} | null;
 
     /**
      * Creates a new GeocodingState instance
@@ -192,7 +192,7 @@ class GeocodingState extends ObserverSubject<GeocodingStateSnapshot> {
         const coords = this._currentCoordinates ?
             `(${this._currentCoordinates.latitude.toFixed(4)}, ${this._currentCoordinates.longitude.toFixed(4)})` :
             'null';
-        return `GeocodingState: position: ${hasPos}, coordinates: ${coords}, observers: ${this._observers.length}`;
+        return `GeocodingState: position: ${hasPos}, coordinates: ${coords}, observers: ${this.getObserverCount()}`;
     }
 }
 

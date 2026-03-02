@@ -1,6 +1,6 @@
 {
   "name": "paraty_geocore.js",
-  "version": "0.9.10-alpha",
+  "version": "0.10.0-alpha",
   "description": "Core JavaScript classes for geolocation applications",
   "main": "dist/src/index.js",
   "exports": {
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "build:esm": "tsc --project tsconfig.esm.json",
-    "test": "jest --testPathPattern='test/(core|integration|utils|index)' --passWithNoTests",
+    "test": "jest --coverage --testPathPattern='test/(core|integration|utils|index)' --passWithNoTests",
     "test:core": "jest --testPathPattern='test/(core|index)' --passWithNoTests",
     "test:utils": "jest --testPathPattern='test/utils' --passWithNoTests",
     "test:integration": "jest --testPathPattern='test/integration' --passWithNoTests",
@@ -50,6 +50,11 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mpbarbosa/paraty_geocore.js.git"
+  },
+  "overrides": {
+    "markdownlint-cli": {
+      "minimatch": "^10.2.3"
+    }
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",

@@ -32,8 +32,7 @@ describe('utils/async delay', () => {
     }
   });
 
-  it('delay() returns a Promise', () => {
-    const result = delay(10);
-    expect(result).toBeInstanceOf(Promise);
+  it('delay() returns a Promise that resolves to undefined', async () => {
+    await expect(delay(10)).resolves.toBeUndefined();
   });
 });

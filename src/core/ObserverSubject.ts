@@ -44,7 +44,7 @@
  * @template T - The type of the snapshot object passed to observers on notification
  */
 class ObserverSubject<T> {
-    _observers: ((snapshot: T) => void)[];
+    private _observers: ((snapshot: T) => void)[];
 
     /**
      * Creates a new ObserverSubject instance with an empty observer list.

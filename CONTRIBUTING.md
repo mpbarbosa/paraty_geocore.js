@@ -28,7 +28,11 @@ test/
   benchmarks/   # Performance benchmarks (excluded from coverage run)
   helpers/      # Shared test fixtures and constants (e.g. TEST_TIMESTAMP)
   index.test.ts # Smoke tests for the public re-export surface
-docs/           # Functional requirements specs, API reference, architecture
+docs/
+  API.md        # Full hand-authored API reference
+  ARCHITECTURE.md
+  *.md          # Functional requirements specs and supplementary reference
+  api/          # TypeDoc-generated HTML reference (gitignored — `npm run docs:generate`)
 ```
 
 ---

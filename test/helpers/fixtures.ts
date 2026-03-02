@@ -6,6 +6,46 @@
 
 import type { GeoPositionInput } from '../../src/core/GeoPosition';
 
+// ---------------------------------------------------------------------------
+// Browser GeolocationPosition simulation
+// ---------------------------------------------------------------------------
+
+export interface FakeCoords {
+  latitude: number;
+  longitude: number;
+  accuracy: number;
+  altitude?: number | null;
+  altitudeAccuracy?: number | null;
+  heading?: number | null;
+  speed?: number | null;
+}
+
+/**
+ * Creates a GeolocationPosition-like object whose coords properties are
+ * exposed as non-enumerable getters — identical to Chrome / Firefox behaviour.
+ *
+ * Use this in tests that must verify GeoPosition handles the real browser API
+ * (where spread / Object.assign on coords produces an empty object).
+ *
+ * @param coords - Coordinate values to expose via non-enumerable getters
+ * @param timestamp - Position timestamp (defaults to {@link TEST_TIMESTAMP})
+ */
+export function makeBrowserPosition(coords: FakeCoords, timestamp = TEST_TIMESTAMP): object {
+  const coordsObj = Object.create(null);
+  for (const [key, value] of Object.entries(coords) as [keyof FakeCoords, unknown][]) {
+    Object.defineProperty(coordsObj, key, {
+      get: () => value ?? null,
+      enumerable: false,  // non-enumerable: spread/assign yields {}
+      configurable: false,
+    });
+  }
+
+  const positionObj = Object.create(null);
+  Object.defineProperty(positionObj, 'coords', { get: () => coordsObj, enumerable: true });
+  Object.defineProperty(positionObj, 'timestamp', { get: () => timestamp, enumerable: true });
+  return positionObj;
+}
+
 /**
  * A stable, well-known Unix timestamp used across unit and integration tests.
  * Corresponds to 2023-11-14T22:13:20.000Z — arbitrary but consistent.

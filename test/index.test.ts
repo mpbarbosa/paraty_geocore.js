@@ -9,6 +9,7 @@ import {
   GeoPositionError,
   GeocodingState,
   ObserverSubject,
+  DualObserverSubject,
   calculateDistance,
   EARTH_RADIUS_METERS,
   delay,
@@ -212,6 +213,44 @@ describe('GeocodingState (exported from index)', () => {
     expect(state.hasPosition()).toBe(true);
     expect(cb).toHaveBeenCalledTimes(1);
     expect(cb.mock.calls[0][0].position).toBe(pos);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// DualObserverSubject
+// ---------------------------------------------------------------------------
+
+describe('DualObserverSubject (exported from index)', () => {
+  it('is a named export and is a constructor', () => {
+    expect(typeof DualObserverSubject).toBe('function');
+  });
+
+  it('creates an instance with zero observers of both types', () => {
+    const subject = new DualObserverSubject();
+    expect(subject.getObserverCount()).toBe(0);
+    expect(subject.getFunctionObserverCount()).toBe(0);
+  });
+
+  it('object subscribe/notify/unsubscribe lifecycle works', () => {
+    const subject = new DualObserverSubject();
+    const obs = { update: jest.fn() };
+    subject.subscribe(obs);
+    subject.notifyObservers('data');
+    expect(obs.update).toHaveBeenCalledWith('data');
+    subject.unsubscribe(obs);
+    subject.notifyObservers('more');
+    expect(obs.update).toHaveBeenCalledTimes(1);
+  });
+
+  it('function subscribeFunction/notify/unsubscribeFunction lifecycle works', () => {
+    const subject = new DualObserverSubject();
+    const fn = jest.fn();
+    subject.subscribeFunction(fn);
+    subject.notifyFunctionObservers('data');
+    expect(fn).toHaveBeenCalledWith('data');
+    subject.unsubscribeFunction(fn);
+    subject.notifyFunctionObservers('more');
+    expect(fn).toHaveBeenCalledTimes(1);
   });
 });
 

@@ -8,7 +8,7 @@
   "excludeInternal": true,
   "hideGenerator": true,
   "validation": {
-    "notExported": false
+    "notExported": false  // suppress warnings for internal symbols that are not re-exported from index.ts
   },
   "blockTags": ["@param", "@returns", "@throws", "@example", "@since", "@author", "@see", "@module", "@template", "@deprecated", "@pure", "@immutable", "@constant"],
   "modifierTags": ["@internal", "@override", "@static", "@class", "@extends", "@private", "@constructor", "@license"],

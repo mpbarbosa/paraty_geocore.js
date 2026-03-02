@@ -9,41 +9,8 @@
 
 import GeoPosition from '../../src/core/GeoPosition';
 import { calculateDistance } from '../../src/utils/distance';
-import { TEST_TIMESTAMP } from '../helpers/fixtures';
-
-// ---------------------------------------------------------------------------
-// Browser GeolocationPosition factory
-// ---------------------------------------------------------------------------
-
-interface FakeCoords {
-  latitude: number;
-  longitude: number;
-  accuracy: number;
-  altitude?: number | null;
-  altitudeAccuracy?: number | null;
-  heading?: number | null;
-  speed?: number | null;
-}
-
-/**
- * Creates a GeolocationPosition-like object whose coords properties are
- * exposed as non-enumerable getters — identical to Chrome / Firefox behaviour.
- */
-function makeBrowserPosition(coords: FakeCoords, timestamp = TEST_TIMESTAMP): object {
-  const coordsObj = Object.create(null);
-  for (const [key, value] of Object.entries(coords) as [keyof FakeCoords, unknown][]) {
-    Object.defineProperty(coordsObj, key, {
-      get: () => value ?? null,
-      enumerable: false,  // non-enumerable: spread/assign yields {}
-      configurable: false,
-    });
-  }
-
-  const positionObj = Object.create(null);
-  Object.defineProperty(positionObj, 'coords', { get: () => coordsObj, enumerable: true });
-  Object.defineProperty(positionObj, 'timestamp', { get: () => timestamp, enumerable: true });
-  return positionObj;
-}
+import { TEST_TIMESTAMP, makeBrowserPosition } from '../helpers/fixtures';
+import type { FakeCoords } from '../helpers/fixtures';
 
 // ---------------------------------------------------------------------------
 // Shared fixture

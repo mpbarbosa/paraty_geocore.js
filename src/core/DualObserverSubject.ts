@@ -17,7 +17,7 @@
  * - Function observers: `(...args) => void` — subscribed via `subscribeFunction()`, notified via `notifyFunctionObservers()`
  *
  * @module core/DualObserverSubject
- * @since 0.9.11-alpha
+ * @since 0.10.0-alpha
  * @author Marcelo Pereira Barbosa
  *
  * @example
@@ -68,17 +68,20 @@ type ObserverFunction = (...args: unknown[]) => void;
  * @class
  */
 class DualObserverSubject {
-    /** Object observers subscribed via {@link subscribe}. */
-    observers: ObserverObject[];
-    /** Function observers subscribed via {@link subscribeFunction}. */
-    functionObservers: ObserverFunction[];
+    private _observers: ObserverObject[];
+    private _functionObservers: ObserverFunction[];
+
+    /** Read-only view of object observers subscribed via {@link subscribe}. */
+    get observers(): ReadonlyArray<ObserverObject> { return this._observers; }
+    /** Read-only view of function observers subscribed via {@link subscribeFunction}. */
+    get functionObservers(): ReadonlyArray<ObserverFunction> { return this._functionObservers; }
 
     /**
      * Creates a new DualObserverSubject with empty observer collections.
      */
     constructor() {
-        this.observers = [];
-        this.functionObservers = [];
+        this._observers = [];
+        this._functionObservers = [];
     }
 
     /**
@@ -96,7 +99,7 @@ class DualObserverSubject {
      */
     subscribe(observer: ObserverObject | null | undefined): void {
         if (observer) {
-            this.observers = [...this.observers, observer];
+            this._observers = [...this._observers, observer];
         }
     }
 
@@ -112,7 +115,7 @@ class DualObserverSubject {
      * subject.unsubscribe(myObserver);
      */
     unsubscribe(observer: ObserverObject): void {
-        this.observers = this.observers.filter(o => o !== observer);
+        this._observers = this._observers.filter(o => o !== observer);
     }
 
     /**
@@ -127,7 +130,7 @@ class DualObserverSubject {
      * subject.notifyObservers(this, 'positionChanged', position, null);
      */
     notifyObservers(...args: unknown[]): void {
-        this.observers.forEach(observer => {
+        this._observers.forEach(observer => {
             if (typeof observer.update === 'function') {
                 try {
                     observer.update(...args);
@@ -152,7 +155,7 @@ class DualObserverSubject {
      */
     subscribeFunction(observerFunction: ObserverFunction | null | undefined): void {
         if (observerFunction) {
-            this.functionObservers = [...this.functionObservers, observerFunction];
+            this._functionObservers = [...this._functionObservers, observerFunction];
         }
     }
 
@@ -168,7 +171,7 @@ class DualObserverSubject {
      * subject.unsubscribeFunction(handler);
      */
     unsubscribeFunction(observerFunction: ObserverFunction): void {
-        this.functionObservers = this.functionObservers.filter(fn => fn !== observerFunction);
+        this._functionObservers = this._functionObservers.filter(fn => fn !== observerFunction);
     }
 
     /**
@@ -182,7 +185,7 @@ class DualObserverSubject {
      * subject.notifyFunctionObservers(this, 'positionChanged', data);
      */
     notifyFunctionObservers(...args: unknown[]): void {
-        this.functionObservers.forEach(fn => {
+        this._functionObservers.forEach(fn => {
             if (typeof fn === 'function') {
                 try {
                     fn(...args);
@@ -199,7 +202,7 @@ class DualObserverSubject {
      * @returns {number} Number of object observers subscribed via {@link subscribe}
      */
     getObserverCount(): number {
-        return this.observers.length;
+        return this._observers.length;
     }
 
     /**
@@ -208,7 +211,7 @@ class DualObserverSubject {
      * @returns {number} Number of function observers subscribed via {@link subscribeFunction}
      */
     getFunctionObserverCount(): number {
-        return this.functionObservers.length;
+        return this._functionObservers.length;
     }
 
     /**
@@ -222,8 +225,8 @@ class DualObserverSubject {
      * console.log(subject.getFunctionObserverCount()); // 0
      */
     clearAllObservers(): void {
-        this.observers = [];
-        this.functionObservers = [];
+        this._observers = [];
+        this._functionObservers = [];
     }
 }
 

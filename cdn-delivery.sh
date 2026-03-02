@@ -16,6 +16,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/scripts/colors.sh"
 GITHUB_USER="mpbarbosa"
 GITHUB_REPO="paraty_geocore.js"
 PACKAGE_VERSION=$(node -p "require('./package.json').version")
+[[ -n "${PACKAGE_VERSION}" ]] || { echo "Error: could not determine package version from package.json" >&2; exit 1; }
 MAIN_FILE="dist/src/index.js"
 
 section() { echo -e "${YELLOW}${1}${NC}"; echo ""; }
@@ -43,6 +44,7 @@ echo ""
 # 2. Load from specific commit
 # ==============================================================================
 LATEST_COMMIT=$(git rev-parse HEAD)
+[[ -n "${LATEST_COMMIT}" ]] || { echo "Error: could not determine current git commit" >&2; exit 1; }
 section "🔖 Commit-Specific URL:"
 echo "Load from specific commit (${LATEST_COMMIT:0:7}):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${LATEST_COMMIT}/${MAIN_FILE}"
@@ -52,6 +54,7 @@ echo ""
 # 3. Load latest from branch
 # ==============================================================================
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+[[ -n "${CURRENT_BRANCH}" ]] || { echo "Error: could not determine current git branch" >&2; exit 1; }
 section "🌿 Branch URLs:"
 echo "Load latest from ${CURRENT_BRANCH} branch (auto-updates):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${CURRENT_BRANCH}/${MAIN_FILE}"

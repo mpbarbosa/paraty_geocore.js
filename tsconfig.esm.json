@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "lib": ["ES2020", "DOM"],
-    "strict": true,
+    "target": "ES2020",           // emit ES2020-compatible output for modern bundlers
+    "module": "ESNext",           // ESM output — preserves import/export for tree-shaking
+    "moduleResolution": "bundler", // resolves modules as a bundler would (Vite, Rollup, esbuild)
+    "lib": ["ES2020", "DOM"],     // include DOM types for GeolocationPosition etc.
+    "strict": true,               // enables all strict type-checking flags
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "outDir": "./dist/esm",
-    "declaration": true,
-    "declarationDir": "./dist/esm/types",
-    "rootDir": "./src",
+    "skipLibCheck": true,         // skip type-checking of declaration files in node_modules
+    "outDir": "./dist/esm",       // ESM compiled output (separate from CJS dist/)
+    "declaration": true,          // emit .d.ts alongside each .js file
+    "declarationDir": "./dist/esm/types", // keep type declarations separate from JS output
+    "rootDir": "./src",           // ESM build only covers src/ (excludes test/)
     "baseUrl": "."
   },
   "include": ["src/**/*"],
