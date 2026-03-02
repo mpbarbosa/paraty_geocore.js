@@ -43,7 +43,14 @@ paraty_geocore.js/
 │   ├── GeoPosition-FRS.md       # Functional requirements spec — GeoPosition
 │   ├── distance-FRS.md          # Functional requirements spec — distance utils
 │   ├── async-FRS.md             # Functional requirements spec — async utils
-│   └── GEOPOSITION_REFACTORING_SUMMARY.md
+│   ├── GEOPOSITION_REFACTORING_SUMMARY.md
+│   └── api/                     # TypeDoc-generated HTML reference (gitignored — run `npm run docs:generate`)
+│       ├── assets/              # TypeDoc CSS/JS/font assets
+│       ├── classes/             # Generated page per exported class
+│       ├── functions/           # Generated page per exported function
+│       ├── interfaces/          # Generated page per exported interface
+│       ├── types/               # Generated page per exported type alias
+│       └── variables/           # Generated page per exported constant
 ├── test/
 │   ├── core/                    # Unit tests for src/core/ (GeoPosition, ObserverSubject, GeocodingState, errors)
 │   ├── utils/                   # Unit tests for src/utils/ (distance, async)
@@ -140,7 +147,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | 0.9.0-alpha   | `GeocodingState` introduced |
 | 0.9.1-alpha   | `ObserverSubject<T>` extracted from `GeocodingState` |
 | 0.9.2-alpha   | `utils/distance` module introduced |
-| 0.9.10-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
+| 0.10.0-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
 
 ---
 
@@ -152,6 +159,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | Jest   | Unit and integration testing |
 | npm    | Package management and scripts |
 | GitHub Actions (`ci.yml`) | CI/CD — runs tests on Node.js 18.x and 20.x |
+| TypeDoc | Generates HTML API reference in `docs/api/` (`npm run docs:generate`) |
 | pre-commit | Automated hooks: private-key detection, EditorConfig, markdownlint |
 | markdownlint | Documentation quality enforcement |
 
