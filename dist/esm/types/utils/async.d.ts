@@ -10,8 +10,9 @@
 /**
  * Creates a Promise that resolves after the specified number of milliseconds.
  *
- * Wraps `setTimeout` for use with `async/await`. Passing `0` yields control
- * on the next event-loop tick without a guaranteed minimum wait.
+ * Wraps `setTimeout` for use with `async/await`. Passing `0` or a negative
+ * value yields control on the next event-loop tick without a guaranteed
+ * minimum wait. Negative values are clamped to `0`.
  *
  * @param {number} ms - Delay duration in milliseconds
  * @returns {Promise<void>} Promise that resolves after `ms` milliseconds

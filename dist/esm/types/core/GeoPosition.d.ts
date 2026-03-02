@@ -31,7 +31,10 @@ export interface GeoPositionInput {
 }
 /** GPS accuracy quality classification. */
 export type AccuracyQuality = 'excellent' | 'good' | 'medium' | 'bad' | 'very bad';
-/** Normalised internal position shape stored on the instance. */
+/**
+ * Normalised internal position shape stored on the instance.
+ * @internal
+ */
 interface NormalisedPosition {
     readonly timestamp: number | undefined;
     readonly coords: Readonly<GeoCoords>;

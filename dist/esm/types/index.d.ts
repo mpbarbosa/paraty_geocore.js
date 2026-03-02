@@ -8,6 +8,9 @@
  */
 export { default as GeoPosition } from './core/GeoPosition.js';
 export type { GeoCoords, GeoPositionInput, AccuracyQuality } from './core/GeoPosition.js';
+export { default as ObserverSubject } from './core/ObserverSubject.js';
+export { default as GeocodingState } from './core/GeocodingState.js';
+export type { GeocodingStateSnapshot } from './core/GeocodingState.js';
 export { GeoPositionError } from './core/errors.js';
 export { calculateDistance, EARTH_RADIUS_METERS } from './utils/distance.js';
 export { delay } from './utils/async.js';
