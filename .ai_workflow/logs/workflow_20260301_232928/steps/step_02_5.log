@@ -1,0 +1,57 @@
+[2026-03-02T02:30:39.412Z] 
+→ Starting: Documentation Optimization
+[2026-03-02T02:30:39.413Z] Documentation optimization initialized
+[2026-03-02T02:30:39.413Z] ════════════════════════════════════════════════════════════
+[2026-03-02T02:30:39.413Z] 🔷  Step 2.5: Documentation Optimization
+[2026-03-02T02:30:39.413Z] ════════════════════════════════════════════════════════════
+[2026-03-02T02:30:39.415Z] Phase 1: Heuristics Analysis (16 files)
+[2026-03-02T02:30:39.421Z] Calculating content hashes...
+[2026-03-02T02:30:39.422Z] Found 1 duplicate groups (1 redundant files)
+[2026-03-02T02:30:39.422Z] Analyzing document similarity...
+[2026-03-02T02:30:39.505Z] Found 1 redundant pairs above 80% similarity
+[2026-03-02T02:30:39.505Z] Found 1 exact duplicates, 1 redundant pairs
+[2026-03-02T02:30:39.506Z] Phase 2: Git History Analysis
+[2026-03-02T02:30:39.506Z] Analyzing git history for 16 files...
+[2026-03-02T02:30:39.714Z] Completed git analysis for 16 files
+[2026-03-02T02:30:39.714Z] Found 0 outdated files
+[2026-03-02T02:30:39.715Z] Phase 3: Version Reference Analysis
+[2026-03-02T02:30:39.716Z] Detected version from package.json: 0.9.9-alpha
+[2026-03-02T02:30:39.716Z] Analyzing version references in 16 files (current: 0.9.9-alpha)...
+[2026-03-02T02:30:39.723Z] Completed version analysis for 16 files
+[2026-03-02T02:30:39.724Z] Version analysis complete (0 total outdated)
+[2026-03-02T02:30:39.724Z] Phase 4: AI Edge Case Analysis (skipped - no AI analyzer)
+[2026-03-02T02:30:39.724Z] Phase 5: Optimization Summary
+[2026-03-02T02:30:39.725Z] 
+📊 Analysis Results:
+───────────────────
+  Total files analyzed: 16
+  Exact duplicates: 1
+  Redundant pairs: 1
+  Outdated files: 0
+  Files to optimize: 1
+
+[2026-03-02T02:30:39.725Z] Phase 6: Applying Optimizations
+[2026-03-02T02:30:39.725Z] Consolidating 1 duplicate groups...
+[2026-03-02T02:30:39.726Z] Created archive: /home/mpb/Documents/GitHub/paraty_geocore.js/.ai_workflow/archive/docs/20260301_233039
+[2026-03-02T02:30:39.726Z] Consolidation complete: 0 removed, 0 kept
+[2026-03-02T02:30:39.727Z] Archiving 0 outdated files...
+[2026-03-02T02:30:39.727Z] Created archive: /home/mpb/Documents/GitHub/paraty_geocore.js/.ai_workflow/archive/docs/20260301_233039
+[2026-03-02T02:30:39.727Z] Archived 0 outdated files
+[2026-03-02T02:30:39.727Z] Phase 7: Generating Report
+[2026-03-02T02:30:39.728Z] Generating optimization report...
+[2026-03-02T02:30:39.729Z] Report saved: /home/mpb/Documents/GitHub/paraty_geocore.js/.ai_workflow/archive/docs/20260301_233039/optimization_report.md
+[2026-03-02T02:30:39.729Z] 
+📊 Optimization Complete!
+═══════════════════════
+  Files analyzed: 16
+  Files optimized: 0
+  Size saved: 0KB (0%)
+  Token savings: ~0
+
+[2026-03-02T02:30:39.729Z] 
+Full report: /home/mpb/Documents/GitHub/paraty_geocore.js/.ai_workflow/archive/docs/20260301_233039/optimization_report.md
+[2026-03-02T02:30:39.729Z] ✓ Workflow complete (0s)
+[2026-03-02T02:30:39.729Z] ✓ Step step_02_5 completed in 318ms
+[2026-03-02T02:30:39.730Z] [DEBUG] [Performance] step_02_5: 318ms
+[2026-03-02T02:30:39.730Z] [DEBUG] Recorded outcome for step_02_5: success
+[2026-03-02T02:30:39.730Z] ✓ Completed: Documentation Optimization (0s)

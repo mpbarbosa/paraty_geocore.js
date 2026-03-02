@@ -1,0 +1,16 @@
+[2026-03-02T02:32:56.567Z] 
+→ Starting: Debugging Analysis
+[2026-03-02T02:32:56.568Z] ════════════════════════════════════════════════════════════
+[2026-03-02T02:32:56.568Z] 🔷  Step 18: Debugging Analysis
+[2026-03-02T02:32:56.568Z] ════════════════════════════════════════════════════════════
+[2026-03-02T02:32:56.584Z] Analyzing 14 source file(s) for debugging patterns
+[2026-03-02T02:32:56.588Z] Selected debugger persona: async_flow_debugger_prompt
+[2026-03-02T02:32:58.769Z] ✓ GitHub Copilot SDK initialized successfully
+[2026-03-02T02:32:59.871Z] Available Copilot models (13): claude-sonnet-4.5, claude-haiku-4.5, claude-opus-4.5, claude-sonnet-4, gemini-3-pro-preview, gpt-5.2-codex, gpt-5.2, gpt-5.1-codex-max, gpt-5.1-codex, gpt-5.1, gpt-5.1-codex-mini, gpt-5-mini, gpt-4.1
+[2026-03-02T02:32:59.971Z] [DEBUG] AI cache initialized: .ai_workflow/.ai_cache
+[2026-03-02T02:32:59.980Z] [DEBUG] Cache hit: 96659107...
+[2026-03-02T02:32:59.984Z] ✓ Step 18 completed - debugging analysis report generated
+[2026-03-02T02:32:59.985Z] ✓ Step step_18 completed in 3418ms
+[2026-03-02T02:32:59.985Z] [DEBUG] [Performance] step_18: 3.4s
+[2026-03-02T02:32:59.985Z] [DEBUG] Recorded outcome for step_18: success
+[2026-03-02T02:32:59.985Z] ✓ Completed: Debugging Analysis (3s)
