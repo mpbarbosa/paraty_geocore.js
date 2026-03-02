@@ -30,8 +30,7 @@ describe('utils/async delay', () => {
             jest.useRealTimers();
         }
     });
-    it('delay() returns a Promise', () => {
-        const result = (0, async_1.delay)(10);
-        expect(result).toBeInstanceOf(Promise);
+    it('delay() returns a Promise that resolves to undefined', async () => {
+        await expect((0, async_1.delay)(10)).resolves.toBeUndefined();
     });
 });

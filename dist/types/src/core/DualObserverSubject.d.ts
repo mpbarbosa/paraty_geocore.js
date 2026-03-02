@@ -17,7 +17,7 @@
  * - Function observers: `(...args) => void` — subscribed via `subscribeFunction()`, notified via `notifyFunctionObservers()`
  *
  * @module core/DualObserverSubject
- * @since 0.9.11-alpha
+ * @since 0.10.0-alpha
  * @author Marcelo Pereira Barbosa
  *
  * @example
@@ -67,10 +67,12 @@ type ObserverFunction = (...args: unknown[]) => void;
  * @class
  */
 declare class DualObserverSubject {
-    /** Object observers subscribed via {@link subscribe}. */
-    observers: ObserverObject[];
-    /** Function observers subscribed via {@link subscribeFunction}. */
-    functionObservers: ObserverFunction[];
+    private _observers;
+    private _functionObservers;
+    /** Read-only view of object observers subscribed via {@link subscribe}. */
+    get observers(): ReadonlyArray<ObserverObject>;
+    /** Read-only view of function observers subscribed via {@link subscribeFunction}. */
+    get functionObservers(): ReadonlyArray<ObserverFunction>;
     /**
      * Creates a new DualObserverSubject with empty observer collections.
      */

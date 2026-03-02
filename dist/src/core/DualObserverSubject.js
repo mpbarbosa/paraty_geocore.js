@@ -18,7 +18,7 @@
  * - Function observers: `(...args) => void` — subscribed via `subscribeFunction()`, notified via `notifyFunctionObservers()`
  *
  * @module core/DualObserverSubject
- * @since 0.9.11-alpha
+ * @since 0.10.0-alpha
  * @author Marcelo Pereira Barbosa
  *
  * @example
@@ -63,12 +63,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @class
  */
 class DualObserverSubject {
+    /** Read-only view of object observers subscribed via {@link subscribe}. */
+    get observers() { return this._observers; }
+    /** Read-only view of function observers subscribed via {@link subscribeFunction}. */
+    get functionObservers() { return this._functionObservers; }
     /**
      * Creates a new DualObserverSubject with empty observer collections.
      */
     constructor() {
-        this.observers = [];
-        this.functionObservers = [];
+        this._observers = [];
+        this._functionObservers = [];
     }
     /**
      * Subscribes an object observer to receive notifications via its `update()` method.
@@ -85,7 +89,7 @@ class DualObserverSubject {
      */
     subscribe(observer) {
         if (observer) {
-            this.observers = [...this.observers, observer];
+            this._observers = [...this._observers, observer];
         }
     }
     /**
@@ -100,7 +104,7 @@ class DualObserverSubject {
      * subject.unsubscribe(myObserver);
      */
     unsubscribe(observer) {
-        this.observers = this.observers.filter(o => o !== observer);
+        this._observers = this._observers.filter(o => o !== observer);
     }
     /**
      * Notifies all subscribed object observers.
@@ -114,7 +118,7 @@ class DualObserverSubject {
      * subject.notifyObservers(this, 'positionChanged', position, null);
      */
     notifyObservers(...args) {
-        this.observers.forEach(observer => {
+        this._observers.forEach(observer => {
             if (typeof observer.update === 'function') {
                 try {
                     observer.update(...args);
@@ -139,7 +143,7 @@ class DualObserverSubject {
      */
     subscribeFunction(observerFunction) {
         if (observerFunction) {
-            this.functionObservers = [...this.functionObservers, observerFunction];
+            this._functionObservers = [...this._functionObservers, observerFunction];
         }
     }
     /**
@@ -154,7 +158,7 @@ class DualObserverSubject {
      * subject.unsubscribeFunction(handler);
      */
     unsubscribeFunction(observerFunction) {
-        this.functionObservers = this.functionObservers.filter(fn => fn !== observerFunction);
+        this._functionObservers = this._functionObservers.filter(fn => fn !== observerFunction);
     }
     /**
      * Notifies all subscribed function observers.
@@ -167,7 +171,7 @@ class DualObserverSubject {
      * subject.notifyFunctionObservers(this, 'positionChanged', data);
      */
     notifyFunctionObservers(...args) {
-        this.functionObservers.forEach(fn => {
+        this._functionObservers.forEach(fn => {
             if (typeof fn === 'function') {
                 try {
                     fn(...args);
@@ -184,7 +188,7 @@ class DualObserverSubject {
      * @returns {number} Number of object observers subscribed via {@link subscribe}
      */
     getObserverCount() {
-        return this.observers.length;
+        return this._observers.length;
     }
     /**
      * Returns the count of subscribed function observers.
@@ -192,7 +196,7 @@ class DualObserverSubject {
      * @returns {number} Number of function observers subscribed via {@link subscribeFunction}
      */
     getFunctionObserverCount() {
-        return this.functionObservers.length;
+        return this._functionObservers.length;
     }
     /**
      * Removes all observers (both object and function collections).
@@ -205,8 +209,8 @@ class DualObserverSubject {
      * console.log(subject.getFunctionObserverCount()); // 0
      */
     clearAllObservers() {
-        this.observers = [];
-        this.functionObservers = [];
+        this._observers = [];
+        this._functionObservers = [];
     }
 }
 exports.default = DualObserverSubject;

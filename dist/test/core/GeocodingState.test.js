@@ -9,46 +9,43 @@ const ObserverSubject_1 = __importDefault(require("../../src/core/ObserverSubjec
 const GeoPosition_1 = __importDefault(require("../../src/core/GeoPosition"));
 const fixtures_1 = require("../helpers/fixtures");
 describe('GeocodingState', () => {
+    let state;
+    beforeEach(() => {
+        state = new GeocodingState_1.default();
+    });
     describe('constructor', () => {
         it('should create instance with null initial state', () => {
-            const state = new GeocodingState_1.default();
             expect(state).toBeInstanceOf(GeocodingState_1.default);
             expect(state).toBeInstanceOf(ObserverSubject_1.default);
             expect(state.getCurrentPosition()).toBeNull();
             expect(state.getCurrentCoordinates()).toBeNull();
         });
         it('should initialize with zero observers', () => {
-            const state = new GeocodingState_1.default();
             expect(state.getObserverCount()).toBe(0);
         });
     });
     describe('setPosition()', () => {
         it('should update position with a valid GeoPosition', () => {
-            const state = new GeocodingState_1.default();
             const pos = new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333));
             state.setPosition(pos);
             expect(state.getCurrentPosition()).toBe(pos);
         });
         it('should update coordinates when position is set', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333)));
             expect(state.getCurrentCoordinates()).toEqual({ latitude: -23.5505, longitude: -46.6333 });
         });
         it('should accept null to clear position', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333)));
             state.setPosition(null);
             expect(state.getCurrentPosition()).toBeNull();
             expect(state.getCurrentCoordinates()).toBeNull();
         });
         it('should throw TypeError for non-GeoPosition values', () => {
-            const state = new GeocodingState_1.default();
             expect(() => state.setPosition({ latitude: 10, longitude: 20 })).toThrow(TypeError);
             expect(() => state.setPosition('invalid')).toThrow(TypeError);
             expect(() => state.setPosition(123)).toThrow(TypeError);
         });
         it('should notify observers when position changes', () => {
-            const state = new GeocodingState_1.default();
             const observer = jest.fn();
             const pos = new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333));
             state.subscribe(observer);
@@ -60,14 +57,12 @@ describe('GeocodingState', () => {
             });
         });
         it('should not notify observers when set to null', () => {
-            const state = new GeocodingState_1.default();
             const observer = jest.fn();
             state.subscribe(observer);
             state.setPosition(null);
             expect(observer).not.toHaveBeenCalled();
         });
         it('should handle observer errors gracefully', () => {
-            const state = new GeocodingState_1.default();
             const errorObserver = jest.fn(() => { throw new Error('boom'); });
             const successObserver = jest.fn();
             const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => { });
@@ -79,17 +74,15 @@ describe('GeocodingState', () => {
             warnSpy.mockRestore();
         });
         it('should allow chaining by returning this', () => {
-            const state = new GeocodingState_1.default();
             const result = state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(0, 0)));
             expect(result).toBe(state);
         });
     });
     describe('getCurrentCoordinates()', () => {
         it('should return null initially', () => {
-            expect(new GeocodingState_1.default().getCurrentCoordinates()).toBeNull();
+            expect(state.getCurrentCoordinates()).toBeNull();
         });
         it('should return a defensive copy', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333)));
             const c1 = state.getCurrentCoordinates();
             const c2 = state.getCurrentCoordinates();
@@ -97,29 +90,25 @@ describe('GeocodingState', () => {
             expect(c1).not.toBe(c2);
         });
         it('should not allow external mutation', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333)));
             const coords = state.getCurrentCoordinates();
             coords.latitude = 999;
             expect(state.getCurrentCoordinates().latitude).toBe(-23.5505);
         });
         it('should handle zero coordinates', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(0, 0)));
             expect(state.getCurrentCoordinates()).toEqual({ latitude: 0, longitude: 0 });
         });
     });
     describe('hasPosition()', () => {
         it('should return false initially', () => {
-            expect(new GeocodingState_1.default().hasPosition()).toBe(false);
+            expect(state.hasPosition()).toBe(false);
         });
         it('should return true after setting position', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(0, 0)));
             expect(state.hasPosition()).toBe(true);
         });
         it('should return false after clearing position', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(0, 0)));
             state.setPosition(null);
             expect(state.hasPosition()).toBe(false);
@@ -127,17 +116,14 @@ describe('GeocodingState', () => {
     });
     describe('subscribe()', () => {
         it('should register observer and return unsubscribe function', () => {
-            const state = new GeocodingState_1.default();
             const unsubscribe = state.subscribe(jest.fn());
             expect(typeof unsubscribe).toBe('function');
         });
         it('should throw TypeError for non-function observer', () => {
-            const state = new GeocodingState_1.default();
             expect(() => state.subscribe(null)).toThrow(TypeError);
             expect(() => state.subscribe('str')).toThrow(TypeError);
         });
         it('should stop calling observer after unsubscribe', () => {
-            const state = new GeocodingState_1.default();
             const observer = jest.fn();
             const unsubscribe = state.subscribe(observer);
             unsubscribe();
@@ -145,13 +131,11 @@ describe('GeocodingState', () => {
             expect(observer).not.toHaveBeenCalled();
         });
         it('should handle double unsubscribe without throwing', () => {
-            const state = new GeocodingState_1.default();
             const unsubscribe = state.subscribe(jest.fn());
             unsubscribe();
             expect(() => unsubscribe()).not.toThrow();
         });
         it('should only remove the specific observer', () => {
-            const state = new GeocodingState_1.default();
             const obs1 = jest.fn();
             const obs2 = jest.fn();
             const obs3 = jest.fn();
@@ -167,19 +151,16 @@ describe('GeocodingState', () => {
     });
     describe('unsubscribe()', () => {
         it('should return true when callback is found and removed', () => {
-            const state = new GeocodingState_1.default();
             const handler = jest.fn();
             state.subscribe(handler);
             expect(state.unsubscribe(handler)).toBe(true);
         });
         it('should return false when callback is not registered', () => {
-            const state = new GeocodingState_1.default();
             expect(state.unsubscribe(jest.fn())).toBe(false);
         });
     });
     describe('clear()', () => {
         it('should reset position without notifying observers', () => {
-            const state = new GeocodingState_1.default();
             const observer = jest.fn();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(0, 0)));
             state.subscribe(observer);
@@ -191,7 +172,6 @@ describe('GeocodingState', () => {
     });
     describe('clearObservers()', () => {
         it('should remove all observers', () => {
-            const state = new GeocodingState_1.default();
             state.subscribe(jest.fn());
             state.subscribe(jest.fn());
             state.clearObservers();
@@ -200,20 +180,18 @@ describe('GeocodingState', () => {
     });
     describe('toString()', () => {
         it('should include class name and null state initially', () => {
-            const str = new GeocodingState_1.default().toString();
+            const str = state.toString();
             expect(str).toContain('GeocodingState');
             expect(str).toContain('position: null');
             expect(str).toContain('observers: 0');
         });
         it('should include coordinates when position is set', () => {
-            const state = new GeocodingState_1.default();
             state.setPosition(new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333)));
             const str = state.toString();
             expect(str).toContain('-23.5505');
             expect(str).toContain('-46.6333');
         });
         it('should reflect correct observer count', () => {
-            const state = new GeocodingState_1.default();
             state.subscribe(jest.fn());
             state.subscribe(jest.fn());
             state.subscribe(jest.fn());
@@ -222,7 +200,6 @@ describe('GeocodingState', () => {
     });
     describe('Integration', () => {
         it('should support full subscribe -> update -> unsubscribe lifecycle', () => {
-            const state = new GeocodingState_1.default();
             const observer = jest.fn();
             const unsubscribe = state.subscribe(observer);
             const pos1 = new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333));
@@ -236,7 +213,6 @@ describe('GeocodingState', () => {
             expect(observer).toHaveBeenNthCalledWith(2, expect.objectContaining({ position: pos2 }));
         });
         it('should maintain consistency during rapid updates', () => {
-            const state = new GeocodingState_1.default();
             const positions = [
                 new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333)),
                 new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(40.7128, -74.006)),
@@ -249,7 +225,6 @@ describe('GeocodingState', () => {
             expect(state.getCurrentPosition()).toBe(positions[2]);
         });
         it('should maintain state even when all observers throw', () => {
-            const state = new GeocodingState_1.default();
             state.subscribe(() => { throw new Error('err1'); });
             state.subscribe(() => { throw new Error('err2'); });
             const pos = new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(0, 0));

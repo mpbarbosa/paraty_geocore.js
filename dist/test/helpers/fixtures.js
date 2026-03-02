@@ -6,7 +6,32 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TEST_TIMESTAMP = void 0;
+exports.makeBrowserPosition = makeBrowserPosition;
 exports.makeGeoPositionInput = makeGeoPositionInput;
+/**
+ * Creates a GeolocationPosition-like object whose coords properties are
+ * exposed as non-enumerable getters — identical to Chrome / Firefox behaviour.
+ *
+ * Use this in tests that must verify GeoPosition handles the real browser API
+ * (where spread / Object.assign on coords produces an empty object).
+ *
+ * @param coords - Coordinate values to expose via non-enumerable getters
+ * @param timestamp - Position timestamp (defaults to {@link TEST_TIMESTAMP})
+ */
+function makeBrowserPosition(coords, timestamp = exports.TEST_TIMESTAMP) {
+    const coordsObj = Object.create(null);
+    for (const [key, value] of Object.entries(coords)) {
+        Object.defineProperty(coordsObj, key, {
+            get: () => value ?? null,
+            enumerable: false, // non-enumerable: spread/assign yields {}
+            configurable: false,
+        });
+    }
+    const positionObj = Object.create(null);
+    Object.defineProperty(positionObj, 'coords', { get: () => coordsObj, enumerable: true });
+    Object.defineProperty(positionObj, 'timestamp', { get: () => timestamp, enumerable: true });
+    return positionObj;
+}
 /**
  * A stable, well-known Unix timestamp used across unit and integration tests.
  * Corresponds to 2023-11-14T22:13:20.000Z — arbitrary but consistent.

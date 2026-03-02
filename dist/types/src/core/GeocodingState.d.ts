@@ -60,11 +60,8 @@ export interface GeocodingStateSnapshot {
  * @extends ObserverSubject<GeocodingStateSnapshot>
  */
 declare class GeocodingState extends ObserverSubject<GeocodingStateSnapshot> {
-    _currentPosition: GeoPosition | null;
-    _currentCoordinates: {
-        latitude: number;
-        longitude: number;
-    } | null;
+    private _currentPosition;
+    private _currentCoordinates;
     /**
      * Creates a new GeocodingState instance
      *

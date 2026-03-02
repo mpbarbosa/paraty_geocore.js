@@ -173,7 +173,7 @@ class GeocodingState extends ObserverSubject_js_1.default {
         const coords = this._currentCoordinates ?
             `(${this._currentCoordinates.latitude.toFixed(4)}, ${this._currentCoordinates.longitude.toFixed(4)})` :
             'null';
-        return `GeocodingState: position: ${hasPos}, coordinates: ${coords}, observers: ${this._observers.length}`;
+        return `GeocodingState: position: ${hasPos}, coordinates: ${coords}, observers: ${this.getObserverCount()}`;
     }
 }
 exports.default = GeocodingState;

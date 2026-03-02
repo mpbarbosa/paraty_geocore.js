@@ -176,6 +176,39 @@ describe('GeocodingState (exported from index)', () => {
     });
 });
 // ---------------------------------------------------------------------------
+// DualObserverSubject
+// ---------------------------------------------------------------------------
+describe('DualObserverSubject (exported from index)', () => {
+    it('is a named export and is a constructor', () => {
+        expect(typeof index_1.DualObserverSubject).toBe('function');
+    });
+    it('creates an instance with zero observers of both types', () => {
+        const subject = new index_1.DualObserverSubject();
+        expect(subject.getObserverCount()).toBe(0);
+        expect(subject.getFunctionObserverCount()).toBe(0);
+    });
+    it('object subscribe/notify/unsubscribe lifecycle works', () => {
+        const subject = new index_1.DualObserverSubject();
+        const obs = { update: jest.fn() };
+        subject.subscribe(obs);
+        subject.notifyObservers('data');
+        expect(obs.update).toHaveBeenCalledWith('data');
+        subject.unsubscribe(obs);
+        subject.notifyObservers('more');
+        expect(obs.update).toHaveBeenCalledTimes(1);
+    });
+    it('function subscribeFunction/notify/unsubscribeFunction lifecycle works', () => {
+        const subject = new index_1.DualObserverSubject();
+        const fn = jest.fn();
+        subject.subscribeFunction(fn);
+        subject.notifyFunctionObservers('data');
+        expect(fn).toHaveBeenCalledWith('data');
+        subject.unsubscribeFunction(fn);
+        subject.notifyFunctionObservers('more');
+        expect(fn).toHaveBeenCalledTimes(1);
+    });
+});
+// ---------------------------------------------------------------------------
 // ObserverSubject
 // ---------------------------------------------------------------------------
 describe('ObserverSubject (exported from index)', () => {

@@ -4,6 +4,26 @@
  * Import these instead of repeating magic values across test files.
  */
 import type { GeoPositionInput } from '../../src/core/GeoPosition';
+export interface FakeCoords {
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+    altitude?: number | null;
+    altitudeAccuracy?: number | null;
+    heading?: number | null;
+    speed?: number | null;
+}
+/**
+ * Creates a GeolocationPosition-like object whose coords properties are
+ * exposed as non-enumerable getters — identical to Chrome / Firefox behaviour.
+ *
+ * Use this in tests that must verify GeoPosition handles the real browser API
+ * (where spread / Object.assign on coords produces an empty object).
+ *
+ * @param coords - Coordinate values to expose via non-enumerable getters
+ * @param timestamp - Position timestamp (defaults to {@link TEST_TIMESTAMP})
+ */
+export declare function makeBrowserPosition(coords: FakeCoords, timestamp?: number): object;
 /**
  * A stable, well-known Unix timestamp used across unit and integration tests.
  * Corresponds to 2023-11-14T22:13:20.000Z — arbitrary but consistent.
