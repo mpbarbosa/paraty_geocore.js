@@ -11,6 +11,7 @@ export { default as GeoPosition } from './core/GeoPosition.js';
 export type { GeoCoords, GeoPositionInput, AccuracyQuality } from './core/GeoPosition.js';
 
 export { default as ObserverSubject } from './core/ObserverSubject.js';
+export { default as DualObserverSubject } from './core/DualObserverSubject.js';
 
 export { default as GeocodingState } from './core/GeocodingState.js';
 export type { GeocodingStateSnapshot } from './core/GeocodingState.js';
