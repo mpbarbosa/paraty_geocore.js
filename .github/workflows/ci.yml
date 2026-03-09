@@ -70,6 +70,16 @@ jobs:
       - name: Type-check (tsc --noEmit)
         run: npm run validate
 
+      - name: Build dist (CJS + ESM)
+        # Verify both output bundles compile cleanly — dist/ is also used by the smoke test below
+        if: matrix.node-version == '20.x'
+        run: npm run build && npm run build:esm
+
+      - name: Run dist smoke test
+        # Exercises every public export against the freshly built CJS dist
+        if: matrix.node-version == '20.x'
+        run: npm run test:smoke
+
       - name: Lint TypeScript
         # Run only once (not per Node version) to avoid duplicate lint reports
         if: matrix.node-version == '20.x'

@@ -22,6 +22,7 @@
     "bench": "jest --testPathPattern='test/benchmarks' --verbose --passWithNoTests",
     "test:flaky": "for i in 1 2 3; do npm test -- --forceExit --randomize || exit 1; done",
     "test:all": "npm run test:coverage && npm run bench",
+    "test:smoke": "node scripts/smoke-test.cjs",
     "validate": "tsc --noEmit",
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
@@ -66,5 +67,8 @@
     "ts-jest": "^29.1.0",
     "typedoc": "^0.28.17",
     "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.2-alpha.tar.gz"
   }
 }
