@@ -220,13 +220,16 @@ describe('ObserverSubject (exported from index)', () => {
         expect(subject.getObserverCount()).toBe(0);
     });
     it('subscribe/notify/unsubscribe lifecycle works', () => {
-        const subject = new index_1.ObserverSubject();
+        class TestableSub extends index_1.ObserverSubject {
+            notify(s) { this._notifyObservers(s); }
+        }
+        const subject = new TestableSub();
         const cb = jest.fn();
         const unsub = subject.subscribe(cb);
-        subject._notifyObservers(7);
+        subject.notify(7);
         expect(cb).toHaveBeenCalledWith(7);
         unsub();
-        subject._notifyObservers(8);
+        subject.notify(8);
         expect(cb).toHaveBeenCalledTimes(1);
     });
 });

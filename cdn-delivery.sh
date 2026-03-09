@@ -10,7 +10,7 @@ set -euo pipefail
 
 # Colors for output
 # shellcheck source=scripts/colors.sh
-source "$(dirname "${BASH_SOURCE[0]}")/scripts/colors.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scripts/colors.sh"
 
 # Project configuration
 GITHUB_USER="mpbarbosa"

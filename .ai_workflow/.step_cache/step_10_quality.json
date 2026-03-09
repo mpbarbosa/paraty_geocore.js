@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "fileScores": {
+    "src/core/DualObserverSubject.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-09T20:53:31.845Z"
+    },
+    "src/core/ObserverSubject.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-09T20:53:31.845Z"
+    },
+    "src/core/GeoPosition.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-09T20:53:31.845Z"
+    },
+    "src/core/GeocodingState.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-09T20:53:31.845Z"
+    },
+    "src/core/errors.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-09T20:53:31.845Z"
+    }
+  }
+}

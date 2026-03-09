@@ -38,6 +38,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ObserverSubject_1 = __importDefault(require("../../src/core/ObserverSubject"));
+/** Minimal subclass to expose protected _notifyObservers for testing. */
+class TestableObserverSubject extends ObserverSubject_1.default {
+    notify(snapshot) { this._notifyObservers(snapshot); }
+}
 describe('ObserverSubject', () => {
     describe('constructor', () => {
         it('should create instance with zero observers', () => {
@@ -70,13 +74,13 @@ describe('ObserverSubject', () => {
             expect(subject.getObserverCount()).toBe(3);
         });
         it('returned unsubscribe removes only that callback', () => {
-            const subject = new ObserverSubject_1.default();
+            const subject = new TestableObserverSubject();
             const obs1 = jest.fn();
             const obs2 = jest.fn();
             subject.subscribe(obs1);
             const unsub2 = subject.subscribe(obs2);
             unsub2();
-            subject._notifyObservers('ping');
+            subject.notify('ping');
             expect(obs1).toHaveBeenCalledWith('ping');
             expect(obs2).not.toHaveBeenCalled();
         });
@@ -100,13 +104,13 @@ describe('ObserverSubject', () => {
             expect(subject.unsubscribe(jest.fn())).toBe(false);
         });
         it('should not affect other observers', () => {
-            const subject = new ObserverSubject_1.default();
+            const subject = new TestableObserverSubject();
             const obs1 = jest.fn();
             const obs2 = jest.fn();
             subject.subscribe(obs1);
             subject.subscribe(obs2);
             subject.unsubscribe(obs1);
-            subject._notifyObservers(null);
+            subject.notify(null);
             expect(obs1).not.toHaveBeenCalled();
             expect(obs2).toHaveBeenCalledTimes(1);
         });
@@ -132,40 +136,40 @@ describe('ObserverSubject', () => {
             expect(subject.getObserverCount()).toBe(0);
         });
         it('should stop further notifications', () => {
-            const subject = new ObserverSubject_1.default();
+            const subject = new TestableObserverSubject();
             const obs = jest.fn();
             subject.subscribe(obs);
             subject.clearObservers();
-            subject._notifyObservers(1);
+            subject.notify(1);
             expect(obs).not.toHaveBeenCalled();
         });
     });
     describe('_notifyObservers()', () => {
         it('should call each observer with the snapshot', () => {
-            const subject = new ObserverSubject_1.default();
+            const subject = new TestableObserverSubject();
             const obs1 = jest.fn();
             const obs2 = jest.fn();
             subject.subscribe(obs1);
             subject.subscribe(obs2);
-            subject._notifyObservers({ x: 99 });
+            subject.notify({ x: 99 });
             expect(obs1).toHaveBeenCalledWith({ x: 99 });
             expect(obs2).toHaveBeenCalledWith({ x: 99 });
         });
         it('should catch errors from observers and log them', () => {
-            const subject = new ObserverSubject_1.default();
+            const subject = new TestableObserverSubject();
             const badObs = jest.fn(() => { throw new Error('boom'); });
             const goodObs = jest.fn();
             const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => { });
             subject.subscribe(badObs);
             subject.subscribe(goodObs);
-            expect(() => subject._notifyObservers('event')).not.toThrow();
+            expect(() => subject.notify('event')).not.toThrow();
             expect(goodObs).toHaveBeenCalledWith('event');
             expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Error notifying observer'), expect.any(Error));
             warnSpy.mockRestore();
         });
         it('should do nothing when there are no observers', () => {
-            const subject = new ObserverSubject_1.default();
-            expect(() => subject._notifyObservers(true)).not.toThrow();
+            const subject = new TestableObserverSubject();
+            expect(() => subject.notify(true)).not.toThrow();
         });
     });
     describe('subclassing', () => {

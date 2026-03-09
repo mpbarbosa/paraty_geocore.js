@@ -5,7 +5,7 @@
  * utilities for callers building polling or throttling logic around the library.
  *
  * @module utils/async
- * @since 0.10.0-alpha
+ * @since 0.10.1-alpha
  */
 
 /**
@@ -26,7 +26,7 @@
  *   }
  * }
  *
- * @since 0.10.0-alpha
+ * @since 0.10.1-alpha
  */
 export const delay = (ms: number): Promise<void> =>
 	new Promise((resolve) => setTimeout(resolve, ms < 0 ? 0 : ms));
