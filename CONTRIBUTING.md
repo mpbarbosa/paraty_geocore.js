@@ -133,6 +133,26 @@ Hooks enforce: private key detection, EditorConfig rules, and markdownlint.
 
 ---
 
+## Dependency Management
+
+Most dependencies are managed automatically by [Dependabot](https://docs.github.com/en/code-security/dependabot), which opens weekly PRs for npm and GitHub Actions updates.
+
+**Manual update required — `bessa_patterns.ts`:**
+This package is installed as a GitHub tarball URL (not a versioned npm registry package), so Dependabot cannot track it automatically:
+
+```json
+"bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.2-alpha.tar.gz"
+```
+
+When a new version of `bessa_patterns.ts` is released, update `package.json` manually:
+
+```bash
+npm install "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/vX.Y.Z.tar.gz" --save
+npm test  # verify all 235 tests pass before committing
+```
+
+---
+
 ## Submitting Changes
 
 1. **Fork** the repository and create a branch from `main`:
