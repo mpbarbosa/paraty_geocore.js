@@ -72,6 +72,15 @@ describe('DualObserverSubject', () => {
             expect(() => subject.subscribe(observer)).not.toThrow();
             expect(subject.getObserverCount()).toBe(1);
         });
+
+        it('allows the same observer to be subscribed multiple times (duplicate behaviour)', () => {
+            const obs = makeObserver();
+            subject.subscribe(obs);
+            subject.subscribe(obs);
+            expect(subject.getObserverCount()).toBe(2);
+            subject.notifyObservers('ping');
+            expect(obs.update).toHaveBeenCalledTimes(2);
+        });
     });
 
     describe('unsubscribe()', () => {
@@ -107,6 +116,15 @@ describe('DualObserverSubject', () => {
             expect(arrayBefore).not.toBe(arrayAfter);
             expect(arrayBefore).toHaveLength(1);
             expect(arrayAfter).toHaveLength(0);
+        });
+
+        it('removes ALL occurrences when the same observer was subscribed multiple times', () => {
+            const obs = makeObserver();
+            subject.subscribe(obs);
+            subject.subscribe(obs);
+            expect(subject.getObserverCount()).toBe(2);
+            subject.unsubscribe(obs);
+            expect(subject.getObserverCount()).toBe(0);
         });
     });
 
@@ -220,6 +238,15 @@ describe('DualObserverSubject', () => {
             expect(arrayBefore).toHaveLength(1);
             expect(arrayAfter).toHaveLength(2);
         });
+
+        it('allows the same function to be subscribed multiple times (duplicate behaviour)', () => {
+            const fn = jest.fn();
+            subject.subscribeFunction(fn);
+            subject.subscribeFunction(fn);
+            expect(subject.getFunctionObserverCount()).toBe(2);
+            subject.notifyFunctionObservers('ping');
+            expect(fn).toHaveBeenCalledTimes(2);
+        });
     });
 
     describe('unsubscribeFunction()', () => {
@@ -243,6 +270,15 @@ describe('DualObserverSubject', () => {
 
             expect(() => subject.unsubscribeFunction(fn2)).not.toThrow();
             expect(subject.getFunctionObserverCount()).toBe(1);
+        });
+
+        it('removes ALL occurrences when the same function was subscribed multiple times', () => {
+            const fn = jest.fn();
+            subject.subscribeFunction(fn);
+            subject.subscribeFunction(fn);
+            expect(subject.getFunctionObserverCount()).toBe(2);
+            subject.unsubscribeFunction(fn);
+            expect(subject.getFunctionObserverCount()).toBe(0);
         });
     });
 
