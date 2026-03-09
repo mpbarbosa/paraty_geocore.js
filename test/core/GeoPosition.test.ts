@@ -2,6 +2,7 @@
 
 import GeoPosition, { GeoCoords, GeoPositionInput, AccuracyQuality } from '../../src/core/GeoPosition';
 import { calculateDistance } from '../../src/utils/distance';
+import { makeGeoPositionInput } from '../helpers/fixtures';
 
 jest.mock('../../src/utils/distance', () => ({
 	calculateDistance: jest.fn(),
@@ -17,7 +18,7 @@ describe('GeoPosition', () => {
 	});
 
 	describe('constructor', () => {
-		it('should create a GeoPosition with full data', () => {
+		it('should correctly initialize all fields from a full GeoPositionInput', () => {
 			const input: GeoPositionInput = {
 				timestamp: 1634567890123,
 				coords: {
@@ -117,11 +118,7 @@ describe('GeoPosition', () => {
 
 	describe('from', () => {
 		it('should create a GeoPosition instance', () => {
-			const input: GeoPositionInput = {
-				timestamp: 1000,
-				coords: { latitude: 1, longitude: 2, accuracy: 5 },
-			};
-			const pos = GeoPosition.from(input);
+			const pos = GeoPosition.from(makeGeoPositionInput(1, 2, 5));
 			expect(pos).toBeInstanceOf(GeoPosition);
 			expect(pos.latitude).toBe(1);
 			expect(pos.longitude).toBe(2);
@@ -154,9 +151,7 @@ describe('GeoPosition', () => {
 
 	describe('calculateAccuracyQuality', () => {
 		it('should return correct quality for current accuracy', () => {
-			const pos = new GeoPosition({
-				coords: { latitude: 1, longitude: 2, accuracy: 25 },
-			});
+			const pos = new GeoPosition(makeGeoPositionInput(1, 2, 25));
 			expect(pos.calculateAccuracyQuality()).toBe('good');
 		});
 		it('should return "very bad" for missing accuracy', () => {
@@ -218,9 +213,7 @@ describe('GeoPosition', () => {
 
 	describe('immutability', () => {
 		it('should not allow mutation of instance properties', () => {
-			const pos = new GeoPosition({
-				coords: { latitude: 1, longitude: 2, accuracy: 5 },
-			});
+			const pos = new GeoPosition(makeGeoPositionInput(1, 2, 5));
 			expect(() => {
 				// @ts-expect-error
 				pos.latitude = 99;
