@@ -1,6 +1,6 @@
 # GeoPosition API Documentation
 
-**Version:** 0.10.0-alpha
+**Version:** 0.10.1-alpha
 **Module:** `src/core/GeoPosition.ts`
 **Pattern:** Value Object (Immutable)
 **Author:** Marcelo Pereira Barbosa

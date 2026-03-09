@@ -123,4 +123,4 @@ console.log(zero); // 0
 | Spherical Earth assumption | Uses mean radius 6,371 km. Does not implement WGS-84 ellipsoidal model; maximum error is < 0.5% for typical geolocation use cases. |
 | No input validation | Out-of-range latitude/longitude values are not validated or clamped; callers are responsible for providing valid coordinates. |
 
-> **Note:** The `delay` utility previously co-located in this module has been extracted to `utils/async` (since 0.10.0-alpha). See [async-FRS.md](./async-FRS.md).
+> **Note:** The `delay` utility previously co-located in this module has been extracted to `utils/async` (since 0.10.1-alpha). See [async-FRS.md](./async-FRS.md).

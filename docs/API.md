@@ -313,7 +313,7 @@ import { delay } from 'paraty_geocore.js/utils/distance';
 await delay(1000); // pause 1 second
 ```
 
-> **Moved in 0.10.0-alpha:** `delay` has been extracted to `utils/async`. Import it from there going forward:
+> **Moved in 0.10.1-alpha:** `delay` has been extracted to `utils/async`. Import it from there going forward:
 > ```javascript
 > import { delay } from 'paraty_geocore.js/utils/async';
 > ```
