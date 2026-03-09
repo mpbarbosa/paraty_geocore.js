@@ -1,6 +1,6 @@
 # ObserverSubject API Documentation
 
-**Version:** 0.9.1-alpha
+**Version:** 0.10.1-alpha
 **Module:** `src/core/ObserverSubject.ts`
 **Pattern:** Observer/Subject
 **Author:** Marcelo Pereira Barbosa
