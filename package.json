@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "build:esm": "tsc --project tsconfig.esm.json",
+    "start": "node dist/src/index.js",
     "test": "jest --coverage --testPathPattern='test/(core|integration|utils|index)' --passWithNoTests",
     "test:core": "jest --testPathPattern='test/(core|index)' --passWithNoTests",
     "test:utils": "jest --testPathPattern='test/utils' --passWithNoTests",
@@ -38,6 +39,7 @@
     "haversine",
     "geo"
   ],
+  "private": true,
   "author": "Marcelo Pereira Barbosa",
   "license": "MIT",
   "engines": {
