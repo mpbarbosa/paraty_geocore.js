@@ -1,9 +1,7 @@
 // test/core/DualObserverSubject.test.ts
 
 import DualObserverSubject from '../../src/core/DualObserverSubject';
-
-/** Creates a fresh object observer with a Jest spy on its update method. */
-const makeObserver = () => ({ update: jest.fn() });
+import { makeObserver } from '../helpers/fixtures';
 
 describe('DualObserverSubject', () => {
     let subject: DualObserverSubject;

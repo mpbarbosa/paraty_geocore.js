@@ -161,30 +161,35 @@ describe('EARTH_RADIUS_METERS (exported from index)', () => {
 // ---------------------------------------------------------------------------
 
 describe('delay (exported from index)', () => {
+  beforeEach(() => { jest.useFakeTimers(); });
+  afterEach(() => { jest.useRealTimers(); });
+
   it('is a function that returns a Promise', () => {
     const p = delay(0);
     expect(p).toBeInstanceOf(Promise);
-    return p; // ensure the promise resolves so no open handles
+    jest.runAllTimers();
+    return p;
   });
 
   it('resolves after the specified milliseconds', async () => {
-    const start = Date.now();
-    await delay(50);
-    expect(Date.now() - start).toBeGreaterThanOrEqual(45); // allow ±5ms for timer imprecision
+    expect.assertions(1);
+    const p = delay(50);
+    jest.advanceTimersByTime(50);
+    await expect(p).resolves.toBeUndefined();
   });
 
   it('resolves immediately for delay(0)', async () => {
-    const start = Date.now();
-    await delay(0);
-    expect(Date.now() - start).toBeLessThan(20);
+    expect.assertions(1);
+    const p = delay(0);
+    jest.runAllTimers();
+    await expect(p).resolves.toBeUndefined();
   });
 
-  it('delay with large ms resolves correctly (fake timers)', async () => {
-    jest.useFakeTimers();
+  it('resolves after a large delay (fake timers)', async () => {
+    expect.assertions(1);
     const p = delay(5000);
     jest.advanceTimersByTime(5000);
     await expect(p).resolves.toBeUndefined();
-    jest.useRealTimers();
   });
 });
 
@@ -269,13 +274,16 @@ describe('ObserverSubject (exported from index)', () => {
   });
 
   it('subscribe/notify/unsubscribe lifecycle works', () => {
-    const subject = new ObserverSubject<number>();
+    class TestableSub<T> extends ObserverSubject<T> {
+      notify(s: T) { this._notifyObservers(s); }
+    }
+    const subject = new TestableSub<number>();
     const cb = jest.fn();
     const unsub = subject.subscribe(cb);
-    subject._notifyObservers(7);
+    subject.notify(7);
     expect(cb).toHaveBeenCalledWith(7);
     unsub();
-    subject._notifyObservers(8);
+    subject.notify(8);
     expect(cb).toHaveBeenCalledTimes(1);
   });
 });

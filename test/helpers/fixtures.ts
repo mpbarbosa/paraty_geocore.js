@@ -63,6 +63,14 @@ export const TEST_TIMESTAMP = 1_700_000_000_000;
  * @param lon - Longitude in decimal degrees
  * @param accuracy - GPS accuracy in metres (default: 10)
  */
+/**
+ * Creates a fresh object observer with a Jest spy on its `update` method.
+ *
+ * Use this in tests for {@link ObserverSubject} and {@link DualObserverSubject}
+ * instead of repeating `{ update: jest.fn() }` literals.
+ */
+export const makeObserver = (): { update: jest.Mock } => ({ update: jest.fn() });
+
 export function makeGeoPositionInput(lat: number, lon: number, accuracy = 10): GeoPositionInput {
   return {
     coords: {
