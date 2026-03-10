@@ -147,8 +147,8 @@ class GeocodingState extends ObserverSubject<GeocodingStateSnapshot> {
      *   console.log(`Lat: ${coords.latitude}, Lon: ${coords.longitude}`);
      * }
      */
-    getCurrentCoordinates(): {latitude: number, longitude: number} | null {
-        return this._currentCoordinates ? { ...this._currentCoordinates } : null;
+    getCurrentCoordinates(): Readonly<{latitude: number, longitude: number}> | null {
+        return this._currentCoordinates ? Object.freeze({ ...this._currentCoordinates }) : null;
     }
 
     /**

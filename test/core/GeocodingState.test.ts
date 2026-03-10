@@ -100,11 +100,11 @@ expect(c1).toEqual(c2);
 expect(c1).not.toBe(c2);
 });
 
-it('should not allow external mutation', () => {
+it('should return a frozen object to prevent external mutation', () => {
 state.setPosition(new GeoPosition(makeGeoPositionInput(-23.5505, -46.6333)));
 const coords = state.getCurrentCoordinates()!;
-coords.latitude = 999;
-expect(state.getCurrentCoordinates()!.latitude).toBe(-23.5505);
+expect(Object.isFrozen(coords)).toBe(true);
+expect(coords.latitude).toBe(-23.5505);
 });
 
 it('should handle zero coordinates', () => {
