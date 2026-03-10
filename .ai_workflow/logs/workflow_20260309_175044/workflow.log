@@ -641,8 +641,8 @@ Full report: /home/mpb/Documents/GitHub/paraty_geocore.js/.ai_workflow/archive/d
 [2026-03-09T20:54:20.073Z] [DEBUG] Prompt logged to: 2026-03-09T20-54-20-072Z_0001_devops_engineer.md
 [2026-03-09T20:54:20.077Z] [DEBUG] Response cached: 5037dd21...
 [2026-03-09T20:54:20.077Z] AI refined bump type: patch (was: patch, confidence: high)
-[2026-03-09T20:54:20.078Z] [VERSION BUMP] previous: 0.10.0 → next: 0.10.1 (patch)
-[2026-03-09T20:54:20.078Z] ✓ New version: 0.10.0 → 0.10.1
+[2026-03-09T20:54:20.078Z] [VERSION BUMP] previous: 0.10.0 → next: 0.10.2 (patch)
+[2026-03-09T20:54:20.078Z] ✓ New version: 0.10.0 → 0.10.2
 [2026-03-09T20:54:20.078Z] Phase 3: Updating versions in files...
 [2026-03-09T20:54:20.162Z] Version scan found 56 file(s) referencing 0.10.0
 [2026-03-09T20:54:20.176Z] ✓ Updated 56 files, skipped 15, failed 0
@@ -754,3 +754,52 @@ Full report: /home/mpb/Documents/GitHub/paraty_geocore.js/.ai_workflow/archive/d
 [2026-03-09T20:55:08.940Z] Changes: 18 files
 [2026-03-09T20:55:08.940Z] Inferred commit type: feat(implementation+tests)
 [2026-03-09T20:55:08.940Z] Staging all changes...
+[2026-03-09T20:55:08.968Z] [DEBUG] Force-staged .ai_workflow/ artifacts
+[2026-03-09T20:55:08.968Z] Changes staged successfully
+[2026-03-09T20:55:08.968Z] Generating commit message...
+[2026-03-09T20:55:11.265Z] ✓ GitHub Copilot SDK initialized successfully
+[2026-03-09T20:55:11.265Z] Available Copilot models (13): claude-sonnet-4.5, claude-haiku-4.5, claude-opus-4.5, claude-sonnet-4, gemini-3-pro-preview, gpt-5.2-codex, gpt-5.2, gpt-5.1-codex-max, gpt-5.1-codex, gpt-5.1, gpt-5.1-codex-mini, gpt-5-mini, gpt-4.1
+[2026-03-09T20:55:11.270Z] [DEBUG] AI cache initialized: .ai_workflow/.ai_cache
+[2026-03-09T20:55:11.338Z] [DEBUG] Cache miss: b703e449...
+[2026-03-09T20:55:11.338Z] [DEBUG] Request Options: {"model":"gpt-4.1","temperature":0.7,"maxTokens":4000,"stream":false,"persona":"git_specialist","cache":true}
+[2026-03-09T20:55:11.338Z] [DEBUG] Persona: git_specialist
+[2026-03-09T20:55:11.338Z] [DEBUG] Model: gpt-4.1
+[2026-03-09T20:55:11.338Z] [AI] SDK call starting — persona: git_specialist, model: gpt-4.1, prompt_chars: 9064
+[2026-03-09T20:55:11.338Z] [DEBUG] Executing AI request (attempt 1/3)
+[2026-03-09T20:55:20.085Z] [AI] SDK call completed — persona: git_specialist, model: gpt-4.1, response_chars: 589, latency: 8747ms
+[2026-03-09T20:55:20.086Z] ✓ AI request completed successfully
+[2026-03-09T20:55:20.086Z] [DEBUG] Prompt logged to: 2026-03-09T20-55-20-086Z_0001_git_specialist.md
+[2026-03-09T20:55:20.089Z] [DEBUG] Response cached: b703e449...
+[2026-03-09T20:55:20.089Z] AI commit message generated
+[2026-03-09T20:55:20.089Z] Creating commit...
+[2026-03-09T20:55:20.106Z] Changes committed successfully
+[2026-03-09T20:55:20.111Z] Tagged release: v0.10.2
+[2026-03-09T20:55:22.949Z] Pushed tag v0.10.2 to remote
+[2026-03-09T20:55:22.949Z] Pushing to origin/main...
+[2026-03-09T20:55:26.941Z] Successfully pushed to remote
+[2026-03-09T20:55:26.943Z] ✓ Step step_12 completed in 18043ms
+[2026-03-09T20:55:26.944Z] [DEBUG] [Performance] step_12: 18.0s
+[2026-03-09T20:55:26.944Z] ⚠ [WARNING] Operation 'step_12' took 18.0s (memory: 51.66MB)
+[2026-03-09T20:55:26.944Z] [DEBUG] Recorded outcome for step_12: success
+[2026-03-09T20:55:26.944Z] ✓ Completed: Git Finalization (18s)
+[2026-03-09T20:55:26.944Z] ✓ Workflow completed in 281881ms
+[2026-03-09T20:55:26.944Z] Results: 25/25 steps succeeded
+[2026-03-09T20:55:26.963Z] Checkpoint saved: workflow_1773089445049-1773089726945
+[2026-03-09T20:55:27.056Z] 
+Generating workflow summary...
+[2026-03-09T20:55:27.056Z] ════════════════════════════════════════════════════════════
+[2026-03-09T20:55:27.056Z] 🔷  Step 17: Workflow Summary
+[2026-03-09T20:55:27.056Z] ════════════════════════════════════════════════════════════
+[2026-03-09T20:55:27.056Z] Generating workflow summary report...
+[2026-03-09T20:55:27.057Z] Summary report written to: /home/mpb/Documents/GitHub/paraty_geocore.js/.ai_workflow/summaries/workflow_20260309_175044/workflow_summary.md
+[2026-03-09T20:55:27.057Z] ✓ Workflow summary generated successfully
+[2026-03-09T20:55:27.057Z] [DEBUG] [Performance] workflow_total: 4m 42s
+[2026-03-09T20:55:27.057Z] [DEBUG] [Performance] Total workflow: 4m 42s
+[2026-03-09T20:55:27.057Z] 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2026-03-09T20:55:27.057Z] ✓ Workflow completed successfully
+[2026-03-09T20:55:27.057Z] Duration: 282s
+[2026-03-09T20:55:27.057Z] Steps: 25/25 succeeded
+[2026-03-09T20:55:27.057Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[2026-03-09T20:55:27.057Z] [DEBUG] [CommitHistory] Saved hash=10141ab4e74a6e5db3be3bcdb36532b7f22a96c0 runId=workflow_1773089445049

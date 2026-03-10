@@ -25,6 +25,31 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-09T20:53:31.845Z"
+    },
+    ".ai_workflow/commit_history.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-10T00:42:29.532Z"
+    },
+    ".ai_workflow/metrics/current_run.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-10T00:42:29.532Z"
+    },
+    "src/index.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-10T00:42:29.532Z"
+    },
+    "src/utils/async.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-10T00:42:29.532Z"
+    },
+    "src/utils/distance.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-10T00:42:29.532Z"
     }
   }
 }
