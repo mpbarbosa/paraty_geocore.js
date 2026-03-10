@@ -2,7 +2,7 @@
  * Custom error classes for paraty_geocore.js.
  *
  * @module core/errors
- * @since 0.10.0-alpha
+ * @since 0.10.2-alpha
  */
 /**
  * Thrown when a `GeoPosition` is constructed with an invalid argument.

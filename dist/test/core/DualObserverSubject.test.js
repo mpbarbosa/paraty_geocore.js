@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DualObserverSubject_1 = __importDefault(require("../../src/core/DualObserverSubject"));
+const fixtures_1 = require("../helpers/fixtures");
 describe('DualObserverSubject', () => {
     let subject;
     beforeEach(() => {
@@ -21,7 +22,7 @@ describe('DualObserverSubject', () => {
     // ─── Object Observer Management ───────────────────────────────────────────
     describe('subscribe()', () => {
         it('should add an object observer', () => {
-            const observer = { update: jest.fn() };
+            const observer = (0, fixtures_1.makeObserver)();
             subject.subscribe(observer);
             expect(subject.observers).toContain(observer);
             expect(subject.getObserverCount()).toBe(1);
@@ -35,9 +36,9 @@ describe('DualObserverSubject', () => {
             expect(subject.getObserverCount()).toBe(0);
         });
         it('should subscribe multiple observers', () => {
-            const obs1 = { update: jest.fn() };
-            const obs2 = { update: jest.fn() };
-            const obs3 = { update: jest.fn() };
+            const obs1 = (0, fixtures_1.makeObserver)();
+            const obs2 = (0, fixtures_1.makeObserver)();
+            const obs3 = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs1);
             subject.subscribe(obs2);
             subject.subscribe(obs3);
@@ -47,26 +48,34 @@ describe('DualObserverSubject', () => {
             expect(subject.observers).toContain(obs3);
         });
         it('creates a new array on each subscribe (immutable pattern)', () => {
-            const obs1 = { update: jest.fn() };
-            const obs2 = { update: jest.fn() };
+            const obs1 = (0, fixtures_1.makeObserver)();
+            const obs2 = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs1);
             const arrayBefore = subject.observers;
             subject.subscribe(obs2);
             const arrayAfter = subject.observers;
             expect(arrayBefore).not.toBe(arrayAfter);
-            expect(arrayBefore.length).toBe(1);
-            expect(arrayAfter.length).toBe(2);
+            expect(arrayBefore).toHaveLength(1);
+            expect(arrayAfter).toHaveLength(2);
         });
         it('accepts objects without an update method', () => {
             const observer = { someOtherMethod: jest.fn() };
             expect(() => subject.subscribe(observer)).not.toThrow();
             expect(subject.getObserverCount()).toBe(1);
         });
+        it('allows the same observer to be subscribed multiple times (duplicate behaviour)', () => {
+            const obs = (0, fixtures_1.makeObserver)();
+            subject.subscribe(obs);
+            subject.subscribe(obs);
+            expect(subject.getObserverCount()).toBe(2);
+            subject.notifyObservers('ping');
+            expect(obs.update).toHaveBeenCalledTimes(2);
+        });
     });
     describe('unsubscribe()', () => {
         it('should remove the specified observer', () => {
-            const obs1 = { update: jest.fn() };
-            const obs2 = { update: jest.fn() };
+            const obs1 = (0, fixtures_1.makeObserver)();
+            const obs2 = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs1);
             subject.subscribe(obs2);
             subject.unsubscribe(obs1);
@@ -75,28 +84,36 @@ describe('DualObserverSubject', () => {
             expect(subject.observers).not.toContain(obs1);
         });
         it('should not throw when unsubscribing a non-registered observer', () => {
-            const obs1 = { update: jest.fn() };
-            const obs2 = { update: jest.fn() };
+            const obs1 = (0, fixtures_1.makeObserver)();
+            const obs2 = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs1);
             expect(() => subject.unsubscribe(obs2)).not.toThrow();
             expect(subject.getObserverCount()).toBe(1);
         });
         it('creates a new array on unsubscribe (immutable pattern)', () => {
-            const obs = { update: jest.fn() };
+            const obs = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs);
             const arrayBefore = subject.observers;
             subject.unsubscribe(obs);
             const arrayAfter = subject.observers;
             expect(arrayBefore).not.toBe(arrayAfter);
-            expect(arrayBefore.length).toBe(1);
-            expect(arrayAfter.length).toBe(0);
+            expect(arrayBefore).toHaveLength(1);
+            expect(arrayAfter).toHaveLength(0);
+        });
+        it('removes ALL occurrences when the same observer was subscribed multiple times', () => {
+            const obs = (0, fixtures_1.makeObserver)();
+            subject.subscribe(obs);
+            subject.subscribe(obs);
+            expect(subject.getObserverCount()).toBe(2);
+            subject.unsubscribe(obs);
+            expect(subject.getObserverCount()).toBe(0);
         });
     });
     // ─── Object Observer Notification ─────────────────────────────────────────
     describe('notifyObservers()', () => {
         it('should call update() on all subscribed object observers', () => {
-            const obs1 = { update: jest.fn() };
-            const obs2 = { update: jest.fn() };
+            const obs1 = (0, fixtures_1.makeObserver)();
+            const obs2 = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs1);
             subject.subscribe(obs2);
             subject.notifyObservers('arg1', 'arg2', 'arg3');
@@ -104,7 +121,7 @@ describe('DualObserverSubject', () => {
             expect(obs2.update).toHaveBeenCalledWith('arg1', 'arg2', 'arg3');
         });
         it('should work with no arguments', () => {
-            const obs = { update: jest.fn() };
+            const obs = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs);
             subject.notifyObservers();
             expect(obs.update).toHaveBeenCalledWith();
@@ -113,7 +130,7 @@ describe('DualObserverSubject', () => {
             expect(() => subject.notifyObservers('data')).not.toThrow();
         });
         it('should skip observers without an update method', () => {
-            const valid = { update: jest.fn() };
+            const valid = (0, fixtures_1.makeObserver)();
             const invalid = { noUpdate: jest.fn() };
             subject.subscribe(valid);
             subject.subscribe(invalid);
@@ -122,7 +139,7 @@ describe('DualObserverSubject', () => {
         });
         it('should catch errors from misbehaving observers and continue notifying others', () => {
             const badObs = { update: jest.fn(() => { throw new Error('boom'); }) };
-            const goodObs = { update: jest.fn() };
+            const goodObs = (0, fixtures_1.makeObserver)();
             const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => { });
             subject.subscribe(badObs);
             subject.subscribe(goodObs);
@@ -133,7 +150,7 @@ describe('DualObserverSubject', () => {
         });
         it('should NOT notify function observers', () => {
             const fn = jest.fn();
-            const obs = { update: jest.fn() };
+            const obs = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs);
             subject.subscribeFunction(fn);
             subject.notifyObservers('data');
@@ -174,8 +191,16 @@ describe('DualObserverSubject', () => {
             subject.subscribeFunction(fn2);
             const arrayAfter = subject.functionObservers;
             expect(arrayBefore).not.toBe(arrayAfter);
-            expect(arrayBefore.length).toBe(1);
-            expect(arrayAfter.length).toBe(2);
+            expect(arrayBefore).toHaveLength(1);
+            expect(arrayAfter).toHaveLength(2);
+        });
+        it('allows the same function to be subscribed multiple times (duplicate behaviour)', () => {
+            const fn = jest.fn();
+            subject.subscribeFunction(fn);
+            subject.subscribeFunction(fn);
+            expect(subject.getFunctionObserverCount()).toBe(2);
+            subject.notifyFunctionObservers('ping');
+            expect(fn).toHaveBeenCalledTimes(2);
         });
     });
     describe('unsubscribeFunction()', () => {
@@ -195,6 +220,14 @@ describe('DualObserverSubject', () => {
             subject.subscribeFunction(fn1);
             expect(() => subject.unsubscribeFunction(fn2)).not.toThrow();
             expect(subject.getFunctionObserverCount()).toBe(1);
+        });
+        it('removes ALL occurrences when the same function was subscribed multiple times', () => {
+            const fn = jest.fn();
+            subject.subscribeFunction(fn);
+            subject.subscribeFunction(fn);
+            expect(subject.getFunctionObserverCount()).toBe(2);
+            subject.unsubscribeFunction(fn);
+            expect(subject.getFunctionObserverCount()).toBe(0);
         });
     });
     // ─── Function Observer Notification ───────────────────────────────────────
@@ -224,7 +257,7 @@ describe('DualObserverSubject', () => {
         });
         it('should NOT notify object observers', () => {
             const fn = jest.fn();
-            const obs = { update: jest.fn() };
+            const obs = (0, fixtures_1.makeObserver)();
             subject.subscribe(obs);
             subject.subscribeFunction(fn);
             subject.notifyFunctionObservers('data');
@@ -235,7 +268,7 @@ describe('DualObserverSubject', () => {
     // ─── Mixed Observer Types ──────────────────────────────────────────────────
     describe('mixed observer types', () => {
         it('should handle both observer types independently', () => {
-            const obs = { update: jest.fn() };
+            const obs = (0, fixtures_1.makeObserver)();
             const fn = jest.fn();
             subject.subscribe(obs);
             subject.subscribeFunction(fn);
@@ -252,8 +285,8 @@ describe('DualObserverSubject', () => {
     // ─── clearAllObservers ─────────────────────────────────────────────────────
     describe('clearAllObservers()', () => {
         it('should remove all object and function observers', () => {
-            subject.subscribe({ update: jest.fn() });
-            subject.subscribe({ update: jest.fn() });
+            subject.subscribe((0, fixtures_1.makeObserver)());
+            subject.subscribe((0, fixtures_1.makeObserver)());
             subject.subscribeFunction(jest.fn());
             subject.subscribeFunction(jest.fn());
             subject.clearAllObservers();
@@ -263,7 +296,7 @@ describe('DualObserverSubject', () => {
             expect(subject.functionObservers).toEqual([]);
         });
         it('should prevent further notifications after clearing', () => {
-            const obs = { update: jest.fn() };
+            const obs = (0, fixtures_1.makeObserver)();
             const fn = jest.fn();
             subject.subscribe(obs);
             subject.subscribeFunction(fn);

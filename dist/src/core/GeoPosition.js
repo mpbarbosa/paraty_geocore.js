@@ -219,7 +219,7 @@ class GeoPosition {
      * @since 0.6.0-alpha
      */
     toString() {
-        if (!this.latitude || !this.longitude) {
+        if (this.latitude === undefined || this.longitude === undefined) {
             return `${this.constructor.name}: No position data`;
         }
         return `${this.constructor.name}: ${this.latitude}, ${this.longitude}, ${this.accuracyQuality}, ${this.altitude}, ${this.speed}, ${this.heading}, ${this.timestamp}`;

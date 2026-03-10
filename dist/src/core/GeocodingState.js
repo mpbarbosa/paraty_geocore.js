@@ -132,7 +132,7 @@ class GeocodingState extends ObserverSubject_js_1.default {
      * }
      */
     getCurrentCoordinates() {
-        return this._currentCoordinates ? { ...this._currentCoordinates } : null;
+        return this._currentCoordinates ? Object.freeze({ ...this._currentCoordinates }) : null;
     }
     /**
      * Check if position is available

@@ -3,7 +3,7 @@
  * Custom error classes for paraty_geocore.js.
  *
  * @module core/errors
- * @since 0.10.0-alpha
+ * @since 0.10.2-alpha
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeoPositionError = void 0;

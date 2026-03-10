@@ -5,7 +5,7 @@
  * Import these instead of repeating magic values across test files.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TEST_TIMESTAMP = void 0;
+exports.makeObserver = exports.TEST_TIMESTAMP = void 0;
 exports.makeBrowserPosition = makeBrowserPosition;
 exports.makeGeoPositionInput = makeGeoPositionInput;
 /**
@@ -48,6 +48,14 @@ exports.TEST_TIMESTAMP = 1700000000000;
  * @param lon - Longitude in decimal degrees
  * @param accuracy - GPS accuracy in metres (default: 10)
  */
+/**
+ * Creates a fresh object observer with a Jest spy on its `update` method.
+ *
+ * Use this in tests for {@link ObserverSubject} and {@link DualObserverSubject}
+ * instead of repeating `{ update: jest.fn() }` literals.
+ */
+const makeObserver = () => ({ update: jest.fn() });
+exports.makeObserver = makeObserver;
 function makeGeoPositionInput(lat, lon, accuracy = 10) {
     return {
         coords: {

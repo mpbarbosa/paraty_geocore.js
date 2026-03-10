@@ -119,9 +119,9 @@ describe('GeoPosition — edge cases', () => {
     // toString edge cases
     // -------------------------------------------------------------------------
     describe('toString edge cases', () => {
-        it('latitude 0 is treated as falsy → "No position data" (known limitation)', () => {
+        it('zero coordinates (equator/prime meridian) produce correct formatted string', () => {
             const pos = new GeoPosition_1.default({ coords: { latitude: 0, longitude: 0 } });
-            expect(pos.toString()).toBe('GeoPosition: No position data');
+            expect(pos.toString()).toBe('GeoPosition: 0, 0, very bad, undefined, undefined, undefined, undefined');
         });
         it('valid non-zero coordinates produce full string', () => {
             const pos = new GeoPosition_1.default({

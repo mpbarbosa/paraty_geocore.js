@@ -6,6 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const GeoPosition_1 = __importDefault(require("../../src/core/GeoPosition"));
 const distance_1 = require("../../src/utils/distance");
+const fixtures_1 = require("../helpers/fixtures");
 jest.mock('../../src/utils/distance', () => ({
     calculateDistance: jest.fn(),
 }));
@@ -18,7 +19,7 @@ describe('GeoPosition', () => {
         jest.clearAllMocks();
     });
     describe('constructor', () => {
-        it('should create a GeoPosition with full data', () => {
+        it('should correctly initialize all fields from a full GeoPositionInput', () => {
             const input = {
                 timestamp: 1634567890123,
                 coords: {
@@ -112,11 +113,7 @@ describe('GeoPosition', () => {
     });
     describe('from', () => {
         it('should create a GeoPosition instance', () => {
-            const input = {
-                timestamp: 1000,
-                coords: { latitude: 1, longitude: 2, accuracy: 5 },
-            };
-            const pos = GeoPosition_1.default.from(input);
+            const pos = GeoPosition_1.default.from((0, fixtures_1.makeGeoPositionInput)(1, 2, 5));
             expect(pos).toBeInstanceOf(GeoPosition_1.default);
             expect(pos.latitude).toBe(1);
             expect(pos.longitude).toBe(2);
@@ -144,9 +141,7 @@ describe('GeoPosition', () => {
     });
     describe('calculateAccuracyQuality', () => {
         it('should return correct quality for current accuracy', () => {
-            const pos = new GeoPosition_1.default({
-                coords: { latitude: 1, longitude: 2, accuracy: 25 },
-            });
+            const pos = new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(1, 2, 25));
             expect(pos.calculateAccuracyQuality()).toBe('good');
         });
         it('should return "very bad" for missing accuracy', () => {
@@ -194,18 +189,16 @@ describe('GeoPosition', () => {
             const pos = new GeoPosition_1.default({});
             expect(pos.toString()).toBe('GeoPosition: No position data');
         });
-        it('should handle falsy latitude/longitude (0)', () => {
+        it('should return formatted string for zero coordinates (equator/prime meridian)', () => {
             const pos = new GeoPosition_1.default({
-                coords: { latitude: 0, longitude: 0 },
+                coords: { latitude: 0, longitude: 0, accuracy: 5 },
             });
-            expect(pos.toString()).toBe('GeoPosition: No position data');
+            expect(pos.toString()).toBe('GeoPosition: 0, 0, excellent, undefined, undefined, undefined, undefined');
         });
     });
     describe('immutability', () => {
         it('should not allow mutation of instance properties', () => {
-            const pos = new GeoPosition_1.default({
-                coords: { latitude: 1, longitude: 2, accuracy: 5 },
-            });
+            const pos = new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(1, 2, 5));
             expect(() => {
                 // @ts-expect-error
                 pos.latitude = 99;

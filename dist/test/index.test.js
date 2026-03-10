@@ -128,27 +128,31 @@ describe('EARTH_RADIUS_METERS (exported from index)', () => {
 // delay
 // ---------------------------------------------------------------------------
 describe('delay (exported from index)', () => {
+    beforeEach(() => { jest.useFakeTimers(); });
+    afterEach(() => { jest.useRealTimers(); });
     it('is a function that returns a Promise', () => {
         const p = (0, index_1.delay)(0);
         expect(p).toBeInstanceOf(Promise);
-        return p; // ensure the promise resolves so no open handles
+        jest.runAllTimers();
+        return p;
     });
     it('resolves after the specified milliseconds', async () => {
-        const start = Date.now();
-        await (0, index_1.delay)(50);
-        expect(Date.now() - start).toBeGreaterThanOrEqual(45); // allow ±5ms for timer imprecision
+        expect.assertions(1);
+        const p = (0, index_1.delay)(50);
+        jest.advanceTimersByTime(50);
+        await expect(p).resolves.toBeUndefined();
     });
     it('resolves immediately for delay(0)', async () => {
-        const start = Date.now();
-        await (0, index_1.delay)(0);
-        expect(Date.now() - start).toBeLessThan(20);
+        expect.assertions(1);
+        const p = (0, index_1.delay)(0);
+        jest.runAllTimers();
+        await expect(p).resolves.toBeUndefined();
     });
-    it('delay with large ms resolves correctly (fake timers)', async () => {
-        jest.useFakeTimers();
+    it('resolves after a large delay (fake timers)', async () => {
+        expect.assertions(1);
         const p = (0, index_1.delay)(5000);
         jest.advanceTimersByTime(5000);
         await expect(p).resolves.toBeUndefined();
-        jest.useRealTimers();
     });
 });
 // ---------------------------------------------------------------------------

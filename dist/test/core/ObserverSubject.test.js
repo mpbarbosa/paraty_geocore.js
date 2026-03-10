@@ -90,6 +90,15 @@ describe('ObserverSubject', () => {
             unsub();
             expect(() => unsub()).not.toThrow();
         });
+        it('allows the same callback to be subscribed multiple times (duplicate behaviour)', () => {
+            const subject = new TestableObserverSubject();
+            const cb = jest.fn();
+            subject.subscribe(cb);
+            subject.subscribe(cb);
+            expect(subject.getObserverCount()).toBe(2);
+            subject.notify('ping');
+            expect(cb).toHaveBeenCalledTimes(2);
+        });
     });
     describe('unsubscribe()', () => {
         it('should return true when callback is found and removed', () => {
@@ -113,6 +122,17 @@ describe('ObserverSubject', () => {
             subject.notify(null);
             expect(obs1).not.toHaveBeenCalled();
             expect(obs2).toHaveBeenCalledTimes(1);
+        });
+        it('removes only the FIRST occurrence when same callback subscribed multiple times', () => {
+            const subject = new TestableObserverSubject();
+            const cb = jest.fn();
+            subject.subscribe(cb);
+            subject.subscribe(cb);
+            expect(subject.getObserverCount()).toBe(2);
+            subject.unsubscribe(cb);
+            expect(subject.getObserverCount()).toBe(1);
+            subject.notify('ping');
+            expect(cb).toHaveBeenCalledTimes(1);
         });
     });
     describe('getObserverCount()', () => {

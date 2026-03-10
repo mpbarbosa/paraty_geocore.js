@@ -48,10 +48,10 @@ import ObserverSubject from './ObserverSubject.js';
  */
 export interface GeocodingStateSnapshot {
     position: GeoPosition | null;
-    coordinates: {
+    coordinates: Readonly<{
         latitude: number;
         longitude: number;
-    } | null;
+    }> | null;
 }
 /**
  * GeocodingState class - Manages position and coordinate state
@@ -106,10 +106,10 @@ declare class GeocodingState extends ObserverSubject<GeocodingStateSnapshot> {
      *   console.log(`Lat: ${coords.latitude}, Lon: ${coords.longitude}`);
      * }
      */
-    getCurrentCoordinates(): {
+    getCurrentCoordinates(): Readonly<{
         latitude: number;
         longitude: number;
-    } | null;
+    }> | null;
     /**
      * Check if position is available
      *
