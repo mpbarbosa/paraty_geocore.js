@@ -203,11 +203,11 @@ describe('GeoPosition', () => {
 			const pos = new GeoPosition({});
 			expect(pos.toString()).toBe('GeoPosition: No position data');
 		});
-		it('should handle falsy latitude/longitude (0)', () => {
+		it('should return formatted string for zero coordinates (equator/prime meridian)', () => {
 			const pos = new GeoPosition({
-				coords: { latitude: 0, longitude: 0 },
+				coords: { latitude: 0, longitude: 0, accuracy: 5 },
 			});
-			expect(pos.toString()).toBe('GeoPosition: No position data');
+			expect(pos.toString()).toBe('GeoPosition: 0, 0, excellent, undefined, undefined, undefined, undefined');
 		});
 	});
 

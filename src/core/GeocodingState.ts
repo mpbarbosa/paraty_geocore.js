@@ -50,7 +50,7 @@ import ObserverSubject from './ObserverSubject.js';
  */
 export interface GeocodingStateSnapshot {
     position: GeoPosition | null;
-    coordinates: { latitude: number; longitude: number } | null;
+    coordinates: Readonly<{ latitude: number; longitude: number }> | null;
 }
 
 /**
