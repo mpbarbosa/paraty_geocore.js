@@ -2,7 +2,7 @@
 ## `async` — `src/utils/async.ts`
 
 **Module:** `utils/async`
-**Since:** 0.10.2-alpha
+**Since:** 0.10.3-alpha
 **Author:** Marcelo Pereira Barbosa
 
 ---
