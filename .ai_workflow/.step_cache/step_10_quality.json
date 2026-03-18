@@ -29,12 +29,12 @@
     ".ai_workflow/commit_history.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-10T00:42:29.532Z"
+      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
     },
     ".ai_workflow/metrics/current_run.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-13T00:25:10.488Z"
+      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
     },
     "src/index.ts": {
       "score": 100,
@@ -70,6 +70,21 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-13T00:25:10.488Z"
+    },
+    "src/core/ObserverMixin.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
+    },
+    "package-lock.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
+    },
+    "package.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
     }
   }
 }
