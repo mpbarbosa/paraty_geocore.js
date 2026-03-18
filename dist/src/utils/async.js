@@ -6,7 +6,7 @@
  * utilities for callers building polling or throttling logic around the library.
  *
  * @module utils/async
- * @since 0.10.2-alpha
+ * @since 0.11.0-alpha
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.delay = void 0;
@@ -28,7 +28,7 @@ exports.delay = void 0;
  *   }
  * }
  *
- * @since 0.10.2-alpha
+ * @since 0.11.0-alpha
  */
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms < 0 ? 0 : ms));
 exports.delay = delay;
