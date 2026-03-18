@@ -14,6 +14,8 @@
 |--------|------|-------------|
 | `core/GeoPosition` | `src/core/GeoPosition.ts` | Immutable geographic position wrapper |
 | `core/ObserverSubject` | `src/core/ObserverSubject.ts` | Generic concrete Observer/Subject base class |
+| `core/DualObserverSubject` | `src/core/DualObserverSubject.ts` | Dual observer subject (GoF + function-based) |
+| `core/ObserverMixin` | `src/core/ObserverMixin.ts` | Delegation mixin for classes composing a `DualObserverSubject` |
 | `core/GeocodingState` | `src/core/GeocodingState.ts` | Geocoding state manager (extends `ObserverSubject`) |
 | `core/errors` | `src/core/errors.ts` | Custom error classes |
 | `utils/distance` | `src/utils/distance.ts` | Pure distance calculation utilities |
@@ -177,6 +179,97 @@ const subject = new ObserverSubject<{ value: number }>();
 const unsub = subject.subscribe((snap) => console.log(snap.value));
 subject._notifyObservers({ value: 42 }); // logs: 42
 unsub();
+```
+
+---
+
+## `core/DualObserverSubject`
+
+### Class: `DualObserverSubject<T>`
+
+Dual-channel observer subject supporting both GoF object observers (`.update()`) and plain function observers. Used as the composition target for the `ObserverMixin`.
+
+**Since:** 0.10.0-alpha (via `bessa_patterns.ts`)
+
+**Type parameter:** `T` — tuple of argument types forwarded on notification.
+
+#### Accessors
+
+| Accessor | Returns | Description |
+|----------|---------|-------------|
+| `observers` | `ReadonlyArray<ObserverObject<T>>` | Currently subscribed object observers |
+| `functionObservers` | `ReadonlyArray<ObserverFunction<T>>` | Currently subscribed function observers |
+
+#### Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `subscribe(observer)` | `void` | Subscribe a GoF object observer (ignores `null`/`undefined`) |
+| `unsubscribe(observer)` | `void` | Unsubscribe a GoF object observer |
+| `notifyObservers(...args)` | `void` | Notify all GoF observers with `...args` |
+| `subscribeFunction(fn)` | `void` | Subscribe a function observer (ignores `null`/`undefined`) |
+| `unsubscribeFunction(fn)` | `void` | Unsubscribe a function observer |
+| `notifyFunctionObservers(...args)` | `void` | Notify all function observers with `...args` |
+| `getObserverCount()` | `number` | Number of registered GoF observers |
+| `getFunctionObserverCount()` | `number` | Number of registered function observers |
+
+#### Types
+
+```typescript
+interface ObserverObject<T extends unknown[] = unknown[]> {
+  update?(...args: T): void;
+}
+
+type ObserverFunction<T extends unknown[] = unknown[]> = (...args: T) => void;
+```
+
+---
+
+## `core/ObserverMixin`
+
+### Function: `withObserver(options?)`
+
+Creates an observer delegation mixin for classes that compose a `DualObserverSubject`. Eliminates boilerplate by providing standard `subscribe`, `unsubscribe`, and (optionally) `notifyObservers` methods that delegate to `this.observerSubject`.
+
+**Since:** 0.12.3-alpha (via `bessa_patterns.ts`)
+
+```typescript
+function withObserver<T extends unknown[] = unknown[]>(
+  options?: ObserverMixinOptions
+): ObserverMixinResult<T>
+```
+
+The host class **must** have an `observerSubject` property that is a `DualObserverSubject` instance.
+
+#### Options: `ObserverMixinOptions`
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `checkNull` | `boolean` | `false` | Emit `console.warn` and skip if observer is `null`/`undefined` |
+| `className` | `string` | `'Class'` | Class name used in null-check warning messages |
+| `excludeNotify` | `boolean` | `false` | Omit `notifyObservers` from the returned mixin |
+
+#### Return type: `ObserverMixinResult<T>`
+
+| Method | Description |
+|--------|-------------|
+| `subscribe(observer)` | Delegates to `this.observerSubject.subscribe()` |
+| `unsubscribe(observer)` | Delegates to `this.observerSubject.unsubscribe()` |
+| `notifyObservers?(...args)` | Delegates to `this.observerSubject.notifyObservers()` (absent when `excludeNotify: true`) |
+
+```typescript
+import { withObserver } from 'paraty_geocore.js/core/ObserverMixin';
+import DualObserverSubject from 'paraty_geocore.js/core/DualObserverSubject';
+
+class LocationManager {
+  observerSubject = new DualObserverSubject();
+}
+
+Object.assign(LocationManager.prototype, withObserver({ checkNull: true, className: 'LocationManager' }));
+
+const manager = new LocationManager() as any;
+manager.subscribe({ update(pos) { console.log(pos); } });
+manager.notifyObservers(currentPosition);
 ```
 
 ---

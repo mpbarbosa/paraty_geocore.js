@@ -141,7 +141,7 @@ Most dependencies are managed automatically by [Dependabot](https://docs.github.
 This package is installed as a GitHub tarball URL (not a versioned npm registry package), so Dependabot cannot track it automatically:
 
 ```json
-"bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.2-alpha.tar.gz"
+"bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.3-alpha.tar.gz"
 ```
 
 When a new version of `bessa_patterns.ts` is released, update `package.json` manually:

@@ -14,6 +14,9 @@ export { default as ObserverSubject } from './core/ObserverSubject.js';
 export { default as DualObserverSubject } from './core/DualObserverSubject.js';
 export type { ObserverObject, ObserverFunction } from './core/DualObserverSubject.js';
 
+export { withObserver } from './core/ObserverMixin.js';
+export type { ObserverMixinOptions, ObserverMixinResult } from './core/ObserverMixin.js';
+
 export { default as GeocodingState } from './core/GeocodingState.js';
 export type { GeocodingStateSnapshot } from './core/GeocodingState.js';
 
