@@ -168,3 +168,16 @@ The following are explicitly **not** required for 0.11.1-alpha:
 
 - npm package publication
 - Input validation for coordinate ranges in `calculateDistance`
+
+
+---
+
+## Roadmap — Minor Issues
+
+> Populated by the `fix-log-issues` skill. Each item was verified against
+> the live codebase before final disposition.
+
+| ID | Source step | Description | File / Path | Priority | Status |
+|----|-------------|-------------|-------------|----------|--------|
+| RI-001 | step_02 | Broken See also links — TypeDoc path-rewriting limitation in generated copy | docs/api/media/API.md | Medium | skipped |
+| RI-002 | step_20 | addEventListener missing { once: true } — TypeDoc-owned asset in git-ignored dir | docs/api/assets/icons.js | Low | skipped |
