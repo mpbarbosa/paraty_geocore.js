@@ -1,0 +1,308 @@
+# update-ibira.yml
+# Checks for a new ibira.js release on GitHub and updates the tarball CDN URL
+# in package.json, installs dependencies, validates TypeScript, runs tests,
+# and opens a pull request with the change.
+#
+# ibira.js is consumed via its GitHub tarball CDN (same pattern as
+# bessa_patterns.ts) so jsDelivr/GitHub raw delivery is implicit.
+#
+# Triggers:
+#   - Weekly schedule (Monday 09:00 UTC) — keeps the dependency current
+#   - workflow_dispatch — pin to a specific version or force a refresh
+
+name: Update ibira.js
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'   # every Monday at 09:00 UTC
+  workflow_dispatch:
+    inputs:
+      version:
+        description: |
+          ibira.js tag to update to (e.g. v0.4.5-alpha).
+          Leave blank to use the latest published release.
+        required: false
+        default: ''
+
+permissions:
+  contents: write        # push update branch
+  pull-requests: write   # open / update PR
+
+# Prevent concurrent runs from racing on the same PR branch.
+# cancel-in-progress: false queues the second run rather than dropping it,
+# ensuring every scheduled or manual trigger is eventually processed.
+concurrency:
+  group: update-ibira-js
+  cancel-in-progress: false
+
+jobs:
+  update-ibira:
+    name: Check & Update ibira.js
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Node.js setup ─────────────────────────────────────────────────────
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+
+      # ── 3. Resolve target version ─────────────────────────────────────────────
+      - name: Resolve target ibira.js version
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          INPUT_VERSION="${{ github.event.inputs.version }}"
+
+          if [[ -n "${INPUT_VERSION}" ]]; then
+            # Strip leading 'v' so we have a bare version for the tarball URL
+            VERSION="${INPUT_VERSION#v}"
+            TAG="v${VERSION}"
+            echo "Source: workflow_dispatch input"
+          else
+            # Fetch the latest release tag from GitHub API
+            TAG="$(gh api repos/mpbarbosa/ibira.js/releases/latest --jq '.tag_name')"
+            [[ -n "${TAG}" ]] || { echo "❌  Could not determine latest ibira.js release." >&2; exit 1; }
+            VERSION="${TAG#v}"
+            echo "Source: GitHub latest release"
+          fi
+
+          TARBALL_URL="https://github.com/mpbarbosa/ibira.js/archive/refs/tags/${TAG}.tar.gz"
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}"         >> "$GITHUB_OUTPUT"
+          echo "tarball_url=${TARBALL_URL}" >> "$GITHUB_OUTPUT"
+          echo "ℹ️  Target: ibira.js ${TAG}"
+          echo "ℹ️  Tarball: ${TARBALL_URL}"
+
+      # ── 4. Check current version ──────────────────────────────────────────────
+      - name: Check current ibira.js version in package.json
+        id: current
+        run: |
+          CURRENT_URL="$(node -p "require('./package.json').dependencies?.['ibira.js'] ?? ''")"
+          echo "current_url=${CURRENT_URL}" >> "$GITHUB_OUTPUT"
+
+          TARGET_URL="${{ steps.resolve.outputs.tarball_url }}"
+
+          if [[ "${CURRENT_URL}" == "${TARGET_URL}" ]]; then
+            echo "up_to_date=true" >> "$GITHUB_OUTPUT"
+            echo "✅  ibira.js is already at ${{ steps.resolve.outputs.tag }} — nothing to do."
+          else
+            echo "up_to_date=false" >> "$GITHUB_OUTPUT"
+            if [[ -z "${CURRENT_URL}" ]]; then
+              echo "ℹ️  ibira.js is not yet a dependency — will add it."
+            else
+              echo "ℹ️  Updating ibira.js:  ${CURRENT_URL}  →  ${TARGET_URL}"
+            fi
+          fi
+
+      # ── 5. Update package.json ────────────────────────────────────────────────
+      - name: Update ibira.js in package.json
+        if: steps.current.outputs.up_to_date != 'true'
+        run: |
+          TARGET_URL="${{ steps.resolve.outputs.tarball_url }}"
+          node - <<'EOF'
+          const fs   = require('fs');
+          const path = require('path');
+          const pkg  = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          pkg.dependencies = pkg.dependencies || {};
+          pkg.dependencies['ibira.js'] = process.env.TARGET_URL;
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          console.log('✅  package.json updated.');
+          EOF
+        env:
+          TARGET_URL: ${{ steps.resolve.outputs.tarball_url }}
+
+      # ── 6. Install & lock ─────────────────────────────────────────────────────
+      # npm ci installs from the existing lock file (deterministic, no drift).
+      # npm install is then called with the specific new tarball URL so only the
+      # target dependency's lock entry is regenerated — devDep ranges are left
+      # untouched, making this step idempotent for repeated same-version runs.
+      - name: Install dependencies (npm ci + targeted update)
+        if: steps.current.outputs.up_to_date != 'true'
+        run: |
+          npm ci
+          npm install "ibira.js@${{ steps.resolve.outputs.tarball_url }}"
+
+      # ── 7. Type-check ─────────────────────────────────────────────────────────
+      - name: Validate TypeScript (tsc --noEmit)
+        if: steps.current.outputs.up_to_date != 'true'
+        run: npm run validate
+
+      # ── 8. Tests ──────────────────────────────────────────────────────────────
+      - name: Run unit & integration tests
+        if: steps.current.outputs.up_to_date != 'true'
+        run: npm test
+
+      # ── 9. Adjust ibira.js related code ───────────────────────────────────────
+      # Scans src/**/*.ts for ibira.js imports and updates any hardcoded version
+      # strings (e.g. in banner comments or config constants) from the old tag
+      # to the new one. Re-runs the TypeScript compiler to confirm no type errors
+      # were introduced by the new ibira.js API surface.
+      - name: Adjust ibira.js related code
+        if: steps.current.outputs.up_to_date != 'true'
+        run: |
+          NEW_VERSION="${{ steps.resolve.outputs.version }}"
+          NEW_TAG="${{ steps.resolve.outputs.tag }}"
+          OLD_URL="${{ steps.current.outputs.current_url }}"
+
+          # Derive old version from the previous tarball URL (empty on first add)
+          OLD_VERSION=""
+          if [[ -n "${OLD_URL}" ]]; then
+            OLD_VERSION="$(echo "${OLD_URL}" | sed 's|.*/tags/v||; s|\.tar\.gz||')"
+          fi
+
+          echo "ℹ️  Scanning src/ for ibira.js imports and version strings…"
+
+          # Collect source files that reference ibira.js
+          mapfile -t CODE_FILES < <(grep -rl "ibira\.js\|ibira/\|from 'ibira'" src/ 2>/dev/null || true)
+
+          if [[ ${#CODE_FILES[@]} -eq 0 ]]; then
+            echo "ℹ️  No ibira.js references found in src/ — nothing to adjust."
+          else
+            echo "📄  Files with ibira.js references: ${CODE_FILES[*]}"
+
+            # Replace hardcoded old version strings inside source files
+            if [[ -n "${OLD_VERSION}" && "${OLD_VERSION}" != "${NEW_VERSION}" ]]; then
+              for f in "${CODE_FILES[@]}"; do
+                sed -i "s|${OLD_VERSION}|${NEW_VERSION}|g" "${f}"
+                echo "   ✏️  Updated version string in ${f}"
+              done
+            fi
+          fi
+
+          # Re-validate TypeScript after any source edits
+          echo "🔍  Re-running TypeScript validation…"
+          npm run validate
+          echo "✅  TypeScript validation passed after code adjustment."
+
+      # ── 10. Update ibira.js related documentation ─────────────────────────────
+      # Replaces the old ibira.js tarball URL and version tag in all Markdown
+      # files under docs/, and in README.md / CHANGELOG.md so that CDN snippets
+      # and version badges stay accurate.
+      - name: Update ibira.js related documentation
+        if: steps.current.outputs.up_to_date != 'true'
+        run: |
+          NEW_VERSION="${{ steps.resolve.outputs.version }}"
+          NEW_TAG="${{ steps.resolve.outputs.tag }}"
+          NEW_URL="${{ steps.resolve.outputs.tarball_url }}"
+          OLD_URL="${{ steps.current.outputs.current_url }}"
+
+          OLD_VERSION=""
+          if [[ -n "${OLD_URL}" ]]; then
+            OLD_VERSION="$(echo "${OLD_URL}" | sed 's|.*/tags/v||; s|\.tar\.gz||')"
+          fi
+
+          echo "ℹ️  Scanning docs/ and root Markdown files for ibira.js references…"
+
+          # All Markdown files (excluding node_modules)
+          mapfile -t DOC_FILES < <(find . -name '*.md' \
+            ! -path './node_modules/*' \
+            ! -path './.ai_workflow/*' \
+            -print 2>/dev/null || true)
+
+          UPDATED=0
+          for f in "${DOC_FILES[@]}"; do
+            if grep -q "ibira\.js\|ibira/js" "${f}" 2>/dev/null; then
+              # Single-pass: replace full tarball URL first, then replace any
+              # remaining bare version strings on ibira lines.  Running URL
+              # replacement before version replacement avoids double-processing
+              # the version token that is embedded inside the URL string.
+              if [[ -n "${OLD_URL}" ]]; then
+                sed -i "s|${OLD_URL}|${NEW_URL}|g" "${f}"
+              fi
+              if [[ -n "${OLD_VERSION}" && "${OLD_VERSION}" != "${NEW_VERSION}" ]]; then
+                # Scope to lines already confirmed to mention ibira; use a negative
+                # lookahead equivalent by matching only lines that still carry the
+                # old version after the URL pass (i.e. bare version references).
+                grep -n "ibira" "${f}" | grep -q "${OLD_VERSION}" && \
+                  sed -i "/ibira/s|${OLD_VERSION}|${NEW_VERSION}|g" "${f}" || true
+              fi
+              echo "   ✏️  Updated: ${f}"
+              UPDATED=$((UPDATED + 1))
+            fi
+          done
+
+          if [[ ${UPDATED} -eq 0 ]]; then
+            echo "ℹ️  No ibira.js references found in documentation — nothing to update."
+          else
+            echo "✅  Updated ${UPDATED} documentation file(s)."
+          fi
+
+      # ── 11. Adjust ibira.js related tests ─────────────────────────────────────
+      # Finds test files that import or mock ibira.js, applies the same version-
+      # string replacement as step 9, then re-runs only those test files to
+      # confirm they still pass against the new package version.
+      - name: Adjust ibira.js related tests
+        if: steps.current.outputs.up_to_date != 'true'
+        run: |
+          NEW_VERSION="${{ steps.resolve.outputs.version }}"
+          OLD_URL="${{ steps.current.outputs.current_url }}"
+
+          OLD_VERSION=""
+          if [[ -n "${OLD_URL}" ]]; then
+            OLD_VERSION="$(echo "${OLD_URL}" | sed 's|.*/tags/v||; s|\.tar\.gz||')"
+          fi
+
+          echo "ℹ️  Scanning test/ and __tests__/ for ibira.js references…"
+
+          mapfile -t TEST_FILES < <(grep -rl "ibira\.js\|ibira/\|from 'ibira'" test/ __tests__/ 2>/dev/null || true)
+
+          if [[ ${#TEST_FILES[@]} -eq 0 ]]; then
+            echo "ℹ️  No ibira.js references found in test files — nothing to adjust."
+          else
+            echo "📄  Test files with ibira.js references: ${TEST_FILES[*]}"
+
+            # Replace hardcoded old version strings inside test files
+            if [[ -n "${OLD_VERSION}" && "${OLD_VERSION}" != "${NEW_VERSION}" ]]; then
+              for f in "${TEST_FILES[@]}"; do
+                sed -i "s|${OLD_VERSION}|${NEW_VERSION}|g" "${f}"
+                echo "   ✏️  Updated version string in ${f}"
+              done
+            fi
+
+            # Re-run only the affected test files to confirm they pass
+            echo "🧪  Re-running affected test files…"
+            npx jest --passWithNoTests "${TEST_FILES[@]}"
+            echo "✅  Affected tests passed after adjustment."
+          fi
+
+      # ── 12. Open pull request ─────────────────────────────────────────────────
+      - name: Create pull request
+        if: steps.current.outputs.up_to_date != 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: chore/update-ibira-js-${{ steps.resolve.outputs.version }}
+          delete-branch: true
+          commit-message: |
+            chore(deps): update ibira.js to ${{ steps.resolve.outputs.tag }}
+
+            Update ibira.js tarball CDN URL to ${{ steps.resolve.outputs.tag }}.
+            URL: ${{ steps.resolve.outputs.tarball_url }}
+          title: "chore(deps): update ibira.js to ${{ steps.resolve.outputs.tag }}"
+          body: |
+            ## ibira.js → ${{ steps.resolve.outputs.tag }}
+
+            Updates the `ibira.js` dependency tarball CDN URL to the latest release.
+
+            | | |
+            |---|---|
+            | **Previous** | `${{ steps.current.outputs.current_url }}` |
+            | **New** | `${{ steps.resolve.outputs.tarball_url }}` |
+
+            ### Checks
+            - [x] TypeScript validation (`tsc --noEmit`)
+            - [x] Unit & integration tests
+            - [x] ibira.js related code adjusted (version strings in `src/` updated, TypeScript re-validated)
+            - [x] ibira.js related documentation updated (CDN URLs and version tags in `docs/` and root Markdown files)
+            - [x] ibira.js related tests adjusted (version strings in `test/` updated, affected tests re-run)
+
+            > Triggered by: `${{ github.event_name }}`
+          labels: dependencies

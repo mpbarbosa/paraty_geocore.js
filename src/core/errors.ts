@@ -2,7 +2,7 @@
  * Custom error classes for paraty_geocore.js.
  *
  * @module core/errors
- * @since 0.11.0-alpha
+ * @since 0.11.1-alpha
  */
 
 /**

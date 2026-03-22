@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.11.0-alpha
+**Version:** 0.11.1-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,7 +42,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.0-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.1-alpha/dist/esm/index.js';
 
   navigator.geolocation.getCurrentPosition((rawPosition) => {
     const pos = new GeoPosition(rawPosition);
@@ -56,7 +56,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ### Version Options
 
-- **Specific version:** `@0.11.0-alpha` (recommended for production)
+- **Specific version:** `@0.11.1-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities
@@ -127,12 +127,12 @@ npm run cdn
 **Sample `cdn-urls.txt` output:**
 
 ```text
-jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.11.0-alpha
+jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.11.1-alpha
 Generated: Mon Mar  2 14:02:00 -03 2026
 =============================================================================
 
 PRODUCTION (Recommended - Specific Version):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.0-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.1-alpha/dist/src/index.js
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
@@ -141,18 +141,18 @@ VERSION RANGE (Auto-update patches):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9/dist/src/index.js
 
 NPM CDN (if published to npm):
-https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.11.0-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.11.1-alpha/dist/src/index.js
 
 HTML USAGE:
-<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.0-alpha/dist/src/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.1-alpha/dist/src/index.js"></script>
 
 ES MODULE:
 <script type="module">
-  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.0-alpha/dist/src/index.js';
+  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.1-alpha/dist/src/index.js';
 </script>
 
 PACKAGE INFO API:
-https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.11.0-alpha
+https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.11.1-alpha
 
 =============================================================================
 ```

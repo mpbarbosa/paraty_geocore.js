@@ -25,3 +25,8 @@ export { GeoPositionError } from './core/errors.js';
 export { calculateDistance, EARTH_RADIUS_METERS } from './utils/distance.js';
 
 export { delay } from './utils/async.js';
+
+export { default as PositionManager, createPositionManagerConfig, initializeConfig } from './core/PositionManager.js';
+export type { PositionManagerConfig } from './core/PositionManager.js';
+
+export { log, warn } from './utils/logger.js';

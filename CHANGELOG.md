@@ -23,7 +23,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 - `src/utils/distance.ts` — new `utils/distance` module
     - `EARTH_RADIUS_METERS` constant (6,371,000 m)
     - `calculateDistance(lat1, lon1, lat2, lon2)` — Haversine great-circle distance in meters
-    - `delay(ms)` — Promise-based async delay utility (moved to `utils/async` in 0.11.0-alpha)
+    - `delay(ms)` — Promise-based async delay utility (moved to `utils/async` in 0.11.1-alpha)
 - `docs/distance-FRS.md` — functional requirements specification for `utils/distance`
 
 ### Changed
