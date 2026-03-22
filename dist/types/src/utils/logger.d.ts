@@ -1,0 +1,26 @@
+/**
+ * Logging utilities for paraty_geocore.js.
+ *
+ * Provides `log` and `warn` helpers that prefix messages with a timestamp and
+ * forward them to the appropriate `console` method.  Callers should prefer
+ * these helpers over raw `console` calls so that the output style stays
+ * consistent across the library.
+ *
+ * @module utils/logger
+ * @since 0.12.0-alpha
+ * @author Marcelo Pereira Barbosa
+ */
+/**
+ * Emits a timestamped informational message via `console.log`.
+ *
+ * @param message - Primary message string
+ * @param params  - Additional values passed to `console.log`
+ */
+export declare function log(message: string, ...params: unknown[]): void;
+/**
+ * Emits a timestamped warning message via `console.warn`.
+ *
+ * @param message - Primary message string
+ * @param params  - Additional values passed to `console.warn`
+ */
+export declare function warn(message: string, ...params: unknown[]): void;

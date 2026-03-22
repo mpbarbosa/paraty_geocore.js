@@ -11,7 +11,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delay = exports.EARTH_RADIUS_METERS = exports.calculateDistance = exports.GeoPositionError = exports.GeocodingState = exports.withObserver = exports.DualObserverSubject = exports.ObserverSubject = exports.GeoPosition = void 0;
+exports.warn = exports.log = exports.initializeConfig = exports.createPositionManagerConfig = exports.PositionManager = exports.delay = exports.EARTH_RADIUS_METERS = exports.calculateDistance = exports.GeoPositionError = exports.GeocodingState = exports.withObserver = exports.DualObserverSubject = exports.ObserverSubject = exports.GeoPosition = void 0;
 var GeoPosition_js_1 = require("./core/GeoPosition.js");
 Object.defineProperty(exports, "GeoPosition", { enumerable: true, get: function () { return __importDefault(GeoPosition_js_1).default; } });
 var ObserverSubject_js_1 = require("./core/ObserverSubject.js");
@@ -29,3 +29,10 @@ Object.defineProperty(exports, "calculateDistance", { enumerable: true, get: fun
 Object.defineProperty(exports, "EARTH_RADIUS_METERS", { enumerable: true, get: function () { return distance_js_1.EARTH_RADIUS_METERS; } });
 var async_js_1 = require("./utils/async.js");
 Object.defineProperty(exports, "delay", { enumerable: true, get: function () { return async_js_1.delay; } });
+var PositionManager_js_1 = require("./core/PositionManager.js");
+Object.defineProperty(exports, "PositionManager", { enumerable: true, get: function () { return __importDefault(PositionManager_js_1).default; } });
+Object.defineProperty(exports, "createPositionManagerConfig", { enumerable: true, get: function () { return PositionManager_js_1.createPositionManagerConfig; } });
+Object.defineProperty(exports, "initializeConfig", { enumerable: true, get: function () { return PositionManager_js_1.initializeConfig; } });
+var logger_js_1 = require("./utils/logger.js");
+Object.defineProperty(exports, "log", { enumerable: true, get: function () { return logger_js_1.log; } });
+Object.defineProperty(exports, "warn", { enumerable: true, get: function () { return logger_js_1.warn; } });
