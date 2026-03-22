@@ -1,14 +1,13 @@
 {
   "version": 1,
   "partitionIndex": 1,
-  "totalPartitions": 5,
-  "filesHash": "f3175eb6",
+  "totalPartitions": 4,
+  "filesHash": "45b96f68",
   "partitionLabels": [
-    "src/core, src/utils, src, .ai_workflow/metrics, tsconfig.esm.json",
-    "tsconfig.json, typedoc.json",
+    ".ai_workflow, .ai_workflow/metrics, tsconfig.json, typedoc.json",
     "docs/api",
     "eslint.config.js, jest.config.js",
     "scripts, cdn-delivery.sh"
   ],
-  "updatedAt": "2026-03-22T18:17:29.109Z"
+  "updatedAt": "2026-03-22T18:46:34.721Z"
 }

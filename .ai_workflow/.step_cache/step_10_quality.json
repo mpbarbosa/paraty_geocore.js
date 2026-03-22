@@ -29,12 +29,12 @@
     ".ai_workflow/commit_history.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
+      "lastAnalyzed": "2026-03-22T18:46:34.721Z"
     },
     ".ai_workflow/metrics/current_run.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-22T18:17:29.108Z"
+      "lastAnalyzed": "2026-03-22T18:46:34.721Z"
     },
     "src/index.ts": {
       "score": 100,
@@ -100,6 +100,16 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-22T18:17:29.108Z"
+    },
+    "tsconfig.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-22T18:46:34.721Z"
+    },
+    "typedoc.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-22T18:46:34.721Z"
     }
   }
 }

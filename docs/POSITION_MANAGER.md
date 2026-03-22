@@ -37,7 +37,7 @@ Device location management involves several recurring challenges:
 
 ## Architecture
 
-```
+```text
 PositionManager (Singleton)
     ├── holds      → GeoPosition (lastPosition)
     ├── uses       → DualObserverSubject
@@ -187,7 +187,7 @@ update is silently dropped (no observer notification).
 
 ### 2. Accuracy quality
 
-```
+```js
 notAcceptedAccuracy: ['medium', 'bad', 'very bad']  // mobile example
 ```
 
