@@ -1,6 +1,6 @@
 {
   "name": "paraty_geocore.js",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "Core JavaScript classes for geolocation applications",
   "main": "dist/src/index.js",
   "exports": {
@@ -71,6 +71,6 @@
     "typescript": "^5.4.0"
   },
   "dependencies": {
-    "bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.3-alpha.tar.gz"
+    "bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.4-alpha.tar.gz"
   }
 }
