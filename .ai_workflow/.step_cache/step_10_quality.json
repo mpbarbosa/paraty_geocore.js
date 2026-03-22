@@ -34,12 +34,12 @@
     ".ai_workflow/metrics/current_run.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
+      "lastAnalyzed": "2026-03-22T18:17:29.108Z"
     },
     "src/index.ts": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-10T00:42:29.532Z"
+      "lastAnalyzed": "2026-03-22T18:17:29.108Z"
     },
     "src/utils/async.ts": {
       "score": 100,
@@ -85,6 +85,21 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-18T03:01:01.184Z"
+    },
+    "src/core/PositionManager.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-22T18:17:29.108Z"
+    },
+    "src/utils/logger.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-22T18:17:29.108Z"
+    },
+    "tsconfig.esm.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-22T18:17:29.108Z"
     }
   }
 }
