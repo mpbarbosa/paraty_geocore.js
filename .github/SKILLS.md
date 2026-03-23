@@ -28,6 +28,7 @@ repository state.
 | [Validate logs](#validate-logs) | _(Copilot skill)_ | Manual | Validate `.ai_workflow/logs` against codebase; write `plan.md` |
 | [Fix log issues](#fix-log-issues) | _(Copilot skill)_ | Manual (after validate-logs) | Consume `plan.md`, apply fixes, update roadmap |
 | [Audit and fix](#audit-and-fix) | _(Copilot skill)_ | Manual | Run validate-logs then fix-log-issues in one pass |
+| [Purge workflow logs](#purge-workflow-logs) | _(Copilot skill)_ | Manual | Delete `.ai_workflow/logs/`, `backlog/`, and `summaries/` |
 
 ---
 
@@ -378,6 +379,46 @@ preserves the status of every issue so no work is lost.
 
 The skill will open a pull request (or update an existing one) on a
 dedicated branch. Review and merge the PR to apply the changes to `main`.
+
+---
+
+## purge-workflow-logs
+
+**File:** `.github/skills/purge-workflow-logs/SKILL.md`
+**Trigger:** Manual (Copilot CLI skill)
+
+Deletes the three transient output directories that accumulate under
+`.ai_workflow/` after workflow runs: `logs/`, `backlog/`, and `summaries/`.
+All three are gitignored, so no commit is produced. The skill is idempotent —
+it is safe to run even when the directories are already absent.
+
+### When to use
+
+- After `audit-and-fix` (or `validate-logs` + `fix-log-issues`) has been
+  run and the logs are no longer needed.
+- Before starting a fresh workflow run to ensure no stale data from previous
+  runs is picked up.
+- Any time you are asked to clean up, remove, or purge workflow logs,
+  backlogs, or summaries.
+
+### What it deletes
+
+| Path | Description |
+|------|-------------|
+| `.ai_workflow/logs/` | Per-run execution transcripts and AI prompt/response logs |
+| `.ai_workflow/backlog/` | Pending step-definition files from previous runs |
+| `.ai_workflow/summaries/` | Executive summary reports per run |
+
+### What it preserves
+
+All other `.ai_workflow/` contents are left untouched: `context/`,
+`metrics/`, `ml_models/`, `archive/`, `checkpoints/`, `commit_history.json`,
+`plan.md`, and `.ai_cache/`.
+
+### Idempotency
+
+Running the skill multiple times is always safe. Absent directories are
+silently skipped.
 
 ---
 
