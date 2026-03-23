@@ -21,3 +21,5 @@ export { delay } from './utils/async.js';
 export { default as PositionManager, createPositionManagerConfig, initializeConfig } from './core/PositionManager.js';
 export type { PositionManagerConfig } from './core/PositionManager.js';
 export { log, warn } from './utils/logger.js';
+export { default as ReferencePlace, NO_REFERENCE_PLACE, VALID_REF_PLACE_CLASSES } from './core/ReferencePlace.js';
+export type { OsmElement } from './core/ReferencePlace.js';

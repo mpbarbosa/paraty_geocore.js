@@ -11,7 +11,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.warn = exports.log = exports.initializeConfig = exports.createPositionManagerConfig = exports.PositionManager = exports.delay = exports.EARTH_RADIUS_METERS = exports.calculateDistance = exports.GeoPositionError = exports.GeocodingState = exports.withObserver = exports.DualObserverSubject = exports.ObserverSubject = exports.GeoPosition = void 0;
+exports.VALID_REF_PLACE_CLASSES = exports.NO_REFERENCE_PLACE = exports.ReferencePlace = exports.warn = exports.log = exports.initializeConfig = exports.createPositionManagerConfig = exports.PositionManager = exports.delay = exports.EARTH_RADIUS_METERS = exports.calculateDistance = exports.GeoPositionError = exports.GeocodingState = exports.withObserver = exports.DualObserverSubject = exports.ObserverSubject = exports.GeoPosition = void 0;
 var GeoPosition_js_1 = require("./core/GeoPosition.js");
 Object.defineProperty(exports, "GeoPosition", { enumerable: true, get: function () { return __importDefault(GeoPosition_js_1).default; } });
 var ObserverSubject_js_1 = require("./core/ObserverSubject.js");
@@ -36,3 +36,7 @@ Object.defineProperty(exports, "initializeConfig", { enumerable: true, get: func
 var logger_js_1 = require("./utils/logger.js");
 Object.defineProperty(exports, "log", { enumerable: true, get: function () { return logger_js_1.log; } });
 Object.defineProperty(exports, "warn", { enumerable: true, get: function () { return logger_js_1.warn; } });
+var ReferencePlace_js_1 = require("./core/ReferencePlace.js");
+Object.defineProperty(exports, "ReferencePlace", { enumerable: true, get: function () { return __importDefault(ReferencePlace_js_1).default; } });
+Object.defineProperty(exports, "NO_REFERENCE_PLACE", { enumerable: true, get: function () { return ReferencePlace_js_1.NO_REFERENCE_PLACE; } });
+Object.defineProperty(exports, "VALID_REF_PLACE_CLASSES", { enumerable: true, get: function () { return ReferencePlace_js_1.VALID_REF_PLACE_CLASSES; } });

@@ -46,7 +46,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  *
  * @jest-environment node
  * @author Marcelo Pereira Barbosa
- * @since 0.12.1-alpha
+ * @since 0.12.3-alpha
  */
 const PositionManager_1 = __importStar(require("../../src/core/PositionManager"));
 const GeoPosition_1 = __importDefault(require("../../src/core/GeoPosition"));
