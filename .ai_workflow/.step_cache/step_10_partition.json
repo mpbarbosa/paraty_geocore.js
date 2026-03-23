@@ -2,10 +2,10 @@
   "version": 1,
   "partitionIndex": 1,
   "totalPartitions": 2,
-  "filesHash": "21102295",
+  "filesHash": "849a5cf7",
   "partitionLabels": [
-    ".ai_workflow/metrics, src/core, eslint.config.js, jest.config.js",
+    ".ai_workflow, .ai_workflow/metrics",
     "scripts, cdn-delivery.sh"
   ],
-  "updatedAt": "2026-03-23T21:25:34.985Z"
+  "updatedAt": "2026-03-23T21:34:27.651Z"
 }
