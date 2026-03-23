@@ -7,6 +7,29 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.13.0-alpha] — 2026-03-23
+
+### Added
+
+- `calculateDistance` now validates coordinate ranges before computing:
+    - Throws `GeoPositionError` when `lat1` or `lat2` is outside `[-90, 90]`
+    - Throws `GeoPositionError` when `lon1` or `lon2` is outside `[-180, 180]`
+    - Error messages include the parameter name and value for easy debugging
+- New tests in `test/utils/distance.test.ts` covering all eight out-of-range cases and boundary values
+
+### Removed
+
+- `GeoPosition.calculateAccuracyQuality()` instance method — deprecated and broken since `0.6.0-alpha`; use the `accuracyQuality` property instead
+
+### Documentation
+
+- `docs/FUNCTIONAL_REQUIREMENTS.md` — updated to `0.13.0-alpha`; added module index entries and acceptance criteria for `ObserverSubject`, `DualObserverSubject`, `ObserverMixin`, `GeocodingState`, `PositionManager`, `utils/logger`; removed stale out-of-scope item (coordinate validation now implemented)
+- `docs/ARCHITECTURE.md` — added `0.13.0-alpha` milestone to versioning table
+- `docs/distance-FRS.md` — documented validation behaviour, throws table, and removed "No input validation" known limitation
+- `docs/GeoPosition-FRS.md` — removed deprecated `calculateAccuracyQuality()` section and stale known-issues entry
+
+---
+
 ## [0.12.0-alpha] — 2026-03-23
 
 ### Added

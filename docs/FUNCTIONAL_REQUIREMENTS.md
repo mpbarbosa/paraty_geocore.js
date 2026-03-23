@@ -1,7 +1,7 @@
 # Functional Requirements — paraty_geocore.js
 
 **Project:** paraty_geocore.js
-**Current version:** 0.11.2-alpha
+**Current version:** 0.13.0-alpha
 **Author:** Marcelo Pereira Barbosa
 
 This document defines the top-level functional requirements and acceptance criteria for the library. Detailed per-module specifications are maintained separately and linked below.
@@ -14,8 +14,14 @@ This document defines the top-level functional requirements and acceptance crite
 |--------|--------|-------------|
 | `core/GeoPosition` | `src/core/GeoPosition.ts` | [GeoPosition-FRS.md](./GeoPosition-FRS.md) |
 | `core/errors` | `src/core/errors.ts` | (see §3 below) |
+| `core/ObserverSubject` | `src/core/ObserverSubject.ts` | (see §7 below) |
+| `core/DualObserverSubject` | `src/core/DualObserverSubject.ts` | (see §8 below) |
+| `core/ObserverMixin` | `src/core/ObserverMixin.ts` | (see §9 below) |
+| `core/GeocodingState` | `src/core/GeocodingState.ts` | (see §10 below) |
+| `core/PositionManager` | `src/core/PositionManager.ts` | (see §11 below) |
 | `utils/distance` | `src/utils/distance.ts` | [distance-FRS.md](./distance-FRS.md) |
 | `utils/async` | `src/utils/async.ts` | [async-FRS.md](./async-FRS.md) |
+| `utils/logger` | `src/utils/logger.ts` | (see §12 below) |
 
 ---
 
@@ -164,10 +170,115 @@ This document defines the top-level functional requirements and acceptance crite
 
 ## 7. Out of Scope
 
-The following are explicitly **not** required for 0.11.2-alpha:
+The following are explicitly **not** required for 0.13.0-alpha:
 
 - npm package publication
-- Input validation for coordinate ranges in `calculateDistance`
+
+
+---
+
+## 7. `core/ObserverSubject` *(since 0.9.1-alpha)*
+
+### 7.1 Acceptance Criteria
+
+#### AC-OS-01 — Generic typed observer pattern
+- **Given** a class extending `ObserverSubject<T>`
+- **When** `subscribe(callback)` is called with a function observer
+- **Then** that callback is invoked with the subject instance on every `_notifyObservers()` call
+
+#### AC-OS-02 — Unsubscribe removes observer
+- **Given** a subscribed callback
+- **When** `unsubscribe(callback)` is called
+- **Then** subsequent `_notifyObservers()` calls do not invoke that callback
+
+#### AC-OS-03 — Observer errors are isolated
+- **Given** an observer that throws
+- **When** `_notifyObservers()` is called
+- **Then** remaining observers are still notified (errors are caught per observer)
+
+---
+
+## 8. `core/DualObserverSubject` *(since 0.11.0)*
+
+### 8.1 Acceptance Criteria
+
+#### AC-DOS-01 — Supports both GoF and function-based observers
+- **Given** a class extending `DualObserverSubject<T>`
+- **When** either an `ObserverObject` (with `update()`) or an `ObserverFunction` is subscribed
+- **Then** both are notified correctly on state changes
+
+---
+
+## 9. `core/ObserverMixin` *(since 0.11.0)*
+
+### 9.1 Acceptance Criteria
+
+#### AC-OM-01 — `withObserver()` adds observer capability to any class
+- **Given** a plain class and a call to `withObserver(BaseClass, options)`
+- **When** the returned mixin class is instantiated
+- **Then** it has `subscribe`, `unsubscribe`, and `_notifyObservers` methods from `ObserverSubject`
+
+---
+
+## 10. `core/GeocodingState` *(since 0.9.0-alpha)*
+
+### 10.1 Acceptance Criteria
+
+#### AC-GS-01 — Tracks current `GeoPosition`
+- **Given** a `GeocodingState` instance
+- **When** `setPosition(pos)` is called with a `GeoPosition`
+- **Then** `getCurrentPosition()` returns that same position
+
+#### AC-GS-02 — Exposes coordinates without exposing internals
+- **When** `getCurrentCoordinates()` is called after a position is set
+- **Then** it returns `{ latitude, longitude }` without exposing the full `GeoPosition` instance
+
+#### AC-GS-03 — Notifies observers on position change
+- **When** `setPosition(pos)` is called
+- **Then** all subscribed observers are notified
+
+#### AC-GS-04 — `clear()` resets state
+- **When** `clear()` is called
+- **Then** `getCurrentPosition()` returns `null` and `hasPosition()` returns `false`
+
+---
+
+## 11. `core/PositionManager` *(since 0.12.0-alpha)*
+
+### 11.1 Acceptance Criteria
+
+#### AC-PM-01 — Singleton pattern
+- **Given** the `PositionManager` class
+- **When** `PositionManager.getInstance()` is called multiple times
+- **Then** it always returns the same instance
+
+#### AC-PM-02 — Multi-layer position filtering
+- **Given** a configured `PositionManager`
+- **When** `update(position)` is called with a position whose accuracy quality is in `notAcceptedAccuracy`
+- **Then** the position is rejected and observers are not notified
+
+#### AC-PM-03 — Distance OR time threshold
+- **Given** a `PositionManager` with a known last position
+- **When** a new position arrives that has moved ≥ `minimumDistanceChange` metres OR elapsed ≥ `minimumTimeChange` ms
+- **Then** the position is accepted and observers notified
+
+#### AC-PM-04 — Observer notification on accepted update
+- **When** an accepted position update triggers a notification
+- **Then** all subscribed observers receive the event type string via `update(manager, eventType)`
+
+---
+
+## 12. `utils/logger` *(since 0.12.0-alpha)*
+
+### 12.1 Acceptance Criteria
+
+#### AC-LG-01 — `log()` prefixes with ISO timestamp
+- **When** `log(message)` is called
+- **Then** `console.log` is called with a string starting with an ISO 8601 timestamp
+
+#### AC-LG-02 — `warn()` prefixes with ISO timestamp
+- **When** `warn(message)` is called
+- **Then** `console.warn` is called with a string starting with an ISO 8601 timestamp
 
 
 ---

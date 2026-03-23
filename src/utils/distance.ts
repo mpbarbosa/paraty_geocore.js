@@ -8,6 +8,7 @@
  * @since 0.9.2-alpha
  * @author Marcelo Pereira Barbosa
  */
+import { GeoPositionError } from '../core/errors.js';
 
 /**
  * Earth's mean radius in meters used for Haversine distance calculations.
@@ -37,6 +38,7 @@ export const EARTH_RADIUS_METERS = 6371e3;
  * @param {number} lat2 - Latitude of second point in decimal degrees (-90 to 90)
  * @param {number} lon2 - Longitude of second point in decimal degrees (-180 to 180)
  * @returns {number} Distance in meters between the two points
+ * @throws {GeoPositionError} If any coordinate is outside the valid range
  * 
  * @example
  * // Distance between São Paulo and Rio de Janeiro
@@ -50,6 +52,11 @@ export const EARTH_RADIUS_METERS = 6371e3;
  * @author Marcelo Pereira Barbosa
  */
 export const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+	if (lat1 < -90 || lat1 > 90) throw new GeoPositionError(`calculateDistance: lat1 (${lat1}) is out of range [-90, 90]`);
+	if (lat2 < -90 || lat2 > 90) throw new GeoPositionError(`calculateDistance: lat2 (${lat2}) is out of range [-90, 90]`);
+	if (lon1 < -180 || lon1 > 180) throw new GeoPositionError(`calculateDistance: lon1 (${lon1}) is out of range [-180, 180]`);
+	if (lon2 < -180 || lon2 > 180) throw new GeoPositionError(`calculateDistance: lon2 (${lon2}) is out of range [-180, 180]`);
+
 	const R = EARTH_RADIUS_METERS; // Earth radius in meters (mean radius)
 	const φ1 = (lat1 * Math.PI) / 180; // Convert latitude 1 to radians
 	const φ2 = (lat2 * Math.PI) / 180; // Convert latitude 2 to radians
