@@ -41,9 +41,10 @@ info "Git tag      : ${TAG}"
 echo ""
 
 # ── 1. Build ──────────────────────────────────────────────────────────────────
-info "Step 1/4 — Building TypeScript …"
+info "Step 1/4 — Building TypeScript (CJS + ESM) …"
 npm run build
-success "Build complete"
+npm run build:esm
+success "Build complete (CJS + ESM)"
 echo ""
 
 # ── 2. Commit build artifacts ─────────────────────────────────────────────────
