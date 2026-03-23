@@ -243,7 +243,7 @@ The following are explicitly **not** required for 0.13.0-alpha:
 
 ---
 
-## 11. `core/PositionManager` *(since 0.12.0-alpha)*
+## 11. `core/PositionManager` *(since 0.12.1-alpha)*
 
 ### 11.1 Acceptance Criteria
 
@@ -268,7 +268,7 @@ The following are explicitly **not** required for 0.13.0-alpha:
 
 ---
 
-## 12. `utils/logger` *(since 0.12.0-alpha)*
+## 12. `utils/logger` *(since 0.12.1-alpha)*
 
 ### 12.1 Acceptance Criteria
 
