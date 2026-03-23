@@ -1,17 +1,23 @@
+# AI Workflow Automation Configuration
+
 project:
-  name: paraty_geocore.js
-  type: nodejs-library
-  kind: location_based_service  # domain classification: geolocation/LBS application
-  version: '0.11.2-alpha'  # keep in sync with package.json
-  description: paraty_geocore.js project
+  name: "paraty_geocore.js"
+  type: "nodejs-library"
+  kind: "location_based_service"  # domain classification: geolocation/LBS library
+  version: "0.12.2-alpha"  # keep in sync with package.json
+  description: "TypeScript library providing core geolocation classes for location-based applications"
+
 tech_stack:
-  primary_language: typescript
-  build_system: tsc  # tsc compiles src/**/*.ts → dist/
-  test_framework: jest
-  test_runner: ts-jest  # TypeScript test runner
-  doc_tool: typedoc     # TypeScript documentation generator
-  test_command: npm test
-  lint_command: npm run lint
+  primary_language: "typescript"
+  build_system: "tsc"  # tsc compiles src/**/*.ts → dist/
+  test_framework: "jest"
+  test_runner: "ts-jest"  # TypeScript test runner
+  doc_tool: "typedoc"     # TypeScript documentation generator
+  test_command: "npm test"
+  lint_command: "npm run lint:md"
+  lint_commands:
+    markdown: "npm run lint:md"
+
 structure:
   source_dirs:
     - src
@@ -20,6 +26,7 @@ structure:
     - __tests__  # Jest default; kept for compatibility with jest --testPathPattern
   docs_dirs:
     - docs
+
 workflow:
   stages:
     quick:
@@ -50,6 +57,7 @@ workflow:
         - step_07  # coverage report generation
         - step_08  # release readiness check
         - step_0f  # artifact commit: versions and commits all workflow outputs to the repo
+
 validation:
   documentation:
     required: true
@@ -58,7 +66,266 @@ validation:
     required: true
     min_coverage: 80  # 80% line coverage threshold; enforced by jest --coverage (matches jest.config.js coverageThreshold)
 
+# Linting Configuration
+# md_linter: CLI tool used for markdown linting (must be installed in node_modules/.bin/).
+# Change this value to switch tools; scripts/lint-md.js reads it at runtime.
+linting:
+  md_linter: "markdownlint-cli2"
+  md_config: ".markdownlint.json"
+  md_glob: "**/*.md"
+  md_excludes:
+    - "!node_modules/**"
+    - "!.ai_workflow/**"
+    - "!docs/api/**"
+
+# Deployment Configuration
 deploy:
   enabled: true
   script: "scripts/deploy.sh"
   description: "Build TypeScript, commit artifacts, tag release, push, and generate jsDelivr CDN URLs"
+
+# Conditional Step Execution Configuration
+conditionals:
+  step_08_release_readiness:
+    skip_if:
+      - no_code_changes: true
+      - only_docs_changed: true
+    run_if:
+      - "src/**/*.ts": changed
+      - "test/**/*.ts": changed
+    description: "Skip release-readiness check if only documentation or non-code files changed"
+
+  step_05_directory_structure:
+    skip_if:
+      - no_new_files: true
+    cache_duration: 24h
+    description: "Cache directory structure scan for 24 hours if no new files"
+
+  step_03_script_validation:
+    skip_if:
+      - no_ts_changes: true
+    run_if:
+      - "src/**/*.ts": changed
+      - "scripts/**/*.sh": changed
+    description: "Skip script-reference validation if no TypeScript or shell files changed"
+
+  step_07_coverage_report:
+    skip_if:
+      - only_docs_changed: true
+      - only_tests_changed: true
+    run_if:
+      - "src/**/*.ts": changed
+    description: "Skip coverage generation for docs-only or test-only changes"
+
+# Change Detection Patterns
+change_patterns:
+  code_files:
+    - "src/**/*.ts"
+  test_files:
+    - "test/**/*.ts"
+    - "__tests__/**/*.ts"
+  documentation_files:
+    - "**/*.md"
+    - "docs/**/*"
+  config_files:
+    - "package.json"
+    - "tsconfig*.json"
+    - ".github/**/*.yml"
+    - ".workflow-config.yaml"
+
+# Version Configuration
+# The version field above must agree with package.json → "version" at all times.
+version:
+  source_of_truth: "package.json"
+
+# Change-Type Detection Configuration (Conventional Commits)
+change_detection:
+  enabled: true
+  convention: "conventional_commits"
+
+  types:
+    feat:
+      description: "New features"
+      impact: "high"
+      test_strategy: "all"
+      examples:
+        - "feat: add ReferencePlace geolocation class"
+        - "feat(utils): new bearing calculation helper"
+
+    fix:
+      description: "Bug fixes"
+      impact: "medium"
+      test_strategy: "related"
+      examples:
+        - "fix: correct Haversine distance for antipodal points"
+        - "fix(errors): improve GeoPositionError message"
+
+    docs:
+      description: "Documentation only"
+      impact: "low"
+      test_strategy: "none"
+      examples:
+        - "docs: update README"
+        - "docs(api): improve JSDoc comments"
+
+    refactor:
+      description: "Code refactoring"
+      impact: "medium"
+      test_strategy: "comprehensive"
+      examples:
+        - "refactor: simplify GeoPosition constructor"
+        - "refactor(utils): consolidate distance helpers"
+
+    test:
+      description: "Test changes only"
+      impact: "low"
+      test_strategy: "tests_only"
+      examples:
+        - "test: add edge cases for calculateDistance"
+        - "test(integration): improve GeoPosition mock coverage"
+
+    style:
+      description: "Code style/formatting"
+      impact: "low"
+      test_strategy: "syntax_only"
+      examples:
+        - "style: format with prettier"
+        - "style: fix eslint warnings"
+
+    perf:
+      description: "Performance improvements"
+      impact: "medium"
+      test_strategy: "all"
+      examples:
+        - "perf: optimise Haversine hot path"
+        - "perf(async): reduce delay timer overhead"
+
+    chore:
+      description: "Maintenance tasks"
+      impact: "low"
+      test_strategy: "minimal"
+      examples:
+        - "chore: update dependencies"
+        - "chore(build): configure tsc output"
+
+    ci:
+      description: "CI/CD changes"
+      impact: "low"
+      test_strategy: "minimal"
+      examples:
+        - "ci: add GitHub Actions workflow"
+        - "ci: update test coverage threshold"
+
+    build:
+      description: "Build system changes"
+      impact: "low"
+      test_strategy: "minimal"
+      examples:
+        - "build: update npm scripts"
+        - "build: add ESM tsconfig"
+
+  # Step routing based on change type
+  routing:
+    feat:
+      steps:
+        - syntax_validation
+        - directory_structure
+        - test_execution
+        - coverage_report
+        - quality_checks
+        - doc_validation
+        - git_finalization
+      description: "Run all validation steps for new features"
+
+    fix:
+      steps:
+        - syntax_validation
+        - test_execution
+        - quality_checks
+        - git_finalization
+      description: "Focus on testing and quality for bug fixes"
+
+    docs:
+      steps:
+        - syntax_validation
+        - doc_validation
+        - git_finalization
+      description: "Minimal validation for documentation changes"
+
+    refactor:
+      steps:
+        - syntax_validation
+        - test_execution
+        - coverage_report
+        - quality_checks
+        - git_finalization
+      description: "Comprehensive testing for refactoring"
+
+    test:
+      steps:
+        - syntax_validation
+        - test_execution
+        - git_finalization
+      description: "Run test suite for test changes"
+
+    style:
+      steps:
+        - syntax_validation
+        - quality_checks
+        - git_finalization
+      description: "Syntax and style validation only"
+
+    perf:
+      steps:
+        - syntax_validation
+        - test_execution
+        - coverage_report
+        - git_finalization
+      description: "Full testing for performance changes"
+
+    chore:
+      steps:
+        - syntax_validation
+        - git_finalization
+      description: "Minimal validation for maintenance tasks"
+
+    ci:
+      steps:
+        - syntax_validation
+        - git_finalization
+      description: "Syntax check only for CI changes"
+
+    build:
+      steps:
+        - syntax_validation
+        - test_execution
+        - git_finalization
+      description: "Validate build system changes"
+
+  # Fallback configuration
+  fallback:
+    steps:
+      - syntax_validation
+      - test_execution
+      - coverage_report
+      - git_finalization
+    description: "Default steps when type cannot be determined"
+
+  # Pattern detection (if commit message doesn't follow convention)
+  pattern_detection:
+    enabled: true
+    patterns:
+      - regex: "^(add|implement|create)\\s"
+        type: "feat"
+      - regex: "^(fix|repair|correct|resolve)\\s"
+        type: "fix"
+      - regex: "^(doc|document|readme)\\s"
+        type: "docs"
+      - regex: "^(refactor|restructure|reorganize)\\s"
+        type: "refactor"
+      - regex: "^(test|spec)\\s"
+        type: "test"
+      - regex: "^(style|format|lint)\\s"
+        type: "style"
+      - regex: "^(perf|optimize|speed)\\s"
+        type: "perf"
