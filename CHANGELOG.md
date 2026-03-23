@@ -7,6 +7,30 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.14.0-alpha] — 2026-03-23
+
+### Added
+
+- `src/core/ReferencePlace.ts` — OSM point-of-interest wrapper with Portuguese descriptions
+    - Immutable value object (`Object.freeze`) mirroring the existing guia_turistico implementation
+    - `className`, `typeName`, `name` properties extracted from raw OSM geocoding data
+    - `calculateDescription()` — resolves a Portuguese label from the built-in `referencePlaceMap`,
+      falls back to `NO_REFERENCE_PLACE` for invalid classes or to `"<class>: <type>"` for unmapped types
+    - `calculateCategory()` — returns the Portuguese category label or `"unknown"`
+    - `toString()` — human-readable `"ReferencePlace: <description>[ - <name>]"` representation
+    - Static `referencePlaceMap` — frozen mapping of OSM classes/types to Portuguese strings
+      (place, shop, amenity, railway, building)
+    - Exports: `ReferencePlace` (default + named), `OsmElement` interface,
+      `NO_REFERENCE_PLACE` constant, `VALID_REF_PLACE_CLASSES` array
+- New tests in `test/core/ReferencePlace.test.ts` — 36 tests, 100% line/branch/function coverage
+
+### Documentation
+
+- `docs/ARCHITECTURE.md` — added `ReferencePlace.ts` to directory structure and versioning table
+- `docs/ReferencePlace-FRS.md` — new Functional Requirements Spec
+
+---
+
 ## [0.13.0-alpha] — 2026-03-23
 
 ### Added

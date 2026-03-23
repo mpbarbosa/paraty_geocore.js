@@ -27,6 +27,7 @@ paraty_geocore.js/
 │   │   ├── GeoPosition.ts       # Immutable position wrapper class
 │   │   ├── ObserverSubject.ts   # Generic concrete Observer/Subject base class
 │   │   ├── GeocodingState.ts    # Geocoding state manager (extends ObserverSubject)
+│   │   ├── ReferencePlace.ts    # OSM point-of-interest wrapper with Portuguese descriptions
 │   │   └── errors.ts            # Custom error classes (GeoPositionError)
 │   └── utils/
 │       ├── distance.ts          # Haversine distance calculation utilities
@@ -43,6 +44,7 @@ paraty_geocore.js/
 │   ├── GeoPosition-FRS.md       # Functional requirements spec — GeoPosition
 │   ├── distance-FRS.md          # Functional requirements spec — distance utils
 │   ├── async-FRS.md             # Functional requirements spec — async utils
+│   ├── ReferencePlace-FRS.md    # Functional requirements spec — ReferencePlace
 │   ├── GEOPOSITION_REFACTORING_SUMMARY.md
 │   └── api/                     # TypeDoc-generated HTML reference (gitignored — run `npm run docs:generate`)
 │       ├── assets/              # TypeDoc CSS/JS/font assets
@@ -52,7 +54,7 @@ paraty_geocore.js/
 │       ├── types/               # Generated page per exported type alias
 │       └── variables/           # Generated page per exported constant
 ├── test/
-│   ├── core/                    # Unit tests for src/core/ (GeoPosition, ObserverSubject, GeocodingState, errors)
+│   ├── core/                    # Unit tests for src/core/ (GeoPosition, ObserverSubject, GeocodingState, ReferencePlace, errors)
 │   ├── utils/                   # Unit tests for src/utils/ (distance, async)
 │   ├── integration/             # Integration tests — browser Geolocation API simulation
 │   ├── benchmarks/              # Performance benchmarks (excluded from coverage)
@@ -159,6 +161,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | 0.11.4        | Infrastructure and documentation improvements |
 | 0.12.1-alpha  | `PositionManager` singleton + `utils/logger` introduced |
 | 0.13.0-alpha  | Coordinate range validation in `calculateDistance`; `calculateAccuracyQuality()` removed |
+| 0.14.0-alpha  | `ReferencePlace` — OSM point-of-interest wrapper with Portuguese descriptions |
 
 ---
 
