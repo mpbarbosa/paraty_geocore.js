@@ -68,7 +68,10 @@ jobs:
           else
             # Try the latest release first; fall back to the latest tag if no
             # release exists (ibira.js uses tags without published releases).
-            TAG="$(gh api repos/mpbarbosa/ibira.js/releases/latest --jq '.tag_name' 2>/dev/null || true)"
+            # Note: gh api may write the 404 JSON body to stdout even with --jq;
+            # guard by requiring the result to look like a semver tag (v<digit>…).
+            TAG="$(gh api repos/mpbarbosa/ibira.js/releases/latest --jq '.tag_name // empty' 2>/dev/null || true)"
+            [[ "${TAG}" =~ ^v[0-9] ]] || TAG=""
             if [[ -n "${TAG}" ]]; then
               echo "Source: GitHub latest release"
             else
