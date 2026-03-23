@@ -7,13 +7,91 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [Unreleased]
+## [0.12.0-alpha] — 2026-03-23
 
-### Planned
-- npm package publication
-- TypeScript compilation (`tsc`) and `dist/` output
-- `package.json` with ESM exports map
-- CI/CD pipeline
+### Added
+
+- `src/core/PositionManager.ts` — new `PositionManager` singleton class
+    - Singleton pattern: one source of truth for the current device position
+    - Observer pattern: `subscribe` / `unsubscribe` backed by `DualObserverSubject`
+    - Multi-layer position validation (accuracy quality → distance OR time threshold)
+    - Event classification: `strCurrPosUpdate`, `strCurrPosNotUpdate`, `strImmediateAddressUpdate`
+    - `PositionManager.getInstance(position?)` — creates or returns the singleton
+    - `manager.update(position)` — validates and applies a new `GeolocationPosition`
+    - `createPositionManagerConfig()` — returns a fresh config object with defaults
+    - `initializeConfig(partial)` — merges overrides before the first `getInstance()` call
+- `src/utils/logger.ts` — new `utils/logger` module
+    - `log(message, ...params)` — timestamped `console.log` wrapper
+    - `warn(message, ...params)` — timestamped `console.warn` wrapper
+- `PositionManagerConfig` interface exported from public API
+- `docs/POSITION_MANAGER.md` — full API reference for `PositionManager`
+
+---
+
+## [0.11.4] — 2026-03-23
+
+### Added
+
+- `.github/skills/purge-workflow-logs/` — new `purge-workflow-logs` skill
+
+### Fixed
+
+- `docs/ARCHITECTURE.md` — documented `coverage/` and `dist/` subdirectories in directory tree
+
+---
+
+## [0.11.3] — 2026-03-22
+
+### Changed
+
+- Updated `bessa_patterns.ts` dependency to `v0.12.4-alpha` (fixes `withObserver` missing from tagged dist)
+
+---
+
+## [0.11.2] — 2026-03-21
+
+### Added
+
+- `src/utils/async.ts` — `delay()` extracted to its own module
+- `scripts/deploy.sh` — build, tag, push, and generate CDN URLs
+- `cdn-delivery.sh` — jsDelivr CDN URL generation
+- Pre-commit hooks (`.pre-commit-config.yaml`): private-key detection, EditorConfig, markdownlint
+- CI/CD pipeline (`.github/workflows/ci.yml`) — Node.js 18.x and 20.x matrix
+- `docs/async-FRS.md` — functional requirements for `utils/async`
+
+### Changed
+
+- `delay()` moved from `utils/distance` to dedicated `utils/async` module
+
+---
+
+## [0.11.0] — 2026-03-20
+
+### Added
+
+- `src/core/ObserverSubject.ts` — generic concrete Observer/Subject base class
+- `src/core/DualObserverSubject.ts` — GoF + function-based dual observer variants
+- `src/core/GeocodingState.ts` — centralised geocoding state manager (extends `ObserverSubject`)
+- `src/core/ObserverMixin.ts` — `withObserver` helper for adding observer management to classes
+- `bessa_patterns.ts` dependency — provides `ObserverMixin` interface contracts
+- `docs/OBSERVER_SUBJECT_API.md`, `docs/GEOCODING_STATE_API.md`, `docs/OBSERVER_MIXIN_API.md`
+
+---
+
+## [0.10.0-alpha] — 2026-02-01
+
+### Added
+
+- `npm run build` and `npm run build:esm` — TypeScript CJS and ESM dual-build output
+- `dist/` artifacts (CJS + ESM + type declarations)
+- `package.json` ESM exports map (`"."`, `"./utils/distance"`, `"./utils/async"`, `"./core/errors"`)
+- CI/CD dist smoke test (`scripts/smoke-test.cjs`)
+- `docs/` expanded: `GETTING_STARTED.md`, `API.md`, `ARCHITECTURE.md`
+
+### Fixed
+
+- `GeoPosition.toString()` — zero-coordinate rendering bug
+- `GeoPosition.getCurrentCoordinates()` return frozen for defensive immutability
 
 ---
 
