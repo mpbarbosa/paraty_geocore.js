@@ -110,6 +110,31 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-22T18:46:34.721Z"
+    },
+    "docs/api/assets/hierarchy.js": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T17:18:47.180Z"
+    },
+    "docs/api/assets/icons.js": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T17:18:47.180Z"
+    },
+    "docs/api/assets/main.js": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T17:18:47.180Z"
+    },
+    "docs/api/assets/navigation.js": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T17:18:47.180Z"
+    },
+    "docs/api/assets/search.js": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T17:18:47.180Z"
     }
   }
 }

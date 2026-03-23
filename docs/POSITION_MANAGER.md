@@ -252,4 +252,4 @@ The test files are:
 
 | Version       | Change |
 |---------------|--------|
-| 0.12.0-alpha  | Initial port from guia_turistico; adapted imports, replaced app config with `PositionManagerConfig`, added `createPositionManagerConfig()` and `initializeConfig()` |
+| 0.12.1-alpha  | Initial port from guia_turistico; adapted imports, replaced app config with `PositionManagerConfig`, added `createPositionManagerConfig()` and `initializeConfig()` |
