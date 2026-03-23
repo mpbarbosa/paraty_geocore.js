@@ -2,12 +2,12 @@
   "version": 1,
   "partitionIndex": 1,
   "totalPartitions": 4,
-  "filesHash": "45b96f68",
+  "filesHash": "2a8c0f70",
   "partitionLabels": [
-    ".ai_workflow, .ai_workflow/metrics, tsconfig.json, typedoc.json",
+    ".ai_workflow/metrics",
     "docs/api",
     "eslint.config.js, jest.config.js",
     "scripts, cdn-delivery.sh"
   ],
-  "updatedAt": "2026-03-22T18:46:34.721Z"
+  "updatedAt": "2026-03-23T14:24:02.546Z"
 }
