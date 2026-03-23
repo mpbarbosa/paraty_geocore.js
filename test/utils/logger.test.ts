@@ -4,7 +4,7 @@
  * Unit tests for the logger utility.
  *
  * @jest-environment node
- * @since 0.12.1-alpha
+ * @since 0.12.2-alpha
  */
 
 import { log, warn } from '../../src/utils/logger';
