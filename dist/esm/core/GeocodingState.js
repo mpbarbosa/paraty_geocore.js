@@ -127,7 +127,7 @@ class GeocodingState extends ObserverSubject {
      * }
      */
     getCurrentCoordinates() {
-        return this._currentCoordinates ? { ...this._currentCoordinates } : null;
+        return this._currentCoordinates ? Object.freeze({ ...this._currentCoordinates }) : null;
     }
     /**
      * Check if position is available
@@ -168,7 +168,7 @@ class GeocodingState extends ObserverSubject {
         const coords = this._currentCoordinates ?
             `(${this._currentCoordinates.latitude.toFixed(4)}, ${this._currentCoordinates.longitude.toFixed(4)})` :
             'null';
-        return `GeocodingState: position: ${hasPos}, coordinates: ${coords}, observers: ${this._observers.length}`;
+        return `GeocodingState: position: ${hasPos}, coordinates: ${coords}, observers: ${this.getObserverCount()}`;
     }
 }
 export default GeocodingState;

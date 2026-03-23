@@ -160,21 +160,6 @@ class GeoPosition {
         }
     }
     /**
-     * Calculates the accuracy quality for the current position.
-     *
-     * @returns {AccuracyQuality} Quality classification for current position accuracy
-     *
-     * @example
-     * const pos = new GeoPosition(position);
-     * pos.calculateAccuracyQuality(); // 'good'
-     *
-     * @since 0.6.0-alpha
-     * @deprecated Use the `accuracyQuality` property instead.
-     */
-    calculateAccuracyQuality() {
-        return GeoPosition.getAccuracyQuality(this.accuracy ?? Infinity);
-    }
-    /**
      * Calculates the distance between this position and another position.
      *
      * Uses the Haversine formula to compute the great-circle distance between
@@ -217,7 +202,7 @@ class GeoPosition {
      * @since 0.6.0-alpha
      */
     toString() {
-        if (!this.latitude || !this.longitude) {
+        if (this.latitude === undefined || this.longitude === undefined) {
             return `${this.constructor.name}: No position data`;
         }
         return `${this.constructor.name}: ${this.latitude}, ${this.longitude}, ${this.accuracyQuality}, ${this.altitude}, ${this.speed}, ${this.heading}, ${this.timestamp}`;

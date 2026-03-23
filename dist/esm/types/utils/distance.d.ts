@@ -1,14 +1,4 @@
 /**
- * Distance calculation utilities for geolocation.
- *
- * Pure functions for geographic distance calculations using the Haversine formula.
- * All functions are referentially transparent with no side effects.
- *
- * @module utils/distance
- * @since 0.9.2-alpha
- * @author Marcelo Pereira Barbosa
- */
-/**
  * Earth's mean radius in meters used for Haversine distance calculations.
  * @constant {number}
  */
@@ -35,6 +25,7 @@ export declare const EARTH_RADIUS_METERS = 6371000;
  * @param {number} lat2 - Latitude of second point in decimal degrees (-90 to 90)
  * @param {number} lon2 - Longitude of second point in decimal degrees (-180 to 180)
  * @returns {number} Distance in meters between the two points
+ * @throws {GeoPositionError} If any coordinate is outside the valid range
  *
  * @example
  * // Distance between São Paulo and Rio de Janeiro
