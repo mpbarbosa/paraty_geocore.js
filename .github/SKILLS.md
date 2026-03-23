@@ -29,6 +29,7 @@ repository state.
 | [Fix log issues](#fix-log-issues) | _(Copilot skill)_ | Manual (after validate-logs) | Consume `plan.md`, apply fixes, update roadmap |
 | [Audit and fix](#audit-and-fix) | _(Copilot skill)_ | Manual | Run validate-logs then fix-log-issues in one pass |
 | [Purge workflow logs](#purge-workflow-logs) | _(Copilot skill)_ | Manual | Delete `.ai_workflow/logs/`, `backlog/`, and `summaries/` |
+| [Next roadmap phase](#next-roadmap-phase) | _(Copilot skill)_ | Manual | Propose and implement the next library version milestone |
 
 ---
 
@@ -419,6 +420,37 @@ All other `.ai_workflow/` contents are left untouched: `context/`,
 
 Running the skill multiple times is always safe. Absent directories are
 silently skipped.
+
+---
+
+## next-roadmap-phase
+
+**File:** `.github/skills/next-roadmap-phase/SKILL.md`
+**Trigger:** Manual (Copilot CLI)
+
+Propose and implement the next library version milestone. Reads current state
+from `ARCHITECTURE.md`, `FUNCTIONAL_REQUIREMENTS.md`, and `CHANGELOG.md`;
+surfaces deferred items, undocumented exports, and stale known-limitations;
+proposes a scoped version bump; and — after developer confirmation — implements
+the changes, updates all documentation, and commits.
+
+### Trigger phrases
+
+- "Go ahead with the next roadmap phase"
+- "Implement the next version"
+- "What should we ship next?"
+
+### What it produces
+
+- TypeScript source changes + matching tests
+- Updated `CHANGELOG.md`, `ARCHITECTURE.md`, `FUNCTIONAL_REQUIREMENTS.md`
+- Updated per-module FRS docs
+- Single atomic git commit
+
+### Requires confirmation
+
+Scope is always proposed before implementation. The developer must confirm
+(or modify) the version number and change list before any code is written.
 
 ---
 
