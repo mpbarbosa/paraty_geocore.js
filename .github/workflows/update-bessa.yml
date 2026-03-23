@@ -67,11 +67,17 @@ jobs:
             TAG="v${VERSION}"
             echo "Source: workflow_dispatch input"
           else
-            # Fetch the latest release tag from GitHub API
-            TAG="$(gh api repos/mpbarbosa/bessa_patterns.ts/releases/latest --jq '.tag_name')"
-            [[ -n "${TAG}" ]] || { echo "❌  Could not determine latest bessa_patterns.ts release." >&2; exit 1; }
+            # Try the latest release first; fall back to the latest tag if no
+            # release exists (bessa_patterns.ts uses tags without published releases).
+            TAG="$(gh api repos/mpbarbosa/bessa_patterns.ts/releases/latest --jq '.tag_name' 2>/dev/null || true)"
+            if [[ -n "${TAG}" ]]; then
+              echo "Source: GitHub latest release"
+            else
+              TAG="$(gh api repos/mpbarbosa/bessa_patterns.ts/tags --jq '.[0].name' 2>/dev/null || true)"
+              [[ -n "${TAG}" ]] || { echo "❌  Could not determine latest bessa_patterns.ts tag." >&2; exit 1; }
+              echo "Source: GitHub latest tag (no published release)"
+            fi
             VERSION="${TAG#v}"
-            echo "Source: GitHub latest release"
           fi
 
           TARBALL_URL="https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/${TAG}.tar.gz"
