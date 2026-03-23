@@ -294,3 +294,4 @@ The following are explicitly **not** required for 0.13.0-alpha:
 | RI-002 | step_20 | addEventListener missing { once: true } — TypeDoc-owned asset in git-ignored dir | docs/api/assets/icons.js | Low | skipped |
 | RI-003 | step_05 | coverage/ directory not documented in directory tree | docs/ARCHITECTURE.md | Low | done |
 | RI-004 | step_05 | dist/ subdirectories not fully documented in directory tree | docs/ARCHITECTURE.md | Low | done |
+| RI-005 | step_05 | .github/skills/ tree missing from directory tree | docs/ARCHITECTURE.md | Medium | done |
