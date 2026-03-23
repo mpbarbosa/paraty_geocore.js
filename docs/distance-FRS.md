@@ -79,9 +79,19 @@ Where:
 
 - **Pure function**: same inputs always produce the same output.
 - **No side effects**: does not mutate any external state or log output.
+- Validates coordinate ranges before computing: throws `GeoPositionError` when any value is out of range.
 - Converts decimal-degree inputs to radians internally.
 - Returns `0` when both points are identical.
 - Assumes a **spherical Earth**; does not account for ellipsoidal geometry (WGS-84). Accuracy degrades slightly for very long distances (< 0.5% error in practice).
+
+#### Throws
+
+| Condition | Error type | Message pattern |
+|-----------|-----------|-----------------|
+| `lat1 < -90` or `lat1 > 90` | `GeoPositionError` | `calculateDistance: lat1 (…) is out of range [-90, 90]` |
+| `lat2 < -90` or `lat2 > 90` | `GeoPositionError` | `calculateDistance: lat2 (…) is out of range [-90, 90]` |
+| `lon1 < -180` or `lon1 > 180` | `GeoPositionError` | `calculateDistance: lon1 (…) is out of range [-180, 180]` |
+| `lon2 < -180` or `lon2 > 180` | `GeoPositionError` | `calculateDistance: lon2 (…) is out of range [-180, 180]` |
 
 #### Example
 
@@ -121,6 +131,5 @@ console.log(zero); // 0
 | Limitation | Detail |
 |------------|--------|
 | Spherical Earth assumption | Uses mean radius 6,371 km. Does not implement WGS-84 ellipsoidal model; maximum error is < 0.5% for typical geolocation use cases. |
-| No input validation | Out-of-range latitude/longitude values are not validated or clamped; callers are responsible for providing valid coordinates. |
 
 > **Note:** The `delay` utility previously co-located in this module has been extracted to `utils/async` (since 0.11.2-alpha). See [async-FRS.md](./async-FRS.md).

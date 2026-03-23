@@ -158,6 +158,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | 0.11.2-alpha   | `utils/async` extracted; CI/CD, pre-commit, deploy script added |
 | 0.11.4        | Infrastructure and documentation improvements |
 | 0.12.0-alpha  | `PositionManager` singleton + `utils/logger` introduced |
+| 0.13.0-alpha  | Coordinate range validation in `calculateDistance`; `calculateAccuracyQuality()` removed |
 
 ---
 

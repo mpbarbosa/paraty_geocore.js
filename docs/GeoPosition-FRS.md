@@ -97,12 +97,6 @@ Returns a formatted string summary of the position for logging/debugging.
 
 ---
 
-### 5.3 `calculateAccuracyQuality()` *(deprecated)*
-
-> **⚠ Deprecated since 0.6.0-alpha.** Contains a bug — calls `getAccuracyQuality` as a free function (which is undefined at call site). Use the `accuracyQuality` property instead.
-
----
-
 ## 6. Immutability
 
 All `GeoPosition` instances are frozen via `Object.freeze()` immediately after construction. Any attempt to modify instance properties in strict mode will throw a `TypeError`; in non-strict mode, mutations are silently ignored.
@@ -120,6 +114,4 @@ All `GeoPosition` instances are frozen via `Object.freeze()` immediately after c
 
 ## 8. Known Issues / Notes
 
-- `calculateAccuracyQuality()` is broken and deprecated. Do not use.
 - `altitude`, `altitudeAccuracy`, `heading`, and `speed` may be `null` depending on the device and browser.
-- `toString()` treats a latitude/longitude of `0` as falsy (no data). Positions exactly at the equator/prime-meridian intersection may produce incorrect output.
