@@ -20,7 +20,7 @@ on:
       version:
         description: |
           ibira.js tag to update to (e.g. v0.4.5-alpha).
-          Leave blank to use the latest published release.
+          Leave blank to use the latest release or tag.
         required: false
         default: ''
 
@@ -66,11 +66,17 @@ jobs:
             TAG="v${VERSION}"
             echo "Source: workflow_dispatch input"
           else
-            # Fetch the latest release tag from GitHub API
-            TAG="$(gh api repos/mpbarbosa/ibira.js/releases/latest --jq '.tag_name')"
-            [[ -n "${TAG}" ]] || { echo "❌  Could not determine latest ibira.js release." >&2; exit 1; }
+            # Try the latest release first; fall back to the latest tag if no
+            # release exists (ibira.js uses tags without published releases).
+            TAG="$(gh api repos/mpbarbosa/ibira.js/releases/latest --jq '.tag_name' 2>/dev/null || true)"
+            if [[ -n "${TAG}" ]]; then
+              echo "Source: GitHub latest release"
+            else
+              TAG="$(gh api repos/mpbarbosa/ibira.js/tags --jq '.[0].name' 2>/dev/null || true)"
+              [[ -n "${TAG}" ]] || { echo "❌  Could not determine latest ibira.js tag." >&2; exit 1; }
+              echo "Source: GitHub latest tag (no published release found)"
+            fi
             VERSION="${TAG#v}"
-            echo "Source: GitHub latest release"
           fi
 
           TARBALL_URL="https://github.com/mpbarbosa/ibira.js/archive/refs/tags/${TAG}.tar.gz"
