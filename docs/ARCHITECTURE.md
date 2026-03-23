@@ -33,6 +33,14 @@ paraty_geocore.js/
 │       ├── distance.ts          # Haversine distance calculation utilities
 │       └── async.ts             # General-purpose async utilities (delay)
 ├── .github/
+│   ├── skills/                  # Copilot CLI skill definitions (SKILLS.md is the index)
+│   │   ├── audit-and-fix/       # Orchestrates validate-logs → fix-log-issues in one pass
+│   │   ├── fix-log-issues/      # Consumes plan.md and applies every confirmed fix
+│   │   ├── next-roadmap-phase/  # Plans and implements the next library version milestone
+│   │   ├── purge-workflow-logs/ # Deletes transient artefacts under .ai_workflow/
+│   │   ├── update-bessa/        # Bumps the bessa_patterns.ts dependency to the latest release
+│   │   ├── update-ibira/        # Bumps the ibira.js dependency to the latest release
+│   │   └── validate-logs/       # Validates .ai_workflow/logs against the codebase; writes plan.md
 │   └── workflows/
 │       └── ci.yml               # CI/CD pipeline (Node.js 18.x, 20.x matrix)
 ├── docs/
