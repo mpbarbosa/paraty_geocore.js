@@ -34,7 +34,7 @@
     ".ai_workflow/metrics/current_run.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-23T14:24:02.545Z"
+      "lastAnalyzed": "2026-03-23T21:25:34.985Z"
     },
     "src/index.ts": {
       "score": 100,
@@ -135,6 +135,21 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-23T17:18:47.180Z"
+    },
+    "src/core/ReferencePlace.ts": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T21:25:34.985Z"
+    },
+    "eslint.config.js": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T21:25:34.985Z"
+    },
+    "jest.config.js": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-23T21:25:34.985Z"
     }
   }
 }
