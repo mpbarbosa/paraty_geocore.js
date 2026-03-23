@@ -54,7 +54,7 @@
  *   manager.update(position); // Validates and updates if rules pass
  * });
  *
- * @since 0.12.2-alpha
+ * @since 0.12.3-alpha
  * @author Marcelo Pereira Barbosa
  */
 
@@ -134,7 +134,7 @@ let config: PositionManagerConfig = createPositionManagerConfig();
  *   notAcceptedAccuracy: ['medium', 'bad', 'very bad'],
  * });
  *
- * @since 0.12.2-alpha
+ * @since 0.12.3-alpha
  */
 export function initializeConfig(newConfig: Partial<PositionManagerConfig>): void {
 	config = { ...createPositionManagerConfig(), ...newConfig };
@@ -234,7 +234,7 @@ class PositionManager {
 	 *   console.log(manager.latitude, manager.longitude);
 	 * });
 	 *
-	 * @since 0.12.2-alpha
+	 * @since 0.12.3-alpha
 	 */
 	static getInstance(position?: GeolocationPosition): PositionManager {
 		if (!PositionManager.instance) {
@@ -256,7 +256,7 @@ class PositionManager {
 	 *
 	 * @param position - Optional initial position data
 	 *
-	 * @since 0.12.2-alpha
+	 * @since 0.12.3-alpha
 	 */
 	constructor(position?: GeolocationPosition) {
 		this.observerSubject = new DualObserverSubject<PositionObserverArgs>();
@@ -343,7 +343,7 @@ class PositionManager {
 	 *   PositionManager.getInstance().update(pos);
 	 * });
 	 *
-	 * @since 0.12.2-alpha
+	 * @since 0.12.3-alpha
 	 */
 	update(position: GeolocationPosition): void {
 		let bUpdateCurrPos = true;
@@ -453,7 +453,7 @@ class PositionManager {
 	 * console.log(manager.toString());
 	 * // "PositionManager: -23.5505, -46.6333, good, 760, 0, 0, 1634567890123"
 	 *
-	 * @since 0.12.2-alpha
+	 * @since 0.12.3-alpha
 	 */
 	toString(): string {
 		const position = this.lastPosition;

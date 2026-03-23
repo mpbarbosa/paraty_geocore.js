@@ -54,7 +54,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.12.2-alpha] — 2026-03-23
+## [0.12.3-alpha] — 2026-03-23
 
 ### Added
 

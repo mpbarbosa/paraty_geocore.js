@@ -9,7 +9,7 @@
  * @jest-environment node
  * @author Marcelo Pereira Barbosa
  * @see [PositionManager Documentation](../../docs/POSITION_MANAGER.md)
- * @since 0.12.2-alpha
+ * @since 0.12.3-alpha
  */
 
 import PositionManager, { initializeConfig, createPositionManagerConfig } from '../../src/core/PositionManager';

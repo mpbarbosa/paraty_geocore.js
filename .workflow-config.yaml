@@ -4,7 +4,7 @@ project:
   name: "paraty_geocore.js"
   type: "nodejs-library"
   kind: "location_based_service"  # domain classification: geolocation/LBS library
-  version: "0.12.2-alpha"  # keep in sync with package.json
+  version: "0.12.3-alpha"  # keep in sync with package.json
   description: "TypeScript library providing core geolocation classes for location-based applications"
 
 tech_stack:
