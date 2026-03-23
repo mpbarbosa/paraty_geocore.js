@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Unit tests for the logger utility.
  *
  * @jest-environment node
- * @since 0.12.0-alpha
+ * @since 0.12.1-alpha
  */
 const logger_1 = require("../../src/utils/logger");
 describe('logger', () => {

@@ -139,16 +139,6 @@ describe('GeoPosition', () => {
             expect(GeoPosition_1.default.getAccuracyQuality(accuracy)).toBe(expected);
         });
     });
-    describe('calculateAccuracyQuality', () => {
-        it('should return correct quality for current accuracy', () => {
-            const pos = new GeoPosition_1.default((0, fixtures_1.makeGeoPositionInput)(1, 2, 25));
-            expect(pos.calculateAccuracyQuality()).toBe('good');
-        });
-        it('should return "very bad" for missing accuracy', () => {
-            const pos = new GeoPosition_1.default({ coords: { latitude: 1, longitude: 2 } });
-            expect(pos.calculateAccuracyQuality()).toBe('very bad');
-        });
-    });
     describe('distanceTo', () => {
         it('should call calculateDistance with correct args', () => {
             const pos = new GeoPosition_1.default({

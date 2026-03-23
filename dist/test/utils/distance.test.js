@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * FRS: AC-DI-01 through AC-DI-04
  */
 const distance_1 = require("../../src/utils/distance");
+const errors_1 = require("../../src/core/errors");
 // ---------------------------------------------------------------------------
 // Known reference points
 // ---------------------------------------------------------------------------
@@ -96,6 +97,44 @@ describe('calculateDistance', () => {
             const d = (0, distance_1.calculateDistance)(0, 180, 0, -180);
             expect(Number.isFinite(d)).toBe(true);
             expect(d).toBeCloseTo(0, -1); // ±180 longitude is the same meridian
+        });
+    });
+    describe('AC-DI-05 — coordinate range validation', () => {
+        it('throws GeoPositionError when lat1 < -90', () => {
+            expect(() => (0, distance_1.calculateDistance)(-91, 0, 0, 0)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(-91, 0, 0, 0)).toThrow('lat1');
+        });
+        it('throws GeoPositionError when lat1 > 90', () => {
+            expect(() => (0, distance_1.calculateDistance)(91, 0, 0, 0)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(91, 0, 0, 0)).toThrow('lat1');
+        });
+        it('throws GeoPositionError when lat2 < -90', () => {
+            expect(() => (0, distance_1.calculateDistance)(0, 0, -91, 0)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(0, 0, -91, 0)).toThrow('lat2');
+        });
+        it('throws GeoPositionError when lat2 > 90', () => {
+            expect(() => (0, distance_1.calculateDistance)(0, 0, 91, 0)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(0, 0, 91, 0)).toThrow('lat2');
+        });
+        it('throws GeoPositionError when lon1 < -180', () => {
+            expect(() => (0, distance_1.calculateDistance)(0, -181, 0, 0)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(0, -181, 0, 0)).toThrow('lon1');
+        });
+        it('throws GeoPositionError when lon1 > 180', () => {
+            expect(() => (0, distance_1.calculateDistance)(0, 181, 0, 0)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(0, 181, 0, 0)).toThrow('lon1');
+        });
+        it('throws GeoPositionError when lon2 < -180', () => {
+            expect(() => (0, distance_1.calculateDistance)(0, 0, 0, -181)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(0, 0, 0, -181)).toThrow('lon2');
+        });
+        it('throws GeoPositionError when lon2 > 180', () => {
+            expect(() => (0, distance_1.calculateDistance)(0, 0, 0, 181)).toThrow(errors_1.GeoPositionError);
+            expect(() => (0, distance_1.calculateDistance)(0, 0, 0, 181)).toThrow('lon2');
+        });
+        it('does NOT throw for boundary values exactly ±90 lat / ±180 lon', () => {
+            expect(() => (0, distance_1.calculateDistance)(90, 180, -90, -180)).not.toThrow();
+            expect(() => (0, distance_1.calculateDistance)(-90, -180, 90, 180)).not.toThrow();
         });
     });
 });

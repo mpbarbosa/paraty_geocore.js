@@ -54,7 +54,7 @@
  *   manager.update(position); // Validates and updates if rules pass
  * });
  *
- * @since 0.12.0-alpha
+ * @since 0.12.1-alpha
  * @author Marcelo Pereira Barbosa
  */
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -93,7 +93,7 @@ let config = createPositionManagerConfig();
  *   notAcceptedAccuracy: ['medium', 'bad', 'very bad'],
  * });
  *
- * @since 0.12.0-alpha
+ * @since 0.12.1-alpha
  */
 function initializeConfig(newConfig) {
     config = { ...createPositionManagerConfig(), ...newConfig };
@@ -133,7 +133,7 @@ class PositionManager {
      *   console.log(manager.latitude, manager.longitude);
      * });
      *
-     * @since 0.12.0-alpha
+     * @since 0.12.1-alpha
      */
     static getInstance(position) {
         if (!PositionManager.instance) {
@@ -154,7 +154,7 @@ class PositionManager {
      *
      * @param position - Optional initial position data
      *
-     * @since 0.12.0-alpha
+     * @since 0.12.1-alpha
      */
     constructor(position) {
         /** Timestamp (ms) of the most recently accepted position. */
@@ -233,7 +233,7 @@ class PositionManager {
      *   PositionManager.getInstance().update(pos);
      * });
      *
-     * @since 0.12.0-alpha
+     * @since 0.12.1-alpha
      */
     update(position) {
         let bUpdateCurrPos = true;
@@ -314,7 +314,7 @@ class PositionManager {
      * console.log(manager.toString());
      * // "PositionManager: -23.5505, -46.6333, good, 760, 0, 0, 1634567890123"
      *
-     * @since 0.12.0-alpha
+     * @since 0.12.1-alpha
      */
     toString() {
         const position = this.lastPosition;
