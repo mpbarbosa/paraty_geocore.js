@@ -8,7 +8,7 @@
  * consistent across the library.
  *
  * @module utils/logger
- * @since 0.12.3-alpha
+ * @since 0.12.4-alpha
  * @author Marcelo Pereira Barbosa
  */
 Object.defineProperty(exports, "__esModule", { value: true });
