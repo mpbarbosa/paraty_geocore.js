@@ -129,14 +129,14 @@ jobs:
           TARGET_URL: ${{ steps.resolve.outputs.tarball_url }}
 
       # ── 6. Install & lock ─────────────────────────────────────────────────────
-      # npm ci installs from the existing lock file (deterministic, no drift).
-      # npm install is then called with the specific new tarball URL so only the
-      # target dependency's lock entry is regenerated — devDep ranges are left
-      # untouched, making this step idempotent for repeated same-version runs.
-      - name: Install dependencies (npm ci + targeted update)
+      # npm install with the explicit tarball URL adds (or updates) bessa_patterns.ts
+      # and regenerates only the affected lock-file entries, leaving all other
+      # devDependency ranges untouched.  We skip `npm ci` here because step 5
+      # already modified package.json — any lock-file check would fail by design
+      # until the bessa_patterns.ts entry is written.
+      - name: Install dependencies (targeted update)
         if: steps.current.outputs.up_to_date != 'true'
         run: |
-          npm ci
           npm install "bessa_patterns.ts@${{ steps.resolve.outputs.tarball_url }}"
 
       # ── 7. Type-check ─────────────────────────────────────────────────────────
