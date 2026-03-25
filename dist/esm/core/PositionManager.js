@@ -53,7 +53,7 @@
  *   manager.update(position); // Validates and updates if rules pass
  * });
  *
- * @since 0.12.4-alpha
+ * @since 0.12.5-alpha
  * @author Marcelo Pereira Barbosa
  */
 import GeoPosition from './GeoPosition.js';
@@ -86,7 +86,7 @@ let config = createPositionManagerConfig();
  *   notAcceptedAccuracy: ['medium', 'bad', 'very bad'],
  * });
  *
- * @since 0.12.4-alpha
+ * @since 0.12.5-alpha
  */
 export function initializeConfig(newConfig) {
     config = { ...createPositionManagerConfig(), ...newConfig };
@@ -126,7 +126,7 @@ class PositionManager {
      *   console.log(manager.latitude, manager.longitude);
      * });
      *
-     * @since 0.12.4-alpha
+     * @since 0.12.5-alpha
      */
     static getInstance(position) {
         if (!PositionManager.instance) {
@@ -147,7 +147,7 @@ class PositionManager {
      *
      * @param position - Optional initial position data
      *
-     * @since 0.12.4-alpha
+     * @since 0.12.5-alpha
      */
     constructor(position) {
         /** Timestamp (ms) of the most recently accepted position. */
@@ -226,7 +226,7 @@ class PositionManager {
      *   PositionManager.getInstance().update(pos);
      * });
      *
-     * @since 0.12.4-alpha
+     * @since 0.12.5-alpha
      */
     update(position) {
         let bUpdateCurrPos = true;
@@ -307,7 +307,7 @@ class PositionManager {
      * console.log(manager.toString());
      * // "PositionManager: -23.5505, -46.6333, good, 760, 0, 0, 1634567890123"
      *
-     * @since 0.12.4-alpha
+     * @since 0.12.5-alpha
      */
     toString() {
         const position = this.lastPosition;
