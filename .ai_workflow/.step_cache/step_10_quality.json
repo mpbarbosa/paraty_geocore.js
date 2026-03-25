@@ -34,7 +34,7 @@
     ".ai_workflow/metrics/current_run.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-23T21:34:27.651Z"
+      "lastAnalyzed": "2026-03-25T23:28:30.662Z"
     },
     "src/index.ts": {
       "score": 100,
@@ -79,12 +79,12 @@
     "package-lock.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
+      "lastAnalyzed": "2026-03-25T23:28:30.662Z"
     },
     "package.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-18T03:01:01.184Z"
+      "lastAnalyzed": "2026-03-25T23:28:30.662Z"
     },
     "src/core/PositionManager.ts": {
       "score": 100,
