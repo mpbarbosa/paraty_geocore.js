@@ -91,7 +91,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Updated `bessa_patterns.ts` dependency to `v0.12.4-alpha` (fixes `withObserver` missing from tagged dist)
+- Updated `bessa_patterns.ts` dependency to `v0.12.12-alpha` (fixes `withObserver` missing from tagged dist)
 
 ---
 
