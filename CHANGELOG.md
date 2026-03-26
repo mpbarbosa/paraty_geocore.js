@@ -7,6 +7,14 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.14.1-alpha] — 2026-03-26
+
+### Changed
+
+- Updated `bessa_patterns.ts` dependency to `v0.12.13-alpha` (adds `CallbackRegistry` pattern)
+
+---
+
 ## [0.14.0-alpha] — 2026-03-23
 
 ### Added
