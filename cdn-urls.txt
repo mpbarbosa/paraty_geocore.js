@@ -1,5 +1,5 @@
 jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.12.9-alpha
-Generated: Thu Mar 26 15:33:19 -03 2026
+Generated: Thu Mar 26 15:59:12 -03 2026
 =============================================================================
 
 PRODUCTION (Recommended - Specific Version):
