@@ -7,6 +7,14 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.14.2-alpha] — 2026-03-26
+
+### Changed
+
+- Updated `ibira.js` dependency to `v0.4.13-alpha` (fixes `toString()` trailing `-` when prerelease is empty)
+
+---
+
 ## [0.14.1-alpha] — 2026-03-26
 
 ### Changed
