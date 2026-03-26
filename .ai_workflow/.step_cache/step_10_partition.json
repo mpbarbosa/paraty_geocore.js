@@ -2,9 +2,9 @@
   "version": 1,
   "partitionIndex": 0,
   "totalPartitions": 1,
-  "filesHash": "30d51cfc",
+  "filesHash": "9b66c4b0",
   "partitionLabels": [
-    ".ai_workflow/metrics, cdn-delivery.sh"
+    ".ai_workflow/metrics"
   ],
-  "updatedAt": "2026-03-26T18:03:35.145Z"
+  "updatedAt": "2026-03-26T18:23:09.642Z"
 }
