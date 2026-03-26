@@ -29,6 +29,7 @@ cd "${PROJECT_ROOT}"
 # ── Read version from package.json ────────────────────────────────────────────
 PACKAGE_VERSION="$(node -p "require('./package.json').version")"
 TAG="v${PACKAGE_VERSION}"
+MAIN_FILE="dist/src/index.js"
 
 echo ""
 echo -e "${BLUE}╔════════════════════════════════════════════╗${NC}"
@@ -88,10 +89,67 @@ success "Pushed to origin/${CURRENT_BRANCH}"
 echo ""
 
 # ── 4. Generate CDN URLs ──────────────────────────────────────────────────────
-info "Step 4/4 — Generating jsDelivr CDN URLs …"
-npm run cdn
+info "Step 4/5 — Generating jsDelivr CDN URLs …"
+bash cdn-delivery.sh > /dev/null 2>&1 || true
+if [[ -f "${PROJECT_ROOT}/cdn-urls.txt" ]]; then
+  cat "${PROJECT_ROOT}/cdn-urls.txt"
+else
+  warn "cdn-urls.txt not found"
+fi
 success "CDN URL list generated"
 echo ""
 
 success "Deployment of ${TAG} complete! 🚀"
+echo "    CDN will pick up the new tag automatically via jsDelivr within a few minutes."
+echo ""
+
+# ── 5. CDN availability check ─────────────────────────────────────────────────
+info "Step 5/5 — Checking CDN availability for ${TAG} …"
+
+GITHUB_USER="$(git remote get-url origin | sed -E 's|.*[:/]([^/]+)/[^/]+$|\1|; s|\.git$||')"
+GITHUB_REPO="$(basename "$(git remote get-url origin)" .git)"
+CDN_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${TAG}/${MAIN_FILE}"
+
+_cdn_purge() {
+  local url="$1"
+  local purge_url="${url/cdn.jsdelivr.net/purge.jsdelivr.net}"
+  curl -s -o /dev/null --max-time 10 "${purge_url}" || true
+}
+
+_github_raw_check() {
+  local gh_user="$1" gh_repo="$2" git_tag="$3" rel_path="$4"
+  local raw_url="https://raw.githubusercontent.com/${gh_user}/${gh_repo}/${git_tag}/${rel_path}"
+  curl -s -f -o /dev/null --max-time 10 "${raw_url}"
+}
+
+_cdn_check() {
+  local label="$1" url="$2" max_retries=5 interval=30
+  _cdn_purge "${url}"
+  for ((attempt=1; attempt<=max_retries; attempt++)); do
+    if curl -s -f -o /dev/null --max-time 10 "${url}"; then
+      success "${label} is live on jsDelivr ✓"
+      echo "    ${url}"
+      return 0
+    fi
+    if [[ ${attempt} -lt ${max_retries} ]]; then
+      warn "${label}: not ready yet (attempt ${attempt}/${max_retries}) — retrying in ${interval}s …"
+      sleep "${interval}"
+    fi
+  done
+  warn "${label}: not yet available on CDN after ${max_retries} attempts."
+  echo "    Check manually: ${url}"
+  return 0
+}
+
+if command -v curl &>/dev/null; then
+  if _github_raw_check "${GITHUB_USER}" "${GITHUB_REPO}" "${TAG}" "${MAIN_FILE}"; then
+    success "${MAIN_FILE} is committed and visible on GitHub ✓"
+  else
+    warn "${MAIN_FILE} not found on GitHub — CDN delivery will fail"
+  fi
+  _cdn_check "${GITHUB_REPO} ${TAG}" "${CDN_URL}" || true
+else
+  warn "curl not found — skipping CDN check"
+  echo "    Verify manually: ${CDN_URL}"
+fi
 echo ""

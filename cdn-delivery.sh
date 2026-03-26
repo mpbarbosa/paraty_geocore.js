@@ -192,18 +192,40 @@ echo ""
 if command -v curl &> /dev/null; then
     echo -e "${YELLOW}🧪 Testing CDN availability...${NC}"
     TEST_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/package.json"
+    RAW_URL="https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/v${PACKAGE_VERSION}/package.json"
+    PURGE_URL="${TEST_URL/cdn.jsdelivr.net/purge.jsdelivr.net}"
 
-    if curl -s -f -o /dev/null "$TEST_URL"; then
-        echo -e "${GREEN}✅ CDN is serving your package!${NC}"
-        echo -e "   Test URL: ${TEST_URL}"
+    # Confirm file is visible on GitHub before polling jsDelivr
+    if curl -s -f -o /dev/null --max-time 10 "${RAW_URL}"; then
+        echo -e "${GREEN}✅ Package is committed and visible on GitHub${NC}"
     else
-        echo -e "${RED}⚠️  Package not yet available on CDN${NC}"
+        echo -e "${RED}⚠️  package.json not found on GitHub for tag v${PACKAGE_VERSION}${NC}"
         echo -e "   Make sure you have:"
         echo -e "   1. Pushed your code to GitHub"
         echo -e "   2. Created a git tag: git tag v${PACKAGE_VERSION}"
         echo -e "   3. Pushed the tag: git push origin v${PACKAGE_VERSION}"
-        echo -e ""
-        echo -e "   Or wait a few minutes for jsDelivr to sync from GitHub"
+    fi
+
+    # Purge jsDelivr cache then poll with retries
+    curl -s -o /dev/null --max-time 10 "${PURGE_URL}" || true
+    MAX_RETRIES=5
+    INTERVAL=30
+    CDN_LIVE=false
+    for ((attempt=1; attempt<=MAX_RETRIES; attempt++)); do
+        if curl -s -f -o /dev/null --max-time 10 "${TEST_URL}"; then
+            echo -e "${GREEN}✅ CDN is serving your package!${NC}"
+            echo -e "   URL: ${TEST_URL}"
+            CDN_LIVE=true
+            break
+        fi
+        if [[ ${attempt} -lt ${MAX_RETRIES} ]]; then
+            echo -e "${YELLOW}⚠️  Not ready yet (attempt ${attempt}/${MAX_RETRIES}) — retrying in ${INTERVAL}s …${NC}"
+            sleep "${INTERVAL}"
+        fi
+    done
+    if [[ "${CDN_LIVE}" == "false" ]]; then
+        echo -e "${YELLOW}⚠️  Package not yet available on CDN after ${MAX_RETRIES} attempts${NC}"
+        echo -e "   Check manually: ${TEST_URL}"
     fi
 else
     echo -e "${YELLOW}ℹ️  Install curl to test CDN availability${NC}"
