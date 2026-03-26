@@ -1,6 +1,6 @@
 {
   "name": "paraty_geocore.js",
-  "version": "0.12.7-alpha",
+  "version": "0.12.8-alpha",
   "description": "Core JavaScript classes for geolocation applications",
   "main": "dist/src/index.js",
   "exports": {
