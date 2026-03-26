@@ -53,7 +53,7 @@
  *   manager.update(position); // Validates and updates if rules pass
  * });
  *
- * @since 0.12.7-alpha
+ * @since 0.12.8-alpha
  * @author Marcelo Pereira Barbosa
  */
 import GeoPosition from './GeoPosition.js';
@@ -110,7 +110,7 @@ export declare function createPositionManagerConfig(): PositionManagerConfig;
  *   notAcceptedAccuracy: ['medium', 'bad', 'very bad'],
  * });
  *
- * @since 0.12.7-alpha
+ * @since 0.12.8-alpha
  */
 export declare function initializeConfig(newConfig: Partial<PositionManagerConfig>): void;
 interface PositionError {
@@ -188,7 +188,7 @@ declare class PositionManager {
      *   console.log(manager.latitude, manager.longitude);
      * });
      *
-     * @since 0.12.7-alpha
+     * @since 0.12.8-alpha
      */
     static getInstance(position?: GeolocationPosition): PositionManager;
     /**
@@ -200,7 +200,7 @@ declare class PositionManager {
      *
      * @param position - Optional initial position data
      *
-     * @since 0.12.7-alpha
+     * @since 0.12.8-alpha
      */
     constructor(position?: GeolocationPosition);
     /**
@@ -261,7 +261,7 @@ declare class PositionManager {
      *   PositionManager.getInstance().update(pos);
      * });
      *
-     * @since 0.12.7-alpha
+     * @since 0.12.8-alpha
      */
     update(position: GeolocationPosition): void;
     /**
@@ -274,7 +274,7 @@ declare class PositionManager {
      * console.log(manager.toString());
      * // "PositionManager: -23.5505, -46.6333, good, 760, 0, 0, 1634567890123"
      *
-     * @since 0.12.7-alpha
+     * @since 0.12.8-alpha
      */
     toString(): string;
 }
