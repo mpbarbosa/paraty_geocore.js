@@ -7,7 +7,7 @@
  * consistent across the library.
  *
  * @module utils/logger
- * @since 0.12.5-alpha
+ * @since 0.12.6-alpha
  * @author Marcelo Pereira Barbosa
  */
 /**
