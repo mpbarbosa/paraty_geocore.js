@@ -42,14 +42,14 @@ info "Git tag      : ${TAG}"
 echo ""
 
 # ── 1. Build ──────────────────────────────────────────────────────────────────
-info "Step 1/4 — Building TypeScript (CJS + ESM) …"
+info "Step 1/5 — Building TypeScript (CJS + ESM) …"
 npm run build
 npm run build:esm
 success "Build complete (CJS + ESM)"
 echo ""
 
 # ── 2. Commit build artifacts ─────────────────────────────────────────────────
-info "Step 2/4 — Committing build artifacts …"
+info "Step 2/5 — Committing build artifacts …"
 
 # Stage compiled output and delivery script (skip if nothing changed)
 git add dist/ cdn-delivery.sh 2>/dev/null || true
@@ -63,7 +63,7 @@ fi
 echo ""
 
 # ── 3. Tag & push ─────────────────────────────────────────────────────────────
-info "Step 3/4 — Tagging and pushing …"
+info "Step 3/5 — Tagging and pushing …"
 
 # Detect current branch dynamically (avoids hardcoding 'main')
 CURRENT_BRANCH="$(git branch --show-current)"
@@ -108,7 +108,7 @@ info "Step 5/5 — Checking CDN availability for ${TAG} …"
 
 GITHUB_USER="$(git remote get-url origin | sed -E 's|.*[:/]([^/]+)/[^/]+$|\1|; s|\.git$||')"
 GITHUB_REPO="$(basename "$(git remote get-url origin)" .git)"
-CDN_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${TAG}/${MAIN_FILE}"
+CDN_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}"
 
 _cdn_purge() {
   local url="$1"
