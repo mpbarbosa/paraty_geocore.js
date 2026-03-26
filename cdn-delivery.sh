@@ -18,6 +18,8 @@ GITHUB_REPO="paraty_geocore.js"
 PACKAGE_VERSION=$(node -p "require('./package.json').version")
 [[ -n "${PACKAGE_VERSION}" ]] || { echo "Error: could not determine package version from package.json" >&2; exit 1; }
 MAIN_FILE="dist/src/index.js"
+MAJOR="$(echo "${PACKAGE_VERSION}" | cut -d. -f1)"
+MINOR="$(echo "${PACKAGE_VERSION}" | cut -d. -f2 | sed 's/-.*//')"
 
 section() { echo -e "${YELLOW}${1}${NC}"; echo ""; }
 
@@ -67,8 +69,8 @@ echo ""
 # 4. Load with version ranges
 # ==============================================================================
 section "🎯 Version Range URLs (SemVer):"
-echo "Load latest v0.9.x (patch updates):"
-echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@0.9/${MAIN_FILE}"
+echo "Load latest v${MAJOR}.${MINOR}.x (patch updates):"
+echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${MAJOR}.${MINOR}/${MAIN_FILE}"
 echo ""
 echo "Load latest v0.x.x (minor updates):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@0/${MAIN_FILE}"
@@ -163,7 +165,7 @@ DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${CURRENT_BRANCH}/${MAIN_FILE}
 
 VERSION RANGE (Auto-update patches):
-https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@0.9/${MAIN_FILE}
+https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${MAJOR}.${MINOR}/${MAIN_FILE}
 
 NPM CDN (if published to npm):
 https://cdn.jsdelivr.net/npm/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}
