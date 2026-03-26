@@ -177,7 +177,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | 0.13.0-alpha  | Coordinate range validation in `calculateDistance`; `calculateAccuracyQuality()` removed |
 | 0.14.0-alpha  | `ReferencePlace` — OSM point-of-interest wrapper with Portuguese descriptions |
 | 0.14.1-alpha  | Dependency bump: `bessa_patterns.ts` → `v0.12.14-alpha` (`CallbackRegistry` added upstream) |
-| 0.14.2-alpha  | Dependency bump: `ibira.js` → `v0.4.13-alpha` (fixes `toString()` trailing `-` on empty prerelease) |
+| 0.14.2-alpha  | Dependency bump: `ibira.js` → `v0.4.20-alpha` (fixes `toString()` trailing `-` on empty prerelease) |
 
 ---
 
