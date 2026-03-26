@@ -34,7 +34,7 @@
     ".ai_workflow/metrics/current_run.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-26T18:23:09.642Z"
+      "lastAnalyzed": "2026-03-26T18:53:39.519Z"
     },
     "src/index.ts": {
       "score": 100,
@@ -175,6 +175,11 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-26T18:03:35.144Z"
+    },
+    ".ai_workflow/cache/step_21_doc_consolidation.json": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-26T18:53:39.519Z"
     }
   }
 }
