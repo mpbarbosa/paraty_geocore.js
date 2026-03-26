@@ -34,7 +34,7 @@
     ".ai_workflow/metrics/current_run.json": {
       "score": 100,
       "issueCount": 0,
-      "lastAnalyzed": "2026-03-25T23:28:30.662Z"
+      "lastAnalyzed": "2026-03-26T02:01:43.288Z"
     },
     "src/index.ts": {
       "score": 100,
@@ -150,6 +150,26 @@
       "score": 100,
       "issueCount": 0,
       "lastAnalyzed": "2026-03-23T21:25:34.985Z"
+    },
+    "scripts/smoke-test.cjs": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-26T02:01:43.288Z"
+    },
+    "scripts/colors.sh": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-26T02:01:43.288Z"
+    },
+    "scripts/deploy.sh": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-26T02:01:43.288Z"
+    },
+    "scripts/generate_ts_profile.sh": {
+      "score": 100,
+      "issueCount": 0,
+      "lastAnalyzed": "2026-03-26T02:01:43.288Z"
     }
   }
 }
