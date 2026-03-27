@@ -145,6 +145,16 @@ declare class PositionManager {
     private lastModified;
     /** Last accepted geographic position. */
     lastPosition: GeoPosition | null;
+    /**
+     * When `true`, the distance/time gate is bypassed so every throttled GPS
+     * fix is forwarded to subscribers regardless of movement distance or elapsed
+     * time.  Intended to be set to `true` while a logradouro confirmation is in
+     * progress (so the confirmation buffer fills quickly) and restored to `false`
+     * once the confirmation buffers settle.
+     *
+     * @since 0.12.11-alpha
+     */
+    private _bypassDistanceRule;
     subscribe: (observer: {
         update?: (...args: PositionObserverArgs) => void;
     }) => void;
@@ -264,6 +274,22 @@ declare class PositionManager {
      * @since 0.12.10-alpha
      */
     update(position: GeolocationPosition): void;
+    /**
+     * Enables or disables the distance/time gate bypass.
+     *
+     * When `true`, `update()` forwards every throttled GPS fix to subscribers
+     * even if neither the distance nor the time threshold has been met.  Set to
+     * `true` while a logradouro confirmation is in progress and restore to
+     * `false` once the confirmation buffers settle.
+     *
+     * @param bypass - `true` to bypass the distance/time gate; `false` to
+     *   restore normal behaviour.
+     *
+     * @since 0.12.11-alpha
+     */
+    setBypassDistanceRule(bypass: boolean): void;
+    /** Returns whether the distance/time gate bypass is currently active. */
+    get bypassDistanceRule(): boolean;
     /**
      * Returns a formatted string representation of the current position,
      * useful for debugging and logging.

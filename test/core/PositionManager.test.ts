@@ -505,4 +505,63 @@ describe('PositionManager', () => {
 			expect(cfg.notAcceptedAccuracy).toBeNull();
 		});
 	});
+
+	// ── bypassDistanceRule (v0.12.11-alpha) ──────────────────────────────────
+
+	describe('bypassDistanceRule', () => {
+		it('defaults to false', () => {
+			const manager = new PositionManager();
+			expect(manager.bypassDistanceRule).toBe(false);
+		});
+
+		it('setBypassDistanceRule(true) sets the flag', () => {
+			const manager = new PositionManager();
+			manager.setBypassDistanceRule(true);
+			expect(manager.bypassDistanceRule).toBe(true);
+		});
+
+		it('setBypassDistanceRule(false) clears the flag', () => {
+			const manager = new PositionManager();
+			manager.setBypassDistanceRule(true);
+			manager.setBypassDistanceRule(false);
+			expect(manager.bypassDistanceRule).toBe(false);
+		});
+
+		it('when true, forwards update even when neither distance nor time threshold is met', () => {
+			mockCalculateDistance.mockReturnValue(5); // < 20 m
+
+			const manager  = new PositionManager(makePosition(-23.5505, -46.6333, 10, TEST_TIMESTAMP));
+			const observer = makeObserver();
+			manager.subscribe(observer);
+			manager.setBypassDistanceRule(true);
+
+			// Time also not met (1 second < 30 s)
+			manager.update(makePosition(-23.5506, -46.6334, 10, TEST_TIMESTAMP + 1_000));
+
+			expect(observer.update).toHaveBeenCalledWith(
+				manager,
+				expect.stringMatching(/PositionManager updated|Immediate address update/),
+				null,
+				expect.anything(),
+			);
+		});
+
+		it('when false, blocks update when neither distance nor time threshold is met', () => {
+			mockCalculateDistance.mockReturnValue(5); // < 20 m
+
+			const manager  = new PositionManager(makePosition(-23.5505, -46.6333, 10, TEST_TIMESTAMP));
+			const observer = makeObserver();
+			manager.subscribe(observer);
+			manager.setBypassDistanceRule(false);
+
+			manager.update(makePosition(-23.5506, -46.6334, 10, TEST_TIMESTAMP + 1_000));
+
+			expect(observer.update).toHaveBeenCalledWith(
+				manager,
+				PositionManager.strCurrPosNotUpdate,
+				null,
+				expect.objectContaining({ name: 'DistanceAndTimeError' }),
+			);
+		});
+	});
 });

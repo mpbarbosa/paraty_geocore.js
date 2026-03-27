@@ -7,6 +7,17 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.12.11-alpha] — 2026-03-27
+
+### Added
+
+- `PositionManager`: `setBypassDistanceRule(bypass: boolean)` method and
+  `bypassDistanceRule` getter — when `true`, the distance/time gate is
+  bypassed so every throttled GPS fix is forwarded to subscribers
+  (intended for use during logradouro confirmation flows)
+
+---
+
 ## [0.14.3-alpha] — 2026-03-27
 
 ### Changed
