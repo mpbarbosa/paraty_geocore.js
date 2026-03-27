@@ -1,7 +1,7 @@
 # Functional Requirements — paraty_geocore.js
 
 **Project:** paraty_geocore.js
-**Current version:** 0.14.2-alpha
+**Current version:** 0.14.3-alpha
 **Author:** Marcelo Pereira Barbosa
 
 This document defines the top-level functional requirements and acceptance criteria for the library. Detailed per-module specifications are maintained separately and linked below.
@@ -22,6 +22,7 @@ This document defines the top-level functional requirements and acceptance crite
 | `utils/distance` | `src/utils/distance.ts` | [distance-FRS.md](./distance-FRS.md) |
 | `utils/async` | `src/utils/async.ts` | [async-FRS.md](./async-FRS.md) |
 | `utils/logger` | `src/utils/logger.ts` | (see §12 below) |
+| `core/ReferencePlace` | `src/core/ReferencePlace.ts` | [ReferencePlace-FRS.md](./ReferencePlace-FRS.md) |
 
 ---
 
@@ -80,8 +81,7 @@ This document defines the top-level functional requirements and acceptance crite
 
 ### 1.2 Known Limitations
 
-- `toString()` treats a latitude or longitude of exactly `0` as falsy, producing `"No position data"` for positions at the equator/prime-meridian intersection. This is a known issue; callers near that coordinate should use properties directly.
-- `calculateAccuracyQuality()` instance method is **deprecated and broken** — do not use. Use the `accuracyQuality` property.
+- `altitude`, `altitudeAccuracy`, `heading`, and `speed` may be `null` depending on the device and browser; `toString()` renders them as `undefined` in that case.
 
 ---
 
@@ -137,7 +137,6 @@ This document defines the top-level functional requirements and acceptance crite
 
 ### 4.2 Known Limitations
 
-- Coordinates outside valid ranges (lat: −90 to 90, lon: −180 to 180) are not validated; callers must supply valid inputs.
 - Spherical Earth model (mean radius 6,371 km) introduces < 0.5% error vs WGS-84 ellipsoidal geometry.
 - `delay` is co-located in this module for convenience; it is unrelated to distance calculation.
 
@@ -170,7 +169,7 @@ This document defines the top-level functional requirements and acceptance crite
 
 ## 7. Out of Scope
 
-The following are explicitly **not** required for 0.13.0-alpha:
+The following are explicitly **not** required for 0.14.3-alpha:
 
 - npm package publication
 
@@ -280,6 +279,73 @@ The following are explicitly **not** required for 0.13.0-alpha:
 - **When** `warn(message)` is called
 - **Then** `console.warn` is called with a string starting with an ISO 8601 timestamp
 
+
+---
+
+## 13. `core/ReferencePlace` *(since 0.14.0-alpha)*
+
+### 13.1 Acceptance Criteria
+
+#### AC-RP-01 — Constructor extracts `className`, `typeName`, and `name`
+- **Given** an `OsmElement` with `class`, `type`, and `name` fields
+- **When** `new ReferencePlace(element)` is called
+- **Then** `className`, `typeName`, and `name` match the input values
+
+#### AC-RP-02 — Null/undefined/empty input yields null fields
+- **Given** `null`, `undefined`, or an empty object is passed to the constructor
+- **When** the instance is inspected
+- **Then** `className`, `typeName`, and `name` are all `null`
+
+#### AC-RP-03 — Instance is frozen after construction
+- **Given** a `ReferencePlace` instance
+- **When** `Object.isFrozen(instance)` is called
+- **Then** it returns `true`; property mutation throws in strict mode
+
+#### AC-RP-04 — `calculateDescription()` returns Portuguese description for known class/type
+- **Given** a known OSM class/type pair (e.g., `{ class: 'shop', type: 'mall' }`)
+- **When** `calculateDescription()` is called (or `description` is accessed)
+- **Then** the correct Portuguese string is returned (e.g., `"Shopping Center"`)
+
+#### AC-RP-05 — `calculateDescription()` falls back to `NO_REFERENCE_PLACE` for invalid/missing class
+- **Given** an unknown class (e.g., `"highway"`) or missing `className`/`typeName`
+- **When** `calculateDescription()` is called
+- **Then** `NO_REFERENCE_PLACE` (`"Não classificado"`) is returned
+
+#### AC-RP-06 — `calculateDescription()` falls back to `"<class>: <type>"` for unknown type within valid class
+- **Given** a valid class (e.g., `"shop"`) with an unmapped type (e.g., `"foo"`)
+- **When** `calculateDescription()` is called
+- **Then** the result is `"shop: foo"`
+
+#### AC-RP-07 — `calculateCategory()` returns category label for known class
+- **Given** a valid class/type pair
+- **When** `calculateCategory()` is called
+- **Then** the Portuguese category label is returned (e.g., `"Shopping Center"`)
+
+#### AC-RP-08 — `calculateCategory()` returns `"unknown"` for invalid/missing class
+- **Given** an invalid or absent `className`
+- **When** `calculateCategory()` is called
+- **Then** `"unknown"` is returned
+
+#### AC-RP-09 — `toString()` produces human-readable label
+- **Given** a `ReferencePlace` with a known description and name
+- **When** `toString()` is called
+- **Then** it returns `"ReferencePlace: <description> - <name>"` when name is present,
+  or `"ReferencePlace: <description>"` when name is absent
+
+#### AC-RP-10 — `VALID_REF_PLACE_CLASSES` is a frozen array
+- **Given** the exported constant `VALID_REF_PLACE_CLASSES`
+- **When** inspected
+- **Then** it is a `ReadonlyArray` containing `['place', 'shop', 'amenity', 'railway', 'building']`
+  and is frozen (mutation is a no-op or throws)
+
+#### AC-RP-11 — `NO_REFERENCE_PLACE` constant is exported
+- **When** `NO_REFERENCE_PLACE` is imported
+- **Then** its value is `"Não classificado"`
+
+### 13.2 Known Limitations
+
+- `referencePlaceMap` covers a limited subset of OSM classes and types; unmapped types
+  fall back to `"<class>: <type>"`. Extending the map is a future enhancement.
 
 ---
 

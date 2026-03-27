@@ -178,6 +178,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | 0.14.0-alpha  | `ReferencePlace` — OSM point-of-interest wrapper with Portuguese descriptions |
 | 0.14.1-alpha  | Dependency bump: `bessa_patterns.ts` → `v0.12.15-alpha` (`CallbackRegistry` added upstream) |
 | 0.14.2-alpha  | Dependency bump: `ibira.js` → `v0.4.22-alpha` (fixes `toString()` trailing `-` on empty prerelease) |
+| 0.14.3-alpha  | Docs: remove stale Known Limitations; add `ReferencePlace` to FRS |
 
 ---
 
