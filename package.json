@@ -71,7 +71,7 @@
     "typescript": "^5.4.0"
   },
   "dependencies": {
-    "bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.14-alpha.tar.gz",
+    "bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.15-alpha.tar.gz",
     "ibira.js": "https://github.com/mpbarbosa/ibira.js/archive/refs/tags/v0.4.22-alpha.tar.gz"
   }
 }
