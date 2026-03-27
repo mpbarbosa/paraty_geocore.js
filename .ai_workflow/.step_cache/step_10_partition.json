@@ -1,10 +1,8 @@
 {
   "version": 1,
   "partitionIndex": 0,
-  "totalPartitions": 1,
-  "filesHash": "99fae48c",
-  "partitionLabels": [
-    ".ai_workflow/metrics, .ai_workflow/cache"
-  ],
-  "updatedAt": "2026-03-26T18:53:39.521Z"
+  "totalPartitions": 0,
+  "filesHash": "e3b0c442",
+  "partitionLabels": [],
+  "updatedAt": "2026-03-27T14:51:47.619Z"
 }
