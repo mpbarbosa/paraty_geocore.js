@@ -1,5 +1,3 @@
-## SKILL
-
 ---
 name: update-bessa
 description: >
