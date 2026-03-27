@@ -1,7 +1,7 @@
 # Functional Requirements — paraty_geocore.js
 
 **Project:** paraty_geocore.js
-**Current version:** 0.14.3-alpha
+**Current version:** 0.15.0-alpha
 **Author:** Marcelo Pereira Barbosa
 
 This document defines the top-level functional requirements and acceptance criteria for the library. Detailed per-module specifications are maintained separately and linked below.
@@ -169,7 +169,7 @@ This document defines the top-level functional requirements and acceptance crite
 
 ## 7. Out of Scope
 
-The following are explicitly **not** required for 0.14.3-alpha:
+The following are explicitly **not** required for 0.15.0-alpha:
 
 - npm package publication
 
@@ -335,7 +335,7 @@ The following are explicitly **not** required for 0.14.3-alpha:
 #### AC-RP-10 — `VALID_REF_PLACE_CLASSES` is a frozen array
 - **Given** the exported constant `VALID_REF_PLACE_CLASSES`
 - **When** inspected
-- **Then** it is a `ReadonlyArray` containing `['place', 'shop', 'amenity', 'railway', 'building']`
+- **Then** it is a `ReadonlyArray` containing `['place', 'shop', 'amenity', 'railway', 'building', 'leisure']`
   and is frozen (mutation is a no-op or throws)
 
 #### AC-RP-11 — `NO_REFERENCE_PLACE` constant is exported
@@ -344,8 +344,8 @@ The following are explicitly **not** required for 0.14.3-alpha:
 
 ### 13.2 Known Limitations
 
-- `referencePlaceMap` covers a limited subset of OSM classes and types; unmapped types
-  fall back to `"<class>: <type>"`. Extending the map is a future enhancement.
+- Unmapped types within a valid class fall back to `"<class>: <type>"`; new OSM
+  types can be added to `referencePlaceMap` as they are needed.
 
 ---
 

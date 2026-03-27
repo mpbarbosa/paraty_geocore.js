@@ -61,10 +61,27 @@ location information such as "Você está no Shopping Center Morumbi".
 | `place` | `house` | Residencial |
 | `shop` | `mall` | Shopping Center |
 | `shop` | `car_repair` | Oficina Mecânica |
+| `shop` | `supermarket` | Supermercado |
+| `shop` | `bakery` | Padaria |
+| `shop` | `convenience` | Loja de Conveniência |
+| `shop` | `pharmacy` | Farmácia |
 | `amenity` | `cafe` | Café |
+| `amenity` | `restaurant` | Restaurante |
+| `amenity` | `bar` | Bar |
+| `amenity` | `fast_food` | Lanchonete |
+| `amenity` | `hospital` | Hospital |
+| `amenity` | `school` | Escola |
+| `amenity` | `bank` | Banco |
+| `amenity` | `pharmacy` | Farmácia |
+| `amenity` | `fuel` | Posto de Combustível |
 | `railway` | `subway` | Estação do Metrô |
-| `railway` | `station` | Estação do Metrô |
+| `railway` | `station` | Estação de Trem |
 | `building` | `yes` | Edifício |
+| `building` | `school` | Escola |
+| `building` | `hospital` | Hospital |
+| `building` | `church` | Igreja |
+| `leisure` | `park` | Parque |
+| `leisure` | `playground` | Playground |
 
 Unmapped types within a valid class fall back to `"<class>: <type>"`.
 Classes outside `VALID_REF_PLACE_CLASSES` fall back to `NO_REFERENCE_PLACE`.
@@ -85,7 +102,7 @@ Fallback description used when a class/type pair cannot be resolved.
 
 ```ts
 export const VALID_REF_PLACE_CLASSES: ReadonlyArray<string> = Object.freeze([
-  'place', 'shop', 'amenity', 'railway', 'building',
+  'place', 'shop', 'amenity', 'railway', 'building', 'leisure',
 ]);
 ```
 
