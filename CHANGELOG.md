@@ -7,6 +7,24 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.14.3-alpha] — 2026-03-27
+
+### Changed
+
+- `docs/FUNCTIONAL_REQUIREMENTS.md`: removed three stale Known Limitations
+    - `GeoPosition.toString()` equator-bug entry — fix (`=== undefined` check) was
+      already in place and covered by tests
+    - `calculateAccuracyQuality()` deprecation notice — method was removed in 0.13.0-alpha
+    - `calculateDistance` "coordinates not validated" entry — range guards were added in 0.13.0-alpha
+- `docs/FUNCTIONAL_REQUIREMENTS.md`: updated "Out of Scope" version reference to 0.14.3-alpha
+- `docs/GeoPosition-FRS.md`: corrected `toString()` trigger condition from "falsy" to "`undefined`"
+- `docs/FUNCTIONAL_REQUIREMENTS.md`: added `core/ReferencePlace` to Module Index
+- `docs/FUNCTIONAL_REQUIREMENTS.md`: added §13 `core/ReferencePlace` acceptance criteria
+  (AC-RP-01 through AC-RP-11) and Known Limitations
+- `docs/ARCHITECTURE.md`: added v0.14.3-alpha row to versioning table
+
+---
+
 ## [0.14.2-alpha] — 2026-03-26
 
 ### Changed

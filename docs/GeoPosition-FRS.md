@@ -92,7 +92,7 @@ Returns a formatted string summary of the position for logging/debugging.
 
 **Returns:** `string`
 
-- If `latitude` or `longitude` is falsy: `"GeoPosition: No position data"`
+- If `latitude` or `longitude` is `undefined`: `"GeoPosition: No position data"`
 - Otherwise: `"GeoPosition: {latitude}, {longitude}, {accuracyQuality}, {altitude}, {speed}, {heading}, {timestamp}"`
 
 ---
