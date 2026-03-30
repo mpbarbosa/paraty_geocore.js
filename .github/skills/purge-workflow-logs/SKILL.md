@@ -1,17 +1,23 @@
 ---
 name: purge-workflow-logs
 description: >
-  Delete all transient workflow artefacts under .ai_workflow/ — specifically
+  Delete all transient workflow artefacts under $project_root/.ai_workflow/ — specifically
   the logs/, backlog/, summaries/, and analysis/ directories and everything
   inside them. Use this skill when asked to clean up, remove, or purge workflow
   logs, backlogs, summaries, or analysis reports, or before starting a fresh
   workflow run to avoid stale data from previous runs.
+parameters:
+  project_root:
+    description: >
+      Root directory of the project to operate on.
+      Defaults to the current GitHub Copilot CLI working directory.
+    default: $PWD
 ---
 
 ## Overview
 
 AI workflow runs accumulate three categories of transient output under
-`.ai_workflow/`:
+`$project_root/.ai_workflow/`:
 
 | Directory | Contents |
 |-----------|----------|
@@ -35,19 +41,19 @@ directories can be safely removed.
 
 ## What NOT to delete
 
-The following `.ai_workflow/` subdirectories and files are **permanent**
+The following `$project_root/.ai_workflow/` subdirectories and files are **permanent**
 and must not be touched by this skill:
 
 | Path | Purpose |
 |------|---------|
-| `.ai_workflow/context/` | Static context files injected into AI prompts |
-| `.ai_workflow/metrics/` | Long-lived metrics snapshots |
-| `.ai_workflow/ml_models/` | Cached model artefacts |
-| `.ai_workflow/archive/` | Historical run archives |
-| `.ai_workflow/checkpoints/` | Workflow execution checkpoints |
-| `.ai_workflow/commit_history.json` | Commit-level run history |
-| `.ai_workflow/plan.md` | Handoff artefact for `fix-log-issues` (if present) |
-| `.ai_workflow/.ai_cache/` | AI response cache (avoids redundant API calls) |
+| `$project_root/.ai_workflow/context/` | Static context files injected into AI prompts |
+| `$project_root/.ai_workflow/metrics/` | Long-lived metrics snapshots |
+| `$project_root/.ai_workflow/ml_models/` | Cached model artefacts |
+| `$project_root/.ai_workflow/archive/` | Historical run archives |
+| `$project_root/.ai_workflow/checkpoints/` | Workflow execution checkpoints |
+| `$project_root/.ai_workflow/commit_history.json` | Commit-level run history |
+| `$project_root/.ai_workflow/plan.md` | Handoff artefact for `fix-log-issues` (if present) |
+| `$project_root/.ai_workflow/.ai_cache/` | AI response cache (avoids redundant API calls) |
 
 ## Step-by-step execution
 
@@ -55,29 +61,29 @@ and must not be touched by this skill:
    exist:
 
    ```bash
-   ls .ai_workflow/logs    2>/dev/null && echo "logs: present"     || echo "logs: absent"
-   ls .ai_workflow/backlog  2>/dev/null && echo "backlog: present"  || echo "backlog: absent"
-   ls .ai_workflow/summaries 2>/dev/null && echo "summaries: present" || echo "summaries: absent"
-   ls .ai_workflow/analysis  2>/dev/null && echo "analysis: present"  || echo "analysis: absent"
+   ls "$project_root/.ai_workflow/logs"      2>/dev/null && echo "logs: present"      || echo "logs: absent"
+   ls "$project_root/.ai_workflow/backlog"   2>/dev/null && echo "backlog: present"   || echo "backlog: absent"
+   ls "$project_root/.ai_workflow/summaries" 2>/dev/null && echo "summaries: present" || echo "summaries: absent"
+   ls "$project_root/.ai_workflow/analysis"  2>/dev/null && echo "analysis: present"  || echo "analysis: absent"
    ```
 
 2. **Delete present directories.** Remove each directory that exists:
 
    ```bash
-   rm -rf .ai_workflow/logs .ai_workflow/backlog .ai_workflow/summaries .ai_workflow/analysis
+   rm -rf "$project_root/.ai_workflow/logs" "$project_root/.ai_workflow/backlog" "$project_root/.ai_workflow/summaries" "$project_root/.ai_workflow/analysis"
    ```
 
 3. **Verify removal.** Confirm none of the three directories remain:
 
    ```bash
-   ls .ai_workflow/
+   ls "$project_root/.ai_workflow/"
    ```
 
 4. **Commit if tracked.** Check whether any of the deleted paths were
    tracked in git:
 
    ```bash
-   git status --short
+   cd "$project_root" && git status --short
    ```
 
    - If `git status` shows staged deletions, commit them:
@@ -86,10 +92,10 @@ and must not be touched by this skill:
      chore: purge workflow logs, backlog, summaries, and analysis
 
      Removed transient AI workflow artefacts:
-       - .ai_workflow/logs/
-       - .ai_workflow/backlog/
-       - .ai_workflow/summaries/
-       - .ai_workflow/analysis/
+       - $project_root/.ai_workflow/logs/
+       - $project_root/.ai_workflow/backlog/
+       - $project_root/.ai_workflow/summaries/
+       - $project_root/.ai_workflow/analysis/
 
      Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
      ```
@@ -101,10 +107,10 @@ and must not be touched by this skill:
 
    ```
    ✓ purge-workflow-logs complete
-     Removed: .ai_workflow/logs/       (N run directories)
-     Removed: .ai_workflow/backlog/
-     Removed: .ai_workflow/summaries/
-     Removed: .ai_workflow/analysis/
+     Removed: $project_root/.ai_workflow/logs/       (N run directories)
+     Removed: $project_root/.ai_workflow/backlog/
+     Removed: $project_root/.ai_workflow/summaries/
+     Removed: $project_root/.ai_workflow/analysis/
      Git commit: <sha> | none needed (directories were gitignored)
    ```
 
@@ -118,10 +124,10 @@ are already absent, the `rm -rf` commands exit 0 with no side effects.
 
 ## Related files
 
-- `.ai_workflow/logs/` — primary target
-- `.ai_workflow/backlog/` — primary target
-- `.ai_workflow/summaries/` — primary target
-- `.ai_workflow/analysis/` — primary target
+- `$project_root/.ai_workflow/logs/` — primary target
+- `$project_root/.ai_workflow/backlog/` — primary target
+- `$project_root/.ai_workflow/summaries/` — primary target
+- `$project_root/.ai_workflow/analysis/` — primary target
 - `.github/skills/validate-logs/SKILL.md` — should be run before purging
 - `.github/skills/audit-and-fix/SKILL.md` — runs validate-logs + fix-log-issues then purge can follow
 - `.github/SKILLS.md` — skills index for this project
