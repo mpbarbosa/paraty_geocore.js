@@ -2,10 +2,10 @@
 name: purge-workflow-logs
 description: >
   Delete all transient workflow artefacts under .ai_workflow/ — specifically
-  the logs/, backlog/, and summaries/ directories and everything inside them.
-  Use this skill when asked to clean up, remove, or purge workflow logs,
-  backlogs, or summaries, or before starting a fresh workflow run to avoid
-  stale data from previous runs.
+  the logs/, backlog/, summaries/, and analysis/ directories and everything
+  inside them. Use this skill when asked to clean up, remove, or purge workflow
+  logs, backlogs, summaries, or analysis reports, or before starting a fresh
+  workflow run to avoid stale data from previous runs.
 ---
 
 ## Overview
@@ -18,8 +18,9 @@ AI workflow runs accumulate three categories of transient output under
 | `logs/` | Per-run execution transcripts (`workflow.log`, `steps/*.log`, `prompts/**/*.md`) |
 | `backlog/` | Pending step-definition files carried forward across runs |
 | `summaries/` | Executive summary reports per run (`workflow_summary.md`) |
+| `analysis/` | Analysis reports produced by `ai_workflow_log_analyzer` (`workflow_*/step_*/{report.json,report.md}`) |
 
-All three are ephemeral — they are gitignored and exist only to support
+All four are ephemeral — they are gitignored and exist only to support
 post-run analysis skills (`validate-logs`, `fix-log-issues`, `audit-and-fix`).
 Once those skills have been run (or the logs are no longer needed), the
 directories can be safely removed.
@@ -57,12 +58,13 @@ and must not be touched by this skill:
    ls .ai_workflow/logs    2>/dev/null && echo "logs: present"     || echo "logs: absent"
    ls .ai_workflow/backlog  2>/dev/null && echo "backlog: present"  || echo "backlog: absent"
    ls .ai_workflow/summaries 2>/dev/null && echo "summaries: present" || echo "summaries: absent"
+   ls .ai_workflow/analysis  2>/dev/null && echo "analysis: present"  || echo "analysis: absent"
    ```
 
 2. **Delete present directories.** Remove each directory that exists:
 
    ```bash
-   rm -rf .ai_workflow/logs .ai_workflow/backlog .ai_workflow/summaries
+   rm -rf .ai_workflow/logs .ai_workflow/backlog .ai_workflow/summaries .ai_workflow/analysis
    ```
 
 3. **Verify removal.** Confirm none of the three directories remain:
@@ -81,17 +83,18 @@ and must not be touched by this skill:
    - If `git status` shows staged deletions, commit them:
 
      ```
-     chore: purge workflow logs, backlog, and summaries
+     chore: purge workflow logs, backlog, summaries, and analysis
 
      Removed transient AI workflow artefacts:
        - .ai_workflow/logs/
        - .ai_workflow/backlog/
        - .ai_workflow/summaries/
+       - .ai_workflow/analysis/
 
      Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
      ```
 
-   - If the working tree is clean (all three directories were gitignored),
+   - If the working tree is clean (all four directories were gitignored),
      no commit is needed. Print a note to the console explaining this.
 
 5. **Print summary:**
@@ -101,6 +104,7 @@ and must not be touched by this skill:
      Removed: .ai_workflow/logs/       (N run directories)
      Removed: .ai_workflow/backlog/
      Removed: .ai_workflow/summaries/
+     Removed: .ai_workflow/analysis/
      Git commit: <sha> | none needed (directories were gitignored)
    ```
 
@@ -117,6 +121,7 @@ are already absent, the `rm -rf` commands exit 0 with no side effects.
 - `.ai_workflow/logs/` — primary target
 - `.ai_workflow/backlog/` — primary target
 - `.ai_workflow/summaries/` — primary target
+- `.ai_workflow/analysis/` — primary target
 - `.github/skills/validate-logs/SKILL.md` — should be run before purging
 - `.github/skills/audit-and-fix/SKILL.md` — runs validate-logs + fix-log-issues then purge can follow
 - `.github/SKILLS.md` — skills index for this project
