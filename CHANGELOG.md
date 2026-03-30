@@ -13,12 +13,12 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 - `ReferencePlace.referencePlaceMap` — expanded from 7 to 24 entries across 6
   OSM classes:
-  - `amenity`: `restaurant`, `bar`, `fast_food`, `hospital`, `school`, `bank`,
-    `pharmacy`, `fuel` (joining existing `cafe`)
-  - `shop`: `supermarket`, `bakery`, `convenience`, `pharmacy`
-    (joining existing `mall`, `car_repair`)
-  - `building`: `school`, `hospital`, `church` (joining existing `yes`)
-  - `leisure` *(new class)*: `park`, `playground`
+    - `amenity`: `restaurant`, `bar`, `fast_food`, `hospital`, `school`, `bank`,
+      `pharmacy`, `fuel` (joining existing `cafe`)
+    - `shop`: `supermarket`, `bakery`, `convenience`, `pharmacy`
+      (joining existing `mall`, `car_repair`)
+    - `building`: `school`, `hospital`, `church` (joining existing `yes`)
+    - `leisure` *(new class)*: `park`, `playground`
 - `VALID_REF_PLACE_CLASSES` — `'leisure'` added as the sixth valid OSM class
 
 ### Changed
