@@ -363,3 +363,4 @@ The following are explicitly **not** required for 0.15.0-alpha:
 | RI-005 | step_05 | .github/skills/ tree missing from directory tree | docs/ARCHITECTURE.md | Medium | done |
 | RI-006 | step_03 | scripts/ section missing colors.sh, generate_ts_profile.sh, smoke-test.cjs | docs/ARCHITECTURE.md | Low | done |
 | RI-007 | step_05 | .github/ section missing SKILLS.md, copilot-instructions.md, dependabot.yml | docs/ARCHITECTURE.md | Low | done |
+| RI-008 | step_13 | MD007 list indentation — 4 nested list items using 2-space indent instead of 4-space | CHANGELOG.md | Low | done |
