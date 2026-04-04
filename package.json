@@ -61,14 +61,14 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.56.1",
-    "eslint": "^10.0.2",
+    "eslint": "^10.2.0",
     "jest": "^30.3.0",
     "markdownlint-cli": "^0.48.0",
-    "ts-jest": "^29.1.0",
-    "typedoc": "^0.28.17",
-    "typescript": "^5.4.0"
+    "ts-jest": "^29.4.9",
+    "typedoc": "^0.28.18",
+    "typescript": "^6.0.2"
   },
   "dependencies": {
     "bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.12.15-alpha.tar.gz",
