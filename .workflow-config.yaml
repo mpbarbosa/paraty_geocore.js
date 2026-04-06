@@ -27,7 +27,301 @@ structure:
   docs_dirs:
     - docs
 
+ai_personas:
+  enabled:
+    - typescript_reviewer        # TypeScript primary: strict types for GeoPosition, ReferencePlace, PositionManager, dual CJS+ESM output
+    - test_engineer              # Jest + ts-jest, 80% coverage threshold, multiple suites (core/utils/integration/smoke/flaky/bench)
+    - code_quality_analyst       # ESLint + @typescript-eslint; geolocation math correctness is critical
+    - documentation_expert       # 80% API doc coverage required; TypeDoc generates docs/api/; 22+ markdown files
+    - technical_writer           # 22+ docs/ files including FRS, API, ARCHITECTURE, FuncSpec; markdownlint-cli2
+    - git_specialist             # deploy.sh, semver tagging, CDN delivery, jsDelivr URL generation
+    - devops_engineer            # tsc + tsconfig.esm.json (dual output), typedoc.json, jest.config.js, eslint.config.js
+    - dependency_analyst         # bessa_patterns.ts + ibira.js prod deps + full devDep suite audit
+    - architecture_reviewer      # GeoPosition/ReferencePlace/PositionManager class hierarchy; core/ vs utils/ separation
+    - performance_engineer       # Has bench script for Haversine hot-path benchmarks; distance.ts performance critical
+    - async_performance_engineer # src/utils/async.ts + PositionManager async geolocation API + Observer subscription patterns
+  disabled:
+    - security_expert            # Pure computation library; no network calls, no auth, no credential storage
+    - prompt_engineer            # Not an AI project
+    - ux_analyst                 # No UI
+    - accessibility_expert       # No HTML or DOM output
+    - aws_serverless_engineer    # No AWS resources
+    - api_designer               # Geolocation class library, not an HTTP API server
+
 workflow:
+  settings:
+    smart_execution: true
+    parallel_execution: true
+    ai_cache_enabled: true
+    auto_commit: false
+    multi_stage_pipeline: true
+    ml_optimize: false
+
+  steps:
+    - id: step_00
+      name: "Pre-Analysis / Environment Scan"
+      file: "step_00.js"
+      description: "Scan project structure, detect project kind (location_based_service), validate environment"
+      phase: 1
+      enabled: true
+      can_parallelize: false
+      dependencies: []
+      ai_persona: documentation_expert
+
+    - id: step_01
+      name: "Documentation Analysis"
+      file: "step_01.js"
+      description: "Validate README, 22+ docs/ files, TypeDoc-generated docs/api/ against 80% API coverage threshold"
+      phase: 1
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_00]
+      ai_persona: documentation_expert
+
+    - id: step_02
+      name: "Consistency Analysis"
+      file: "step_02.js"
+      description: "Cross-check docs/code consistency; verify TypeDoc JSDoc in src/core/ and src/utils/ matches implementation"
+      phase: 1
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_01]
+      ai_persona: documentation_expert
+
+    - id: step_03
+      name: "Script Reference Analysis"
+      file: "step_03.js"
+      description: "Validate package.json scripts (build, build:esm, test:*, bench, docs:generate, cdn), tsconfig references"
+      phase: 1
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_00]
+      ai_persona: devops_engineer
+
+    - id: step_04
+      name: "Config Validation"
+      file: "step_04.js"
+      description: "Validate tsconfig.json, tsconfig.esm.json, typedoc.json, jest.config.js, eslint.config.js"
+      phase: 1
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_00]
+      ai_persona: devops_engineer
+
+    - id: step_05
+      name: "Directory Structure Validation"
+      file: "step_05.js"
+      description: "Validate src/core/, src/utils/, test/, dist/ structure and module boundaries"
+      phase: 1
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_00]
+      ai_persona: architecture_reviewer
+
+    - id: step_06
+      name: "Integration Tests"
+      file: "step_06.js"
+      description: "Run Jest suites (test:core, test:utils, test:integration, test:smoke); enforce 80% coverage threshold"
+      phase: 2
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_03, step_04]
+      ai_persona: test_engineer
+
+    - id: step_07
+      name: "Coverage Report Generation"
+      file: "step_07.js"
+      description: "Generate coverage report; verify 80% threshold across GeoPosition, ReferencePlace, PositionManager, distance.ts"
+      phase: 2
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_06]
+      ai_persona: test_engineer
+
+    - id: step_08
+      name: "Release Readiness Check"
+      file: "step_08.js"
+      description: "Validate version sync, dist/ build artifacts, CDN URL generation (cdn-urls.txt, cdn-delivery.sh)"
+      phase: 2
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_07]
+      ai_persona: git_specialist
+
+    - id: step_09
+      name: "Dependency Audit"
+      file: "step_09.js"
+      description: "Audit bessa_patterns.ts + ibira.js production deps and all devDeps for security and outdated versions"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_00]
+      ai_persona: dependency_analyst
+
+    - id: step_10
+      name: "Code Quality Analysis"
+      file: "step_10.js"
+      description: "Run ESLint (@typescript-eslint) against src/**/*.ts; check geolocation math correctness and anti-patterns"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_06]
+      ai_persona: code_quality_analyst
+
+    - id: step_11
+      name: "Context Optimization"
+      file: "step_11.js"
+      description: "Optimize AI context for subsequent steps using project analysis results"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_01, step_02]
+      ai_persona: documentation_expert
+
+    - id: step_12
+      name: "Git Status Analysis"
+      file: "step_12.js"
+      description: "Analyze git diff, stage changes, validate conventional commit message format"
+      phase: 3
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_10]
+      ai_persona: git_specialist
+
+    - id: step_13
+      name: "Markdown Lint"
+      file: "step_13.js"
+      description: "Lint all 22+ docs/ markdown files and README.md with markdownlint-cli2 (.markdownlint.json)"
+      phase: 3
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_01]
+      ai_persona: technical_writer
+
+    - id: step_14
+      name: "Prompt Engineering Review"
+      file: "step_14.js"
+      description: "Review AI prompt structure and optimization for workflow effectiveness"
+      phase: 3
+      enabled: false
+      reason: "paraty_geocore.js is not an AI project; no AI prompt artifacts to review"
+      can_parallelize: true
+      dependencies: [step_11]
+      ai_persona: prompt_engineer
+
+    - id: step_15
+      name: "UX Analysis"
+      file: "step_15.js"
+      description: "UX and accessibility analysis for interactive interfaces"
+      phase: 3
+      enabled: false
+      reason: "Geolocation class library with no UI"
+      can_parallelize: true
+      dependencies: [step_10]
+      ai_persona: ux_analyst
+
+    - id: step_16
+      name: "Version Update"
+      file: "step_16.js"
+      description: "Bump semver version; sync across package.json, dist/, docs/, .workflow-config.yaml"
+      phase: 3
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_08, step_12]
+      ai_persona: git_specialist
+
+    - id: step_17
+      name: "Summary Generation"
+      file: "step_17.js"
+      description: "Generate workflow execution summary and backlog report"
+      phase: 3
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_16]
+      ai_persona: technical_writer
+
+    - id: step_18
+      name: "Debugging Analysis"
+      file: "step_18.js"
+      description: "Analyze async bugs in PositionManager (geolocation API callbacks), GeocodingState transitions, async.ts utilities"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_06]
+      ai_persona: async_performance_engineer
+
+    - id: step_19
+      name: "TypeScript Review"
+      file: "step_19.js"
+      description: "Review TypeScript strictness: GeoPosition/ReferencePlace/PositionManager types, dual CJS+ESM compatibility, tsconfig strictness"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_10]
+      ai_persona: typescript_reviewer
+
+    - id: step_20
+      name: "Async Performance Review"
+      file: "step_20.js"
+      description: "Review async.ts utilities, PositionManager geolocation API patterns, Observer subscription cleanup in DualObserverSubject"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_06]
+      ai_persona: async_performance_engineer
+
+    - id: step_21
+      name: "Architecture Review"
+      file: "step_21.js"
+      description: "Review GeoPosition/ReferencePlace/PositionManager class hierarchy; bessa_patterns.ts + ibira.js integration patterns"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_05]
+      ai_persona: architecture_reviewer
+
+    - id: step_22
+      name: "Accessibility Review"
+      file: "step_22.js"
+      description: "WCAG 2.1 AA/AAA review for any HTML output or UI components in the geolocation library"
+      phase: 3
+      enabled: false
+      reason: "Geolocation class library with no UI — step skips gracefully if no HTML/UI files found, but disabled to avoid unnecessary runs"
+      can_parallelize: true
+      dependencies: [step_10]
+      ai_persona: accessibility_expert
+
+    - id: step_23
+      name: "Performance Review"
+      file: "step_23.js"
+      description: "Performance review: Haversine distance hot paths, distance.ts complexity, async.ts patterns, PositionManager geolocation API performance"
+      phase: 2
+      enabled: true
+      can_parallelize: true
+      dependencies: [step_06]
+      ai_persona: performance_engineer
+
+    - id: step_0b
+      name: "Bootstrap Documentation"
+      file: "step_0b.js"
+      description: "Bootstrap missing TypeDoc stubs; generate JSDoc for undocumented src/core/ and src/utils/ exports"
+      phase: 1
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_01]
+      ai_persona: documentation_expert
+
+    - id: step_0f
+      name: "Artifact Commit"
+      file: "step_0f.js"
+      description: "Commit all workflow outputs (backlog, metrics, logs) to repo"
+      phase: 3
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_17]
+      ai_persona: git_specialist
+
+  # Legacy stages kept for backwards compatibility
   stages:
     quick:
       enabled: true

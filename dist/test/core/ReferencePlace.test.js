@@ -130,7 +130,7 @@ describe('ReferencePlace', () => {
         });
         it('should handle railway/station with name', () => {
             const rp = new ReferencePlace_1.default({ class: 'railway', type: 'station', name: 'Estação da Luz' });
-            expect(rp.description).toBe('Estação do Metrô Estação da Luz');
+            expect(rp.description).toBe('Estação de Trem Estação da Luz');
         });
         it('should handle place/house with name', () => {
             const rp = new ReferencePlace_1.default({ class: 'place', type: 'house', name: 'Casa do João' });
@@ -143,6 +143,78 @@ describe('ReferencePlace', () => {
         it('should handle building/yes with name', () => {
             const rp = new ReferencePlace_1.default({ class: 'building', type: 'yes', name: 'Edifício Copan' });
             expect(rp.description).toBe('Edifício Edifício Copan');
+        });
+        it('should handle amenity/restaurant with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'restaurant', name: 'Restaurante Fasano' });
+            expect(rp.description).toBe('Restaurante Restaurante Fasano');
+        });
+        it('should handle amenity/bar without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'bar' });
+            expect(rp.description).toBe('Bar');
+        });
+        it('should handle amenity/fast_food without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'fast_food' });
+            expect(rp.description).toBe('Lanchonete');
+        });
+        it('should handle amenity/hospital with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'hospital', name: 'Hospital das Clínicas' });
+            expect(rp.description).toBe('Hospital Hospital das Clínicas');
+        });
+        it('should handle amenity/school with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'school', name: 'Escola Estadual Central' });
+            expect(rp.description).toBe('Escola Escola Estadual Central');
+        });
+        it('should handle amenity/bank without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'bank' });
+            expect(rp.description).toBe('Banco');
+        });
+        it('should handle amenity/pharmacy without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'pharmacy' });
+            expect(rp.description).toBe('Farmácia');
+        });
+        it('should handle amenity/fuel without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'amenity', type: 'fuel' });
+            expect(rp.description).toBe('Posto de Combustível');
+        });
+        it('should handle shop/supermarket with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'shop', type: 'supermarket', name: 'Pão de Açúcar' });
+            expect(rp.description).toBe('Supermercado Pão de Açúcar');
+        });
+        it('should handle shop/bakery without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'shop', type: 'bakery' });
+            expect(rp.description).toBe('Padaria');
+        });
+        it('should handle shop/convenience without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'shop', type: 'convenience' });
+            expect(rp.description).toBe('Loja de Conveniência');
+        });
+        it('should handle shop/pharmacy without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'shop', type: 'pharmacy' });
+            expect(rp.description).toBe('Farmácia');
+        });
+        it('should handle building/school with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'building', type: 'school', name: 'Escola Municipal' });
+            expect(rp.description).toBe('Escola Escola Municipal');
+        });
+        it('should handle building/hospital with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'building', type: 'hospital', name: 'Hospital São Paulo' });
+            expect(rp.description).toBe('Hospital Hospital São Paulo');
+        });
+        it('should handle building/church with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'building', type: 'church', name: 'Catedral da Sé' });
+            expect(rp.description).toBe('Igreja Catedral da Sé');
+        });
+        it('should handle leisure/park with name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'leisure', type: 'park', name: 'Parque Ibirapuera' });
+            expect(rp.description).toBe('Parque Parque Ibirapuera');
+        });
+        it('should handle leisure/playground without name', () => {
+            const rp = new ReferencePlace_1.default({ class: 'leisure', type: 'playground' });
+            expect(rp.description).toBe('Playground');
+        });
+        it('should return "class: type" fallback for leisure with unmapped type', () => {
+            const rp = new ReferencePlace_1.default({ class: 'leisure', type: 'sports_centre' });
+            expect(rp.description).toBe('leisure: sports_centre');
         });
         it('should cover all entries in referencePlaceMap', () => {
             const map = ReferencePlace_1.default.referencePlaceMap;
@@ -220,6 +292,7 @@ describe('ReferencePlace', () => {
             expect(ReferencePlace_1.VALID_REF_PLACE_CLASSES).toContain('amenity');
             expect(ReferencePlace_1.VALID_REF_PLACE_CLASSES).toContain('railway');
             expect(ReferencePlace_1.VALID_REF_PLACE_CLASSES).toContain('building');
+            expect(ReferencePlace_1.VALID_REF_PLACE_CLASSES).toContain('leisure');
         });
     });
     // ── public API smoke test (via index) ─────────────────────────────────────

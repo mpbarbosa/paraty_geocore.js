@@ -1,0 +1,38 @@
+# ── Test runner image for paraty_geocore.js ──────────────────────────────────
+#
+# Build and run:
+#   docker build -f Dockerfile.test -t paraty_geocore-test .
+#   docker run --rm -e CI=true paraty_geocore-test
+#
+# Run with coverage extracted to the host:
+#   docker run --rm \
+#     -e CI=true \
+#     -v "$(pwd)/coverage:/app/coverage" \
+#     paraty_geocore-test \
+#     npm test -- --runInBand --coverage
+#
+# Or use the convenience script (recommended):
+#   npm run test:docker
+#   bash scripts/run-tests-docker.sh
+#   bash scripts/run-tests-docker.sh -- --coverage
+# ─────────────────────────────────────────────────────────────────────────────
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy dependency manifests first so this layer is cached between source changes.
+COPY package.json package-lock.json ./
+
+# Override NODE_ENV=production (the default in all official Node images) so that
+# npm ci installs devDependencies (Jest, ts-jest, TypeScript, etc.).
+# --ignore-scripts skips lifecycle scripts that may fail inside Alpine.
+ENV NODE_ENV=test
+RUN npm ci --ignore-scripts
+
+# Copy the rest of the project after npm ci so source changes don't invalidate
+# the dependency cache layer. .dockerignore controls what is excluded.
+COPY . .
+
+# Run the full Jest suite by default.
+CMD ["npm", "test"]

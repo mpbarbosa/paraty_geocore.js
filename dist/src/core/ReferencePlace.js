@@ -23,6 +23,7 @@ exports.NO_REFERENCE_PLACE = 'Não classificado';
  * - `amenity` — public facilities (restaurants, banks, schools)
  * - `railway` — railway stations and transport hubs
  * - `building` — buildings
+ * - `leisure` — parks, playgrounds, and recreational spaces
  */
 exports.VALID_REF_PLACE_CLASSES = Object.freeze([
     'place',
@@ -30,6 +31,7 @@ exports.VALID_REF_PLACE_CLASSES = Object.freeze([
     'amenity',
     'railway',
     'building',
+    'leisure',
 ]);
 /**
  * Represents a reference place extracted from geocoding data.
@@ -124,10 +126,41 @@ exports.ReferencePlace = ReferencePlace;
  * @see {@link https://wiki.openstreetmap.org/wiki/Map_Features} OSM feature documentation
  */
 ReferencePlace.referencePlaceMap = Object.freeze({
-    place: { house: 'Residencial' },
-    shop: { mall: 'Shopping Center', car_repair: 'Oficina Mecânica' },
-    amenity: { cafe: 'Café' },
-    railway: { subway: 'Estação do Metrô', station: 'Estação do Metrô' },
-    building: { yes: 'Edifício' },
+    place: {
+        house: 'Residencial',
+    },
+    shop: {
+        mall: 'Shopping Center',
+        car_repair: 'Oficina Mecânica',
+        supermarket: 'Supermercado',
+        bakery: 'Padaria',
+        convenience: 'Loja de Conveniência',
+        pharmacy: 'Farmácia',
+    },
+    amenity: {
+        cafe: 'Café',
+        restaurant: 'Restaurante',
+        bar: 'Bar',
+        fast_food: 'Lanchonete',
+        hospital: 'Hospital',
+        school: 'Escola',
+        bank: 'Banco',
+        pharmacy: 'Farmácia',
+        fuel: 'Posto de Combustível',
+    },
+    railway: {
+        subway: 'Estação do Metrô',
+        station: 'Estação de Trem',
+    },
+    building: {
+        yes: 'Edifício',
+        school: 'Escola',
+        hospital: 'Hospital',
+        church: 'Igreja',
+    },
+    leisure: {
+        park: 'Parque',
+        playground: 'Playground',
+    },
 });
 exports.default = ReferencePlace;

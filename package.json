@@ -23,6 +23,7 @@
     "bench": "jest --testPathPatterns='test/benchmarks' --verbose --passWithNoTests",
     "test:flaky": "for i in 1 2 3; do npm test -- --forceExit --randomize || exit 1; done",
     "test:all": "npm run test:coverage && npm run bench",
+    "test:docker": "bash scripts/run-tests-docker.sh",
     "test:smoke": "node scripts/smoke-test.cjs",
     "validate": "tsc --noEmit",
     "lint": "eslint 'src/**/*.ts'",
