@@ -30,6 +30,7 @@ export declare const NO_REFERENCE_PLACE = "N\u00E3o classificado";
  * - `amenity` — public facilities (restaurants, banks, schools)
  * - `railway` — railway stations and transport hubs
  * - `building` — buildings
+ * - `leisure` — parks, playgrounds, and recreational spaces
  */
 export declare const VALID_REF_PLACE_CLASSES: ReadonlyArray<string>;
 /**
