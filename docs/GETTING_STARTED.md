@@ -153,7 +153,15 @@ console.log(pos.accuracyQuality); // 'good'
 npm test
 ```
 
-Tests are located in `__tests__/` and use Jest.
+Tests are located in `test/` and use Jest.
+
+Run specific test suites:
+
+```bash
+npm run test:core        # core/ unit tests
+npm run test:utils       # utils/ unit tests
+npm run test:integration # integration tests
+```
 
 ---
 

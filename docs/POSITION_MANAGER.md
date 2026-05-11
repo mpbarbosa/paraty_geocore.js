@@ -253,3 +253,5 @@ The test files are:
 | Version       | Change |
 |---------------|--------|
 | 0.12.3-alpha  | Initial port from guia_turistico; adapted imports, replaced app config with `PositionManagerConfig`, added `createPositionManagerConfig()` and `initializeConfig()` |
+| 0.12.10-alpha | Introduced to paraty_geocore.js as a fully integrated module |
+| 0.12.11-alpha | Added `setBypassDistanceRule(enabled)` / `_bypassDistanceRule` flag for testing distance-rule bypass |

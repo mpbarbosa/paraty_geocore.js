@@ -1,6 +1,6 @@
 # GeoPosition API Documentation
 
-**Version:** 0.11.2-alpha
+**Version:** 0.12.11-alpha
 **Module:** `src/core/GeoPosition.ts`
 **Pattern:** Value Object (Immutable)
 **Author:** Marcelo Pereira Barbosa
@@ -27,7 +27,7 @@ src/core/GeoPosition.ts
 
 ```javascript
 import { calculateDistance } from '../utils/distance.js';
-import { log, warn, error } from '../utils/logger.js';
+import { GeoPositionError } from './errors.js';
 ```
 
 ## Constructor
@@ -103,6 +103,30 @@ console.log(GeoPosition.getAccuracyQuality(500));  // 'very bad'
 
 **Since:** 0.9.0-alpha
 
+### `from(input)`
+
+Creates a new `GeoPosition` from a plain `GeoPositionInput` object. Useful when constructing a position from non-browser sources (e.g., stored data, test fixtures).
+
+**Parameters:**
+
+- `input` (`GeoPositionInput`): Plain object with `coords` and optional `timestamp`
+
+**Returns:** `GeoPosition` instance
+
+**Example:**
+
+```typescript
+import GeoPosition from 'paraty_geocore.js';
+
+const pos = GeoPosition.from({
+  coords: { latitude: -23.5505, longitude: -46.6333, accuracy: 10 },
+  timestamp: Date.now()
+});
+console.log(pos.latitude); // -23.5505
+```
+
+**Since:** 0.6.0-alpha
+
 ## Instance Properties
 
 All properties are read-only due to `Object.freeze()`:
@@ -166,28 +190,6 @@ console.log(`Restaurant is ${Math.round(distance)} meters away`);
 
 ---
 
-### `calculateAccuracyQuality()`
-
-Calculates the accuracy quality for the current position.
-
-**Returns:** `string` - Quality classification for current position accuracy
-
-**Deprecation Notice:** ⚠️ **Deprecated** - Use the `accuracyQuality` property instead. This method has a bug (calls undefined `getAccuracyQuality` instead of `GeoPosition.getAccuracyQuality`).
-
-**Example:**
-
-```javascript
-// Deprecated - do not use
-const quality = position.calculateAccuracyQuality(); // May throw error
-
-// Use this instead
-const quality = position.accuracyQuality; // Correct
-```
-
-**Since:** 0.9.0-alpha
-
----
-
 ### `toString()`
 
 Returns a string representation of the GeoPosition instance.
@@ -227,7 +229,6 @@ navigator.geolocation.getCurrentPosition((browserPosition) => {
 
 ```javascript
 import GeoPosition from './core/GeoPosition.js';
-import { log } from '../utils/logger.js';
 
 // Current position
 const currentPosition = new GeoPosition(browserPosition);
@@ -242,7 +243,7 @@ const destinations = [
 // Calculate distances
 destinations.forEach(dest => {
   const distance = currentPosition.distanceTo(dest);
-  log(`${dest.name} is ${Math.round(distance)} meters away`);
+  console.log(`${dest.name} is ${Math.round(distance)} meters away`);
 });
 
 // Find nearest destination
@@ -252,7 +253,7 @@ const nearest = destinations.reduce((closest, current) => {
   return currentDist < closestDist ? current : closest;
 });
 
-log(`Nearest destination: ${nearest.name}`);
+console.log(`Nearest destination: ${nearest.name}`);
 ```
 
 ### Accuracy Validation
@@ -377,7 +378,7 @@ navigator.geolocation.watchPosition(onPositionUpdate);
 
 ## Testing
 
-Test file: `__tests__/unit/core/GeoPosition.test.js`
+Test file: `test/core/GeoPosition.test.ts`
 
 ```javascript
 import GeoPosition from './GeoPosition.js';

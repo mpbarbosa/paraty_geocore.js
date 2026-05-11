@@ -76,9 +76,9 @@ The GeoPosition class addresses these issues by:
 
 **Validation**:
 
-- No validation required during construction
-- Null and undefined values are handled gracefully
-- Invalid numeric values are not rejected (handled by display logic)
+- Throws `GeoPositionError` if `position` is a primitive value (string, number, boolean, etc.)
+- `null` and `undefined` are accepted and result in an instance with null coordinate fields
+- Missing or invalid coordinate values do not throw (handled by display logic)
 
 **Purity Requirements**:
 
@@ -208,35 +208,6 @@ Return: distance (in meters)
 
 ---
 
-### FR-4: Accuracy Setter with Automatic Quality Update
-
-**Description**: Update position accuracy value and automatically recalculate quality classification.
-
-**Input**:
-
-- `value` (number): New accuracy value in meters
-
-**Output**:
-
-- None (setter method)
-
-**Behavior**:
-
-1. Store accuracy value in internal property
-2. Automatically invoke accuracy quality classification logic
-3. Update accuracyQuality property with new classification
-
-**Side Effects**:
-
-- Updates two properties: internal accuracy storage and accuracyQuality
-
-**Synchronization Requirement**:
-
-- The accuracy value and accuracyQuality must always be consistent
-- When accuracy changes, accuracyQuality MUST be updated immediately
-
----
-
 ### FR-5: String Representation
 
 **Description**: Generate a human-readable string representation of the position for debugging and logging.
@@ -286,25 +257,11 @@ Missing coordinates:
 
 ---
 
-### FR-6: Instance Accuracy Quality Calculation (Deprecated)
+### FR-6: Instance Accuracy Quality Calculation (Removed)
 
-**Description**: Calculate accuracy quality for current instance's accuracy value.
+**Status**: ~~DEPRECATED~~ **REMOVED** as of 0.13.0-alpha — this method no longer exists in the codebase.
 
-**Status**: DEPRECATED - Use the accuracyQuality property instead
-
-**Reason for Deprecation**: This method contains a bug (calls undefined function instead of static method). The accuracyQuality property is automatically maintained and should be used instead.
-
-**Input**: None (uses instance's accuracy property)
-
-**Output**: `string` - Quality classification
-
-**Behavior**: Apply static accuracy quality classification to instance's accuracy value
-
-**Recommendation**: Implementations should either:
-
-- Not implement this method
-- Mark it as deprecated with warning
-- Fix the bug if implementing for compatibility
+**Reason for Removal**: The instance method `calculateAccuracyQuality()` was deprecated and then fully removed. Use the `accuracyQuality` read-only property instead — it is computed at construction time and always consistent with the `accuracy` value.
 
 ## Data Model
 

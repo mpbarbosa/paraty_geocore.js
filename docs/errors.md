@@ -16,14 +16,9 @@ import { GeoPositionError } from 'paraty_geocore.js';
 
 ### When it is thrown
 
-| Scenario | Message |
+| Scenario | Message pattern |
 |---|---|
-| `position` argument is not an object | `"GeoPosition: position must be an object"` |
-| `coords` property is missing or not an object | `"GeoPosition: position.coords must be an object"` |
-| `latitude` is not a finite number | `"GeoPosition: latitude must be a finite number"` |
-| `longitude` is not a finite number | `"GeoPosition: longitude must be a finite number"` |
-| `latitude` is outside −90 to 90 | `"GeoPosition: latitude must be between -90 and 90"` |
-| `longitude` is outside −180 to 180 | `"GeoPosition: longitude must be between -180 and 180"` |
+| `position` argument is a primitive (number, string, boolean, etc.) | `"GeoPosition: position must be an object, got <type>"` |
 
 ### Prototype chain
 
@@ -55,10 +50,12 @@ try {
 
 ## Error propagation
 
-`GeoPositionError` is only thrown by the `GeoPosition` constructor.
-Other library exports (`calculateDistance`, `delay`) do **not** throw custom
-errors — they follow standard JavaScript conventions (`NaN` for bad numeric
-inputs, `Promise` rejection for async failures).
+`GeoPositionError` is thrown by:
+
+- The `GeoPosition` constructor — when `position` is a primitive value (number, string, boolean, etc.)
+- `calculateDistance` — when any coordinate argument is outside the valid range (lat outside −90…90, lon outside −180…180)
+
+Other library exports (`delay`) do **not** throw custom errors.
 
 ---
 
@@ -87,6 +84,8 @@ try {
 ```
 
 ### `ObserverSubject.subscribe(callback)`
+
+> **Note:** `ObserverSubject` is re-exported from the external [`bessa_patterns.ts`](https://github.com/mpbarbosa/bessa_patterns.ts) package. The behavior below reflects its documented contract.
 
 | Scenario | Message |
 |---|---|

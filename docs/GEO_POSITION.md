@@ -3,11 +3,11 @@
 ## Source & Location
 
 **Source file:** `src/core/GeoPosition.ts`
-**Version:** 0.11.2-alpha
+**Version:** 0.12.11-alpha
 
 **CDN (ESM — for browsers):**
 ```ts
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha/dist/esm/index.js';
 ```
 
 **Node.js / npm:**
@@ -50,7 +50,6 @@ Previously, developers had to work directly with the browser's `GeolocationPosit
 - **Automatic extraction** of coordinates from GeolocationPosition objects
 - **Quality classification** for GPS accuracy (excellent to very bad)
 - **Distance calculation** between geographic points using Haversine formula
-- **Consistent logging** with formatted toString() output
 - **Integration** with PositionManager and GeolocationService
 - **Referential transparency**: Pure functions, no side effects, predictable outputs
 - **Immutability**: All properties set at construction, no mutation after creation
@@ -63,7 +62,7 @@ Previously, developers had to work directly with the browser's `GeolocationPosit
 ### Basic Usage
 
 ```javascript
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha/dist/esm/index.js';
 
 // Simulate browser GeolocationPosition object
 const geolocationPosition = {
@@ -213,7 +212,7 @@ console.log(position.altitude);   // null
 Here's a complete example of tracking a user's movement while driving:
 
 ```javascript
-import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha/dist/esm/index.js';
+import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha/dist/esm/index.js';
 
 let lastPosition = null;
 

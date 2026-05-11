@@ -8,11 +8,16 @@
 
 ## 1. Purpose
 
-`paraty_geocore.js` is a lightweight, dependency-free core library for geolocation applications. It provides:
+`paraty_geocore.js` is a core library for geolocation applications. It provides:
 
 - An immutable, normalised wrapper around the browser Geolocation API (`GeoPosition`)
+- Observer-pattern infrastructure re-exported from [`bessa_patterns.ts`](https://github.com/mpbarbosa/bessa_patterns.ts): `ObserverSubject`, `DualObserverSubject`, and the `withObserver` mixin
+- A geocoding state manager built on `ObserverSubject` (`GeocodingState`)
+- A singleton position manager with configurable distance thresholds (`PositionManager`)
+- An OSM point-of-interest wrapper with Portuguese-language descriptions (`ReferencePlace`)
 - Pure utility functions for geographic distance calculation (`utils/distance`)
 - General-purpose async helpers for polling/throttling patterns (`utils/async`)
+- Lightweight structured logging helpers (`utils/logger`)
 
 The library is designed to be consumed by higher-level geolocation applications, not used directly by end users.
 
@@ -24,14 +29,19 @@ The library is designed to be consumed by higher-level geolocation applications,
 paraty_geocore.js/
 ├── src/
 │   ├── core/
-│   │   ├── GeoPosition.ts       # Immutable position wrapper class
-│   │   ├── ObserverSubject.ts   # Generic concrete Observer/Subject base class
-│   │   ├── GeocodingState.ts    # Geocoding state manager (extends ObserverSubject)
-│   │   ├── ReferencePlace.ts    # OSM point-of-interest wrapper with Portuguese descriptions
-│   │   └── errors.ts            # Custom error classes (GeoPositionError)
-│   └── utils/
-│       ├── distance.ts          # Haversine distance calculation utilities
-│       └── async.ts             # General-purpose async utilities (delay)
+│   │   ├── GeoPosition.ts           # Immutable position wrapper class
+│   │   ├── ObserverSubject.ts       # Re-export of ObserverSubject from bessa_patterns.ts
+│   │   ├── DualObserverSubject.ts   # Re-export of DualObserverSubject from bessa_patterns.ts
+│   │   ├── ObserverMixin.ts         # Re-export of withObserver mixin from bessa_patterns.ts
+│   │   ├── GeocodingState.ts        # Geocoding state manager (extends ObserverSubject)
+│   │   ├── PositionManager.ts       # Singleton position manager with configurable distance thresholds
+│   │   ├── ReferencePlace.ts        # OSM point-of-interest wrapper with Portuguese descriptions
+│   │   └── errors.ts                # Custom error classes (GeoPositionError)
+│   ├── utils/
+│   │   ├── distance.ts              # Haversine distance calculation utilities
+│   │   ├── async.ts                 # General-purpose async utilities (delay)
+│   │   └── logger.ts                # Structured logging helpers (log, warn)
+│   └── index.ts                     # Public package entry point (re-exports all public API)
 ├── .github/
 │   ├── SKILLS.md                # Skills index — catalogue of all Copilot CLI skills
 │   ├── copilot-instructions.md  # Copilot custom instructions for this repository
@@ -47,17 +57,25 @@ paraty_geocore.js/
 │   └── workflows/
 │       └── ci.yml               # CI/CD pipeline (Node.js 18.x, 20.x matrix)
 ├── docs/
-│   ├── API.md                   # Full API reference
-│   ├── ARCHITECTURE.md          # This file
-│   ├── GEOCODING_STATE_API.md   # GeocodingState API reference
-│   ├── OBSERVER_SUBJECT_API.md  # ObserverSubject API reference
-│   ├── GETTING_STARTED.md       # Installation and usage guide
-│   ├── GeoPosition-FRS.md       # Functional requirements spec — GeoPosition
-│   ├── distance-FRS.md          # Functional requirements spec — distance utils
-│   ├── async-FRS.md             # Functional requirements spec — async utils
-│   ├── ReferencePlace-FRS.md    # Functional requirements spec — ReferencePlace
+│   ├── API.md                          # Full API reference (legacy hand-written)
+│   ├── ARCHITECTURE.md                 # This file
+│   ├── FUNCTIONAL_REQUIREMENTS.md      # Library-wide functional requirements
+│   ├── GETTING_STARTED.md              # Installation and usage guide
+│   ├── DOCKER_TESTING.md               # Running tests inside Docker
+│   ├── errors.md                       # Error handling strategy and reference
+│   ├── GEOCODING_STATE_API.md          # GeocodingState API reference
+│   ├── OBSERVER_SUBJECT_API.md         # ObserverSubject API reference
+│   ├── OBSERVER_MIXIN_API.md           # withObserver mixin API reference
+│   ├── POSITION_MANAGER.md             # PositionManager API reference
+│   ├── GEO_POSITION.md                 # GeoPosition user guide
+│   ├── GEO_POSITION_API.md             # GeoPosition API reference
+│   ├── GEO_POSITION_FUNC_SPEC.md       # GeoPosition functional spec
+│   ├── GeoPosition-FRS.md              # Functional requirements spec — GeoPosition
+│   ├── distance-FRS.md                 # Functional requirements spec — distance utils
+│   ├── async-FRS.md                    # Functional requirements spec — async utils
+│   ├── ReferencePlace-FRS.md           # Functional requirements spec — ReferencePlace
 │   ├── GEOPOSITION_REFACTORING_SUMMARY.md
-│   └── api/                     # TypeDoc-generated HTML reference (gitignored — run `npm run docs:generate`)
+│   └── api/                            # TypeDoc-generated HTML reference (gitignored — run `npm run docs:generate`)
 │       ├── assets/              # TypeDoc CSS/JS/font assets
 │       ├── classes/             # Generated page per exported class
 │       ├── functions/           # Generated page per exported function
@@ -97,17 +115,33 @@ paraty_geocore.js/
 ## 3. Module Dependency Graph
 
 ```text
-ObserverSubject<T>
-  └── GeocodingState  ──imports──►  GeoPosition
+[bessa_patterns.ts]  (external package)
+    ├──► ObserverSubject.ts    (re-export)
+    ├──► DualObserverSubject.ts (re-export)
+    └──► ObserverMixin.ts      (re-export: withObserver)
 
-GeoPosition  ──imports──►  utils/distance  (calculateDistance)
-                                │
-                                └──► (no further dependencies)
+GeoPosition.ts  ──► utils/distance.ts  (calculateDistance)
+                ──► core/errors.ts     (GeoPositionError)
 
-(utils/async is independent — no imports from core or other utils)
+utils/distance.ts  ──► core/errors.ts  (GeoPositionError, for coord-range validation)
+
+GeocodingState.ts  ──► ObserverSubject (via bessa_patterns.ts)
+                   ──► core/GeoPosition.ts
+
+PositionManager.ts  ──► DualObserverSubject (via bessa_patterns.ts)
+                    ──► ObserverMixin / withObserver (via bessa_patterns.ts)
+                    ──► core/GeoPosition.ts
+                    ──► utils/distance.ts
+                    ──► utils/logger.ts
+
+ReferencePlace.ts  — no internal imports (self-contained)
+utils/async.ts     — no imports (self-contained)
+utils/logger.ts    — no imports (self-contained)
+
+src/index.ts  — re-exports all of the above
 ```
 
-Both modules have **zero external runtime dependencies**.
+> **External runtime dependency:** `bessa_patterns.ts` (installed from GitHub) provides the observer-pattern primitives (`ObserverSubject`, `DualObserverSubject`, `withObserver`). All other modules are self-contained within this repository.
 
 ---
 
@@ -119,7 +153,7 @@ Both modules have **zero external runtime dependencies**.
 
 ### 4.2 Referential Transparency
 
-All functions in `utils/distance` and all methods on `GeoPosition` (except `calculateAccuracyQuality`, which is deprecated due to a bug) are **pure**:
+All functions in `utils/distance` and all methods on `GeoPosition` are **pure**:
 - Deterministic: same inputs always produce the same output.
 - No side effects: no logging, no mutation of external state, no I/O.
 
@@ -127,9 +161,9 @@ All functions in `utils/distance` and all methods on `GeoPosition` (except `calc
 
 The `GeoPosition` constructor explicitly extracts each property from `position.coords` by name rather than using the spread operator (`{ ...coords }`). This is necessary because the browser's `GeolocationCoordinates` object exposes its properties through non-enumerable getters, which spread silently ignores.
 
-### 4.4 No Global State
+### 4.4 Isolated Module-Level State
 
-Neither module uses module-level mutable state, singletons, or global variables.
+Most modules are stateless. The exception is `PositionManager`, which uses a module-level mutable `config` variable and a `static instance` singleton to implement the singleton pattern. This is intentional — `PositionManager` is the library's single coordination point for device position updates. All other core modules (`GeoPosition`, `GeocodingState`, `ReferencePlace`) and all utility modules are fully stateless.
 
 ---
 
