@@ -44,6 +44,7 @@ export const delay = (ms: number): Promise<void>
 - Wraps `setTimeout` in a `Promise` for use with `async/await`.
 - Does not reject under normal conditions.
 - Passing `0` resolves on the next event-loop tick (yields control once).
+- Negative values are clamped to `0` (treated as `delay(0)`).
 
 #### Example
 

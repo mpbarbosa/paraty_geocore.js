@@ -125,20 +125,9 @@ This document defines the top-level functional requirements and acceptance crite
 - **When** `EARTH_RADIUS_METERS` is accessed
 - **Then** its value is `6371000` (6,371 km)
 
-#### AC-DI-05 — `delay(ms)` resolves after the specified duration
-- **Given** a call to `delay(ms)` with a positive integer `ms`
-- **When** the returned `Promise` resolves
-- **Then** at least `ms` milliseconds have elapsed
-
-#### AC-DI-06 — `delay(0)` resolves on the next event-loop tick
-- **Given** a call to `delay(0)`
-- **When** awaited
-- **Then** it resolves without throwing and yields control once
-
 ### 4.2 Known Limitations
 
 - Spherical Earth model (mean radius 6,371 km) introduces < 0.5% error vs WGS-84 ellipsoidal geometry.
-- `delay` is co-located in this module for convenience; it is unrelated to distance calculation.
 
 ---
 
@@ -164,15 +153,6 @@ This document defines the top-level functional requirements and acceptance crite
 - **Given** the `core/GeoPosition` module
 - **When** `distanceTo()` is called
 - **Then** it internally delegates to `calculateDistance` from `utils/distance` (verified by module dependency graph)
-
----
-
-## 7. Out of Scope
-
-The following are explicitly **not** required for 0.15.0-alpha:
-
-- npm package publication
-
 
 ---
 
@@ -346,6 +326,14 @@ The following are explicitly **not** required for 0.15.0-alpha:
 
 - Unmapped types within a valid class fall back to `"<class>: <type>"`; new OSM
   types can be added to `referencePlaceMap` as they are needed.
+
+---
+
+## 14. Out of Scope
+
+The following are explicitly **not** required for 0.15.0-alpha:
+
+- npm package publication
 
 ---
 

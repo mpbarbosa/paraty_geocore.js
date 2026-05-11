@@ -5,6 +5,8 @@
 **Pattern:** Observer/Subject
 **Author:** Marcelo Pereira Barbosa
 
+> **Note:** `ObserverSubject` is a **re-export** from the external [`bessa_patterns.ts`](https://github.com/mpbarbosa/bessa_patterns.ts) package. The `src/core/ObserverSubject.ts` module contains only a re-export declaration. The implementation and full API contract live in the upstream package.
+
 ## Overview
 
 `ObserverSubject<T>` is a concrete generic class that implements the Observer/Subject pattern.

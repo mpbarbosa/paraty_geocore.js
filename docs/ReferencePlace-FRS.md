@@ -39,12 +39,12 @@ location information such as "Você está no Shopping Center Morumbi".
 | FR-05 | Instance is frozen after construction | `Object.isFrozen(rp) === true`; mutation throws in strict mode |
 | FR-06 | `calculateDescription()` returns `NO_REFERENCE_PLACE` when `className` is absent | `rp.description === 'Não classificado'` |
 | FR-07 | `calculateDescription()` returns `NO_REFERENCE_PLACE` when `typeName` is absent | `rp.description === 'Não classificado'` |
-| FR-08 | `calculateDescription()` returns `NO_REFERENCE_PLACE` for classes outside `VALID_REF_PLACE_CLASSES` | `new ReferencePlace({ class: 'leisure', type: 'park' }).description === 'Não classificado'` |
+| FR-08 | `calculateDescription()` returns `NO_REFERENCE_PLACE` for classes outside `VALID_REF_PLACE_CLASSES` | `new ReferencePlace({ class: 'highway', type: 'residential' }).description === 'Não classificado'` |
 | FR-09 | `calculateDescription()` returns `"<label> <name>"` for a mapped class/type when name is present | `'Shopping Center Shopping Morumbi'` for `{ class: 'shop', type: 'mall', name: 'Shopping Morumbi' }` |
 | FR-10 | `calculateDescription()` returns just `"<label>"` for a mapped class/type when name is absent | `'Shopping Center'` for `{ class: 'shop', type: 'mall' }` |
 | FR-11 | `calculateDescription()` returns `"<class>: <type>"` fallback for a valid class with an unmapped type | `'shop: bookshop'` for `{ class: 'shop', type: 'bookshop' }` |
 | FR-12 | `calculateCategory()` returns the Portuguese label for a known class/type pair | `'Shopping Center'` for `{ class: 'shop', type: 'mall' }` |
-| FR-13 | `calculateCategory()` returns `"unknown"` when no mapping is found | `'unknown'` for `{ class: 'leisure', type: 'park' }` |
+| FR-13 | `calculateCategory()` returns `"unknown"` when no mapping is found | `'unknown'` for `{ class: 'highway', type: 'residential' }` |
 | FR-14 | `toString()` returns `"ReferencePlace: <description>"` when name is absent | `'ReferencePlace: Café'` |
 | FR-15 | `toString()` returns `"ReferencePlace: <description> - <name>"` when name is present | `'ReferencePlace: Shopping Center Shopping Morumbi - Shopping Morumbi'` |
 | FR-16 | `referencePlaceMap` is frozen | `Object.isFrozen(ReferencePlace.referencePlaceMap) === true` |
