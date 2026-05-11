@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.11.2-alpha
+**Version:** 0.12.11-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,7 +42,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha/dist/esm/index.js';
 
   navigator.geolocation.getCurrentPosition((rawPosition) => {
     const pos = new GeoPosition(rawPosition);
@@ -56,7 +56,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ### Version Options
 
-- **Specific version:** `@0.11.2-alpha` (recommended for production)
+- **Specific version:** `@0.12.11-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities
@@ -64,8 +64,17 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 ### Running Tests
 
 ```bash
-# Run all tests
+# Run all tests (with coverage)
 npm test
+
+# Run only core tests
+npm run test:core
+
+# Run only utils tests
+npm run test:utils
+
+# Run only integration tests
+npm run test:integration
 
 # Run tests in watch mode
 npm run test:watch
@@ -76,11 +85,38 @@ npm run test:coverage
 # Run tests with verbose output
 npm run test:verbose
 
-# Validate JavaScript syntax
+# Run performance benchmarks
+npm run bench
+
+# Run all tests + benchmarks
+npm run test:all
+
+# Run tests in Docker (isolated environment)
+npm run test:docker
+
+# Run smoke test (quick sanity check against dist/)
+npm run test:smoke
+
+# Detect flaky tests (runs test suite 3 times)
+npm run test:flaky
+
+# Validate TypeScript without emitting output
 npm run validate
 
-# Validate and run tests
-npm run test:all
+# Lint TypeScript source
+npm run lint
+
+# Lint and auto-fix TypeScript source
+npm run lint:fix
+
+# Lint markdown files
+npm run lint:md
+
+# Lint and auto-fix markdown files
+npm run lint:md:fix
+
+# Generate TypeDoc API reference
+npm run docs:generate
 ```
 
 ## 🚢 Release & Automation Scripts
@@ -98,11 +134,10 @@ bash scripts/deploy.sh
 **Steps performed:**
 
 1. Reads version from `package.json`
-2. Runs `npm run build` (TypeScript compilation)
+2. Runs `npm run build` + `npm run build:esm` (CJS and ESM TypeScript compilation)
 3. Commits `dist/` and `cdn-delivery.sh` as build artifacts
-4. Creates git tag `v<version>` (skips if already exists)
-5. Pulls and pushes current branch + tags to `origin`
-6. Runs `cdn-delivery.sh` to generate CDN URL list
+4. Creates git tag `v<version>` (skips if already exists), then pulls and pushes current branch + tags to `origin`
+5. Runs `cdn-delivery.sh` to generate CDN URL list and checks CDN availability
 
 **Output:** console status messages, committed artifacts, git tag, updated `cdn-urls.txt`
 
@@ -127,32 +162,32 @@ npm run cdn
 **Sample `cdn-urls.txt` output:**
 
 ```text
-jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.11.2-alpha
+jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.12.11-alpha
 Generated: Mon Mar  2 14:02:00 -03 2026
 =============================================================================
 
 PRODUCTION (Recommended - Specific Version):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha/dist/src/index.js
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
 
 VERSION RANGE (Auto-update patches):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.9/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12/dist/src/index.js
 
 NPM CDN (if published to npm):
-https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.11.2-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.12.11-alpha/dist/src/index.js
 
 HTML USAGE:
-<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha/dist/src/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha/dist/src/index.js"></script>
 
 ES MODULE:
 <script type="module">
-  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha/dist/src/index.js';
+  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha/dist/src/index.js';
 </script>
 
 PACKAGE INFO API:
-https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.11.2-alpha
+https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.12.11-alpha
 
 =============================================================================
 ```
@@ -222,8 +257,19 @@ To trigger the full deploy workflow from CI (including build, tag, and push), en
 ```text
 paraty_geocore.js/
 ├── src/                    # TypeScript source code
-│   ├── core/               # Core domain classes (GeoPosition, ObserverSubject, etc.)
-│   └── utils/              # Utility functions (distance, async helpers)
+│   ├── core/               # Core domain classes
+│   │   ├── GeoPosition.ts          # Immutable geolocation position wrapper
+│   │   ├── ObserverSubject.ts      # Observable subject base class
+│   │   ├── DualObserverSubject.ts  # Observer subject with dual observer support
+│   │   ├── ObserverMixin.ts        # Mixin for adding observer capabilities
+│   │   ├── GeocodingState.ts       # Geocoding state machine
+│   │   ├── PositionManager.ts      # Geolocation position lifecycle manager
+│   │   ├── ReferencePlace.ts       # OSM-based reference place wrapper
+│   │   └── errors.ts               # GeoPositionError custom error class
+│   └── utils/              # Utility functions
+│       ├── distance.ts             # Haversine distance calculation
+│       ├── async.ts                # Async helpers (delay)
+│       └── logger.ts               # Shared logging utilities
 ├── test/                   # Jest test suite
 │   ├── core/               # Unit tests for src/core/
 │   ├── utils/              # Unit tests for src/utils/
@@ -237,6 +283,11 @@ paraty_geocore.js/
 │   ├── src/                # CommonJS build (Node.js)
 │   └── esm/                # ES Module build (CDN/browser)
 ├── scripts/                # Shell automation scripts
+│   ├── deploy.sh               # Build, tag, and publish a release
+│   ├── colors.sh               # Shared ANSI color definitions
+│   ├── run-tests-docker.sh     # Run tests in a Docker container
+│   ├── generate_ts_profile.sh  # Generate TypeScript profile
+│   └── smoke-test.cjs          # Quick smoke test against dist/
 ├── .github/workflows/      # GitHub Actions CI/CD workflows
 ├── cdn-delivery.sh         # CDN URL generator script
 └── package.json            # Project manifest and dependencies
