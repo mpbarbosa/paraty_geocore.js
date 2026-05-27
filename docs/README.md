@@ -28,10 +28,19 @@ docs/
 ├── OBSERVER_SUBJECT_API.md   # ObserverSubject and DualObserverSubject API reference
 ├── OBSERVER_MIXIN_API.md     # withObserver mixin API reference
 ├── POSITION_MANAGER.md       # PositionManager API reference
+├── POSITION_MANAGER_POLICY.md # PositionManagerPolicy API reference
 ├── GeoPosition-FRS.md        # Functional requirements spec — GeoPosition
 ├── async-FRS.md              # Functional requirements for async utilities
 ├── distance-FRS.md           # Functional requirements for Haversine distance utility
-└── ReferencePlace-FRS.md     # Functional requirements spec — ReferencePlace
+├── ReferencePlace-FRS.md     # Functional requirements spec — ReferencePlace
+├── CONTRIBUTING.md           # How to contribute — branching, commits, validation
+├── CLEAN_ARCHITECTURE_GUIDE.md    # Layer rules: src/core/ ← src/utils/ ← src/index.ts
+├── LIGHTWEIGHT_DDD_GUIDE.md       # Ubiquitous language, bounded contexts, value objects
+├── HIGH_COHESION_GUIDE.md         # Single-responsibility rules per module
+├── LOW_COUPLING_GUIDE.md          # Dependency direction rules and coupling heuristics
+├── REFERENTIAL_TRANSPARENCY.md    # Immutability and pure-function design rules
+├── CODE_QUALITY_CONTROL_GUIDE.md  # Quality gates and pre-PR review checklist
+└── UNIT_TEST_GUIDE.md             # Jest test structure, patterns, and quality gates
 ```
 
 ## `api/` — TypeDoc-generated API Reference
@@ -71,3 +80,11 @@ Run `npm run docs:generate` to regenerate. **Do not edit files in this directory
 | `async-FRS.md` | Functional requirements for the async utilities (`delay`) |
 | `distance-FRS.md` | Functional requirements for the Haversine distance utility |
 | `ReferencePlace-FRS.md` | Functional requirements spec — `ReferencePlace` |
+| `CONTRIBUTING.md` | How to contribute — branching, commit conventions, validation commands |
+| `CLEAN_ARCHITECTURE_GUIDE.md` | Layer rules: `src/core/` ← `src/utils/` ← `src/index.ts` |
+| `LIGHTWEIGHT_DDD_GUIDE.md` | Ubiquitous language, bounded contexts, and value-object rules |
+| `HIGH_COHESION_GUIDE.md` | Single-responsibility rules per module and heuristics |
+| `LOW_COUPLING_GUIDE.md` | Dependency direction rules and coupling review heuristics |
+| `REFERENTIAL_TRANSPARENCY.md` | Immutability and pure-function design rules |
+| `CODE_QUALITY_CONTROL_GUIDE.md` | Quality gates and pre-PR review checklist |
+| `UNIT_TEST_GUIDE.md` | Jest test structure, patterns, and quality gates |

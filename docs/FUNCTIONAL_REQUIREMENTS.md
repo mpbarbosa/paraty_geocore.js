@@ -233,8 +233,8 @@ This document defines the top-level functional requirements and acceptance crite
 
 #### AC-PM-02 — Multi-layer position filtering
 - **Given** a configured `PositionManager`
-- **When** `update(position)` is called with a position whose accuracy quality is in `notAcceptedAccuracy`
-- **Then** the position is rejected and observers are not notified
+- **When** `update(position)` is called with a `GeoPositionInput` whose accuracy quality is in `notAcceptedAccuracy`
+- **Then** the position is rejected and subscribed observers receive `strCurrPosNotUpdate`
 
 #### AC-PM-03 — Distance OR time threshold
 - **Given** a `PositionManager` with a known last position
@@ -244,6 +244,11 @@ This document defines the top-level functional requirements and acceptance crite
 #### AC-PM-04 — Observer notification on accepted update
 - **When** an accepted position update triggers a notification
 - **Then** all subscribed observers receive the event type string via `update(manager, eventType)`
+
+#### AC-PM-05 — Invalid input rejection
+- **Given** a configured `PositionManager`
+- **When** `update(position)` is called with invalid input (for example, missing `timestamp` or coordinates)
+- **Then** the update is rejected and subscribed observers receive `strCurrPosNotUpdate` with an error descriptor
 
 ---
 

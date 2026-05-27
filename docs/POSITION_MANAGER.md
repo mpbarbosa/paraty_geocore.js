@@ -64,7 +64,7 @@ npm install paraty_geocore.js
 ### Basic usage
 
 ```typescript
-import PositionManager from 'paraty_geocore.js';
+import { PositionManager } from 'paraty_geocore.js';
 
 const manager = PositionManager.getInstance();
 
@@ -98,6 +98,34 @@ navigator.geolocation.watchPosition((position) => {
 });
 ```
 
+### Browser compatibility
+
+```typescript
+import { PositionManager, initializeConfig } from 'paraty_geocore.js';
+
+const browserPosition = await new Promise<GeolocationPosition>((resolve, reject) => {
+  navigator.geolocation.getCurrentPosition(resolve, reject);
+});
+
+// Browser GeolocationPosition objects remain compatible with the
+// library-owned GeoPositionInput shape accepted by PositionManager.
+PositionManager.getInstance(browserPosition);
+```
+
+### Library-owned input shape
+
+```typescript
+import { initializeConfig } from 'paraty_geocore.js';
+import type { GeoPositionInput } from 'paraty_geocore.js';
+
+const input: GeoPositionInput = {
+  coords: { latitude: -23.5505, longitude: -46.6333, accuracy: 10 },
+  timestamp: Date.now(),
+};
+
+PositionManager.getInstance(input);
+```
+
 ### Custom configuration
 
 ```typescript
@@ -119,11 +147,15 @@ initializeConfig({
 Returns the singleton instance, creating it on first call.  If `position` is
 supplied to a subsequent call, it is forwarded to `update()`.
 
+`position` uses the library-owned `GeoPositionInput` shape. Browser
+`GeolocationPosition` objects remain compatible and can still be passed
+directly.
+
 ### `manager.update(position)`
 
-Processes a new `GeolocationPosition` object through all validation layers.
-Accepted positions update `lastPosition` and notify observers.  Rejected
-positions also notify observers (with `strCurrPosNotUpdate`).
+Processes a new `GeoPositionInput`-compatible object through all validation
+layers. Accepted positions update `lastPosition` and notify observers. Rejected
+positions notify observers with `strCurrPosNotUpdate`.
 
 ### `manager.subscribe(observer)` / `manager.unsubscribe(observer)`
 
@@ -178,12 +210,14 @@ or selective overrides.
 
 ## Validation Rules
 
-Position updates go through three layers in order:
+Position updates go through four layers in order:
 
 ### 1. Position validity
 
-The `position` object must exist and have a `timestamp` field.  If not, the
-update is silently dropped (no observer notification).
+The `position` object must exist, include a finite `timestamp`, and provide
+finite `coords.latitude` and `coords.longitude` values. If not, the update is
+rejected and observers receive `strCurrPosNotUpdate` with an
+`InvalidPositionError`.
 
 ### 2. Accuracy quality
 
@@ -254,4 +288,4 @@ The test files are:
 |---------------|--------|
 | 0.12.3-alpha  | Initial port from guia_turistico; adapted imports, replaced app config with `PositionManagerConfig`, added `createPositionManagerConfig()` and `initializeConfig()` |
 | 0.12.10-alpha | Introduced to paraty_geocore.js as a fully integrated module |
-| 0.12.11-alpha | Added `setBypassDistanceRule(enabled)` / `_bypassDistanceRule` flag for testing distance-rule bypass |
+| 0.13.0-alpha | Added `setBypassDistanceRule(enabled)` / `_bypassDistanceRule` flag for testing distance-rule bypass |
