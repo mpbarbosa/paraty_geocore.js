@@ -68,6 +68,19 @@ workflow:
       dependencies: []
       ai_persona: documentation_expert
 
+    # step_0b runs BEFORE step_01: generates TypeDoc stubs for undocumented exports so that
+    # step_01 (Documentation Analysis) reviews a complete doc surface, not a stub-free one.
+    # Restoring canonical order: step_00 → step_0b → step_01.
+    - id: step_0b
+      name: "Bootstrap Documentation"
+      file: "step_0b.js"
+      description: "Bootstrap missing TypeDoc stubs; generate JSDoc for undocumented src/core/ and src/utils/ exports"
+      phase: 1
+      enabled: true
+      can_parallelize: false
+      dependencies: [step_00]
+      ai_persona: documentation_expert
+
     - id: step_01
       name: "Documentation Analysis"
       file: "step_01.js"
@@ -75,7 +88,7 @@ workflow:
       phase: 1
       enabled: true
       can_parallelize: false
-      dependencies: [step_00]
+      dependencies: [step_0b]
       ai_persona: documentation_expert
 
     - id: step_02
@@ -86,6 +99,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_01]
+      dependency_comment: "Skips canonical step_01_5 (Copilot Instructions Audit): paraty_geocore.js has no .github/copilot-instructions.md and is not an AI project. Consistency Analysis runs directly after Documentation Analysis."
       ai_persona: documentation_expert
 
     - id: step_03
@@ -96,6 +110,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_00]
+      dependency_comment: "Script Reference Analysis is independent of the documentation chain (canonical: step_02) and runs in parallel from step_00. For this pure-TypeScript library, package.json script validation does not require documentation consistency results."
       ai_persona: devops_engineer
 
     - id: step_04
@@ -116,6 +131,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_00]
+      dependency_comment: "Directory Structure Validation runs in parallel with Config Validation (canonical: step_04) from step_00. For this project, dir-structure and config validation are independent checks that can be parallelised safely."
       ai_persona: architecture_reviewer
 
     - id: step_06
@@ -125,7 +141,8 @@ workflow:
       phase: 2
       enabled: true
       can_parallelize: false
-      dependencies: [step_03, step_04]
+      dependencies: [step_03, step_04, step_05]
+      dependency_comment: "Integration Tests gate on script refs (step_03), config validation (step_04), and directory structure (step_05) — all three must pass before running the full Jest suite. Canonical dep is step_05 only; explicit step_03 and step_04 are added as additional quality gates."
       ai_persona: test_engineer
 
     - id: step_07
@@ -156,6 +173,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_00]
+      dependency_comment: "Dependency audit is declared from step_00, but canonical enforcement adds step_08 as a required prerequisite. Effective execution chain: step_00 → step_03/04/05 → step_06 → step_07 → step_08 → step_09. The audit does NOT run early or in parallel — it runs after the full test-and-build pipeline completes. The step_00 anchor is retained as an explicit record; adjust this dependency if canonical enforcement rules change in future."
       ai_persona: dependency_analyst
 
     - id: step_10
@@ -166,6 +184,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_06]
+      dependency_comment: "Code quality runs in parallel after Integration Tests (step_06) rather than after Dependency Audit (canonical: step_09). For this geolocation library, ESLint analysis is independent of dependency audit findings. step_09 is enforced by the runtime as an effective prerequisite."
       ai_persona: code_quality_analyst
 
     - id: step_11
@@ -176,6 +195,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_01, step_02]
+      dependency_comment: "Context Optimization uses documentation analysis (step_01) and consistency results (step_02) as its primary inputs. Canonical dep is step_13 (Markdown Lint); step_13 is enforced by the runtime and will be added as an effective prerequisite automatically."
       ai_persona: documentation_expert
 
     - id: step_12
@@ -186,6 +206,7 @@ workflow:
       enabled: true
       can_parallelize: false
       dependencies: [step_10]
+      dependency_comment: "Git Finalization (step_12) is mandatory for this project. It gates on Code Quality Analysis (step_10) to ensure no ESLint violations are committed. Canonical dep is step_0f (Artifact Commit); step_0f is enforced by the runtime as an effective prerequisite, so step_12 will always run after artifact commit."
       ai_persona: git_specialist
 
     - id: step_13
@@ -196,6 +217,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_01]
+      dependency_comment: "Markdown Lint runs in phase 1 immediately after Documentation Analysis (step_01), before Code Quality (canonical: step_10). For the 22+ docs/ files in this project, markdown linting is a phase-1 documentation activity independent of ESLint code quality results."
       ai_persona: technical_writer
 
     - id: step_14
@@ -206,7 +228,6 @@ workflow:
       enabled: false
       reason: "paraty_geocore.js is not an AI project; no AI prompt artifacts to review"
       can_parallelize: true
-      dependencies: [step_11]
       ai_persona: prompt_engineer
 
     - id: step_15
@@ -217,7 +238,6 @@ workflow:
       enabled: false
       reason: "Geolocation class library with no UI"
       can_parallelize: true
-      dependencies: [step_10]
       ai_persona: ux_analyst
 
     - id: step_16
@@ -227,7 +247,8 @@ workflow:
       phase: 3
       enabled: true
       can_parallelize: false
-      dependencies: [step_08, step_12]
+      dependencies: [step_08]
+      dependency_comment: "Version Update gates on Release Readiness Check (step_08) to ensure dist/ artifacts and CDN URLs are valid before bumping semver. Canonical dep is step_03 (Script References). step_12 was removed as it creates a forward reference cycle — step_12 runs after step_0f which runs after step_17 which runs after step_16."
       ai_persona: git_specialist
 
     - id: step_17
@@ -237,8 +258,19 @@ workflow:
       phase: 3
       enabled: true
       can_parallelize: false
-      dependencies: [step_16]
+      dependencies: [step_16, step_03, step_20, step_23]
+      dependency_comment: "Summary Generation gates primarily on Version Update (step_16) completing. Terminal branch prerequisites step_03 (Script References), step_20 (Async Performance Review), and step_23 (Performance Review) are listed explicitly to suppress the runtime re-injection advisory. step_11_6 is intentionally absent — it is disabled below because this is not an AWS project."
       ai_persona: technical_writer
+
+    - id: step_11_6
+      name: "AWS Serverless AI Review"
+      file: "step_11_6.js"
+      description: "AI-powered deployment readiness review for aws_lbs_backend_setup projects"
+      phase: 2
+      enabled: false
+      reason: "paraty_geocore.js is a pure geolocation library — no AWS resources, no serverless infrastructure. Explicitly disabled to suppress re-injection as a terminal branch prerequisite for step_17."
+      can_parallelize: true
+      ai_persona: documentation_expert
 
     - id: step_18
       name: "Debugging Analysis"
@@ -248,6 +280,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_06]
+      dependency_comment: "Debugging Analysis runs in parallel after Integration Tests (step_06), not after Version Update (canonical: step_16). For this pure-computation geolocation library, async bug analysis in PositionManager/async.ts is independent of version management and can be parallelised with other phase-2 review steps."
       ai_persona: async_performance_engineer
 
     - id: step_19
@@ -258,6 +291,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_10]
+      dependency_comment: "TypeScript Review runs after Code Quality Analysis (step_10) to benefit from ESLint findings. Canonical dep is step_18 (Debugging Analysis); both step_18 and step_19 are parallel phase-2 steps for this project — TypeScript strictness review is independent of async debug findings."
       ai_persona: typescript_reviewer
 
     - id: step_20
@@ -268,6 +302,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_06]
+      dependency_comment: "Async Performance Review runs in parallel after Integration Tests (step_06), not after TypeScript Review (canonical: step_19). DualObserverSubject and async.ts pattern analysis is independent of TypeScript strictness findings for this pure-computation library."
       ai_persona: async_performance_engineer
 
     - id: step_21
@@ -278,6 +313,7 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_05]
+      dependency_comment: "Architecture Review gates on Directory Structure Validation (step_05) to confirm src/core/ vs src/utils/ boundaries before reviewing the class hierarchy. Canonical dep is step_02_5 (Documentation Optimization) which is not enabled for this project; step_05 is the appropriate local anchor for architecture analysis."
       ai_persona: architecture_reviewer
 
     - id: step_22
@@ -288,7 +324,6 @@ workflow:
       enabled: false
       reason: "Geolocation class library with no UI — step skips gracefully if no HTML/UI files found, but disabled to avoid unnecessary runs"
       can_parallelize: true
-      dependencies: [step_10]
       ai_persona: accessibility_expert
 
     - id: step_23
@@ -299,17 +334,8 @@ workflow:
       enabled: true
       can_parallelize: true
       dependencies: [step_06]
+      dependency_comment: "Performance Review runs in parallel after Integration Tests (step_06), not after Accessibility Review (canonical: step_22, which is disabled). Haversine hot-path and distance.ts complexity analysis is independent of accessibility findings. step_22 is explicitly disabled above."
       ai_persona: performance_engineer
-
-    - id: step_0b
-      name: "Bootstrap Documentation"
-      file: "step_0b.js"
-      description: "Bootstrap missing TypeDoc stubs; generate JSDoc for undocumented src/core/ and src/utils/ exports"
-      phase: 1
-      enabled: true
-      can_parallelize: false
-      dependencies: [step_01]
-      ai_persona: documentation_expert
 
     - id: step_0f
       name: "Artifact Commit"
@@ -321,36 +347,16 @@ workflow:
       dependencies: [step_17]
       ai_persona: git_specialist
 
-  # Legacy stages kept for backwards compatibility
+  # NOTE: stages only support 'enabled: true|false'.
+  # 'steps:' is NOT supported and will cause a preflight validation error.
+  # To skip individual steps, use 'enabled: false' on the step entry under workflow.steps.
   stages:
     quick:
       enabled: true
-      steps:
-        - step_00  # pre-analysis / environment scan
-        - step_01  # documentation analysis
-        - step_02  # consistency analysis
     medium:
       enabled: true
-      steps:
-        - step_00  # pre-analysis / environment scan
-        - step_01  # documentation analysis
-        - step_02  # consistency analysis
-        - step_03  # script reference analysis
-        - step_04  # config validation
-        - step_05  # directory structure validation
     full:
       enabled: true
-      steps:
-        - step_00  # pre-analysis / environment scan
-        - step_01  # documentation analysis
-        - step_02  # consistency analysis
-        - step_03  # script reference analysis
-        - step_04  # config validation
-        - step_05  # directory structure validation
-        - step_06  # integration tests
-        - step_07  # coverage report generation
-        - step_08  # release readiness check
-        - step_0f  # artifact commit: versions and commits all workflow outputs to the repo
 
 validation:
   documentation:
