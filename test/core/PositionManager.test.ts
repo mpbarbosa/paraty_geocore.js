@@ -238,7 +238,12 @@ describe('PositionManager', () => {
 			// @ts-expect-error intentional bad input
 			manager.update(null);
 
-			expect(observer.update).not.toHaveBeenCalled();
+			expect(observer.update).toHaveBeenCalledWith(
+				manager,
+				PositionManager.strCurrPosNotUpdate,
+				null,
+				expect.objectContaining({ name: 'InvalidPositionError' }),
+			);
 			expect(manager.lastPosition).toBeNull();
 		});
 
@@ -247,10 +252,29 @@ describe('PositionManager', () => {
 			const observer = makeObserver();
 			manager.subscribe(observer);
 
-			// @ts-expect-error intentional bad input
 			manager.update({ coords: { latitude: -23, longitude: -46, accuracy: 10 } });
 
-			expect(observer.update).not.toHaveBeenCalled();
+			expect(observer.update).toHaveBeenCalledWith(
+				manager,
+				PositionManager.strCurrPosNotUpdate,
+				null,
+				expect.objectContaining({ name: 'InvalidPositionError' }),
+			);
+		});
+
+		it('accepts a plain GeoPositionInput object', () => {
+			const manager  = new PositionManager();
+			const observer = makeObserver();
+			manager.subscribe(observer);
+
+			manager.update(makeGeoPositionInput(-23.5505, -46.6333, 10));
+
+			expect(observer.update).toHaveBeenCalledWith(
+				manager,
+				PositionManager.strCurrPosUpdate,
+				null,
+				null,
+			);
 		});
 	});
 
@@ -506,7 +530,7 @@ describe('PositionManager', () => {
 		});
 	});
 
-	// ── bypassDistanceRule (v0.12.11-alpha) ──────────────────────────────────
+	// ── bypassDistanceRule (v0.13.0-alpha) ──────────────────────────────────
 
 	describe('bypassDistanceRule', () => {
 		it('defaults to false', () => {

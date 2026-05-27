@@ -14,7 +14,12 @@
 
 import PositionManager, { initializeConfig, createPositionManagerConfig } from '../../src/core/PositionManager';
 import GeoPosition from '../../src/core/GeoPosition';
-import { makeBrowserPosition, TEST_TIMESTAMP, makeObserver } from '../helpers/fixtures';
+import {
+	makeBrowserPosition,
+	TEST_TIMESTAMP,
+	makeGeoPositionInput,
+	makeObserver,
+} from '../helpers/fixtures';
 
 // ---------------------------------------------------------------------------
 // Mocks
@@ -56,6 +61,16 @@ describe('Integration: GeoPosition + PositionManager', () => {
 	// ── GeoPosition creation ─────────────────────────────────────────────────
 
 	describe('GeoPosition creation on position update', () => {
+		it('accepts a plain GeoPositionInput through update()', () => {
+			const manager = new PositionManager();
+
+			manager.update(makeGeoPositionInput(-23.5505, -46.6333, 10));
+
+			expect(manager.lastPosition).toBeInstanceOf(GeoPosition);
+			expect(manager.lastPosition!.latitude).toBe(-23.5505);
+			expect(manager.lastPosition!.longitude).toBe(-46.6333);
+		});
+
 		it('wraps raw position in a GeoPosition instance', () => {
 			const manager = new PositionManager(makePos(-23.5505, -46.6333));
 

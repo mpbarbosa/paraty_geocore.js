@@ -207,16 +207,22 @@ describe('PositionManager', () => {
             manager.subscribe(observer);
             // @ts-expect-error intentional bad input
             manager.update(null);
-            expect(observer.update).not.toHaveBeenCalled();
+            expect(observer.update).toHaveBeenCalledWith(manager, PositionManager_1.default.strCurrPosNotUpdate, null, expect.objectContaining({ name: 'InvalidPositionError' }));
             expect(manager.lastPosition).toBeNull();
         });
         it('rejects position without timestamp', () => {
             const manager = new PositionManager_1.default();
             const observer = (0, fixtures_1.makeObserver)();
             manager.subscribe(observer);
-            // @ts-expect-error intentional bad input
             manager.update({ coords: { latitude: -23, longitude: -46, accuracy: 10 } });
-            expect(observer.update).not.toHaveBeenCalled();
+            expect(observer.update).toHaveBeenCalledWith(manager, PositionManager_1.default.strCurrPosNotUpdate, null, expect.objectContaining({ name: 'InvalidPositionError' }));
+        });
+        it('accepts a plain GeoPositionInput object', () => {
+            const manager = new PositionManager_1.default();
+            const observer = (0, fixtures_1.makeObserver)();
+            manager.subscribe(observer);
+            manager.update((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333, 10));
+            expect(observer.update).toHaveBeenCalledWith(manager, PositionManager_1.default.strCurrPosUpdate, null, null);
         });
     });
     // ── Accuracy validation ──────────────────────────────────────────────────
@@ -375,7 +381,7 @@ describe('PositionManager', () => {
             expect(cfg.notAcceptedAccuracy).toBeNull();
         });
     });
-    // ── bypassDistanceRule (v0.12.11-alpha) ──────────────────────────────────
+    // ── bypassDistanceRule (v0.13.0-alpha) ──────────────────────────────────
     describe('bypassDistanceRule', () => {
         it('defaults to false', () => {
             const manager = new PositionManager_1.default();

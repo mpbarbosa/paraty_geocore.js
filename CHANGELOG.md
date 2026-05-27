@@ -7,6 +7,29 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- `PositionManager` now accepts the library-owned `GeoPositionInput` shape in
+  its public entry points (`getInstance`, constructor, and `update`) instead of
+  exposing browser-owned `GeolocationPosition` in the public API
+- Invalid `PositionManager.update()` inputs now emit
+  `strCurrPosNotUpdate` with an `InvalidPositionError` instead of being dropped
+  silently
+- `PositionManager` validation and event-classification policy was extracted
+  into `src/core/PositionManagerPolicy.ts` to separate deterministic rules from
+  runtime orchestration
+
+### Documentation
+
+- Updated `docs/POSITION_MANAGER.md`,
+  `docs/FUNCTIONAL_REQUIREMENTS.md`, and
+  `docs/POSITION_MANAGER_CODE_QUALITY_ASSESSMENT.md` to reflect the remediated
+  `PositionManager` API boundary and rejection behaviour
+
+---
+
 ## [0.15.0-alpha] — 2026-03-27
 
 ### Added
@@ -28,7 +51,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.12.11-alpha] — 2026-03-27
+## [0.13.0-alpha] — 2026-03-27
 
 ### Added
 

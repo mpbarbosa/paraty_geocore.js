@@ -79,6 +79,13 @@ describe('Integration: GeoPosition + PositionManager', () => {
     });
     // ── GeoPosition creation ─────────────────────────────────────────────────
     describe('GeoPosition creation on position update', () => {
+        it('accepts a plain GeoPositionInput through update()', () => {
+            const manager = new PositionManager_1.default();
+            manager.update((0, fixtures_1.makeGeoPositionInput)(-23.5505, -46.6333, 10));
+            expect(manager.lastPosition).toBeInstanceOf(GeoPosition_1.default);
+            expect(manager.lastPosition.latitude).toBe(-23.5505);
+            expect(manager.lastPosition.longitude).toBe(-46.6333);
+        });
         it('wraps raw position in a GeoPosition instance', () => {
             const manager = new PositionManager_1.default(makePos(-23.5505, -46.6333));
             expect(manager.lastPosition).toBeInstanceOf(GeoPosition_1.default);
