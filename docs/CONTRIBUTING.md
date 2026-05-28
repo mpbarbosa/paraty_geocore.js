@@ -130,9 +130,9 @@ Scopes are optional but useful: `GeoPosition`, `ReferencePlace`, `PositionManage
 Examples:
 
 ```text
-feat(ReferencePlace): add leisure/sports_centre mapping (v0.16.0-alpha)
+feat(ReferencePlace): add leisure/sports_centre mapping (v0.17.0-alpha)
 fix(GeoPosition): handle null speed field without throwing
-docs(ARCHITECTURE): add v0.16.0-alpha row to versioning table
+docs(ARCHITECTURE): add v0.17.0-alpha row to versioning table
 ```
 
 ---
