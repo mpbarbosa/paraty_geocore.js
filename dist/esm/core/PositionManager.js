@@ -61,6 +61,7 @@ import DualObserverSubject from './DualObserverSubject.js';
 import { calculateDistance } from '../utils/distance.js';
 import { log, warn } from '../utils/logger.js';
 import { withObserver } from './ObserverMixin.js';
+import { classifyPositionEvent, evaluateDistanceTimeGate, getRejectedAccuracyError, validatePositionInput, } from './PositionManagerPolicy.js';
 /**
  * Returns a fresh config object pre-populated with library defaults.
  */
@@ -114,7 +115,8 @@ class PositionManager {
      * supplied and an instance already exists, it delegates to
      * {@link update}.
      *
-     * @param position - Optional HTML5 Geolocation API position object
+     * @param position - Optional position data in the library-owned
+     *   {@link GeoPositionInput} shape
      * @returns The singleton PositionManager instance
      *
      * @example
@@ -161,7 +163,7 @@ class PositionManager {
          * progress (so the confirmation buffer fills quickly) and restored to `false`
          * once the confirmation buffers settle.
          *
-         * @since 0.12.11-alpha
+         * @since 0.13.0-alpha
          */
         this._bypassDistanceRule = false;
         this.observerSubject = new DualObserverSubject();
@@ -195,6 +197,47 @@ class PositionManager {
     get speed() { return this.lastPosition?.speed; }
     /** Timestamp (ms) of the last accepted position. */
     get timestamp() { return this.lastPosition?.timestamp; }
+    rejectUpdate(error) {
+        this.notifyObservers(PositionManager.strCurrPosNotUpdate, null, error);
+    }
+    logGateResult(gateResult) {
+        if (gateResult.distance == null) {
+            return;
+        }
+        const timeElapsedSeconds = (gateResult.timeElapsed / 1000).toFixed(1);
+        const distanceLabel = `${gateResult.distance.toFixed(1)}m`;
+        const timeLabel = `${timeElapsedSeconds}s`;
+        if (!gateResult.accepted) {
+            warn('(PositionManager) Update blocked — distance:', distanceLabel, 'time:', timeLabel);
+            return;
+        }
+        if (gateResult.bypassed) {
+            log('(PositionManager) Distance/time gate bypassed (confirmation pending) — distance:', distanceLabel, 'time:', timeLabel);
+            return;
+        }
+        if (gateResult.distanceExceeded && gateResult.timeExceeded) {
+            log('(PositionManager) Update triggered — BOTH conditions met — distance:', distanceLabel, 'time:', timeLabel);
+            return;
+        }
+        if (gateResult.distanceExceeded) {
+            log('(PositionManager) Update triggered by DISTANCE —', distanceLabel, '(time:', `${timeLabel})`);
+            return;
+        }
+        log('(PositionManager) Update triggered by TIME —', timeLabel, '(distance:', `${distanceLabel})`);
+    }
+    resolvePositionEvent(eventClassification) {
+        if (eventClassification.immediate) {
+            warn('(PositionManager)', eventClassification.error.message);
+            return {
+                posEvent: PositionManager.strImmediateAddressUpdate,
+                error: eventClassification.error,
+            };
+        }
+        return {
+            posEvent: PositionManager.strCurrPosUpdate,
+            error: null,
+        };
+    }
     // ─── Core notification method ───────────────────────────────────────────
     /**
      * Notifies all subscribed observers with the given event type and optional
@@ -212,7 +255,8 @@ class PositionManager {
      * Updates the position with multi-layer validation and filtering rules.
      *
      * Validation layers (evaluated in order):
-     * 1. **Position validity** — must have a valid object with a timestamp.
+     * 1. **Position validity** — must have a valid object with a finite timestamp
+     *    and coordinates.
      * 2. **Accuracy requirement** — rejects quality labels listed in
      *    {@link PositionManagerConfig.notAcceptedAccuracy}.
      * 3. **Distance OR time threshold** — rejects updates where *neither*
@@ -223,92 +267,63 @@ class PositionManager {
      *
      * When validation passes, position properties are updated and observers
      * are notified.  When validation fails, observers receive
-     * {@link strCurrPosNotUpdate} with an error descriptor.
+     * {@link strCurrPosNotUpdate} with an error descriptor, including invalid
+     * input that cannot be processed.
      *
-     * @param position - New position data from the Geolocation API
+     * @param position - New position data in the library-owned
+     *   {@link GeoPositionInput} shape
      *
      * @fires PositionManager#strCurrPosUpdate        — position accepted
      * @fires PositionManager#strImmediateAddressUpdate — accepted but early
      * @fires PositionManager#strCurrPosNotUpdate     — position rejected
      *
      * @example
-     * navigator.geolocation.getCurrentPosition((pos) => {
-     *   PositionManager.getInstance().update(pos);
+     * navigator.geolocation.getCurrentPosition((rawPosition) => {
+     *   PositionManager.getInstance().update(rawPosition);
      * });
      *
      * @since 0.12.10-alpha
      */
     update(position) {
-        let bUpdateCurrPos = true;
         let error = null;
         log('(PositionManager) update called with position:', position);
         log('(PositionManager) lastPosition:', this.lastPosition);
-        if (!position || !position.timestamp) {
+        const validation = validatePositionInput(position);
+        if (!validation.position || validation.error) {
             warn('(PositionManager) Invalid position data:', position);
+            this.rejectUpdate(validation.error);
             return;
         }
+        const nextPosition = validation.position;
         // ── Accuracy validation ───────────────────────────────────────────
-        if (config.notAcceptedAccuracy &&
-            Array.isArray(config.notAcceptedAccuracy) &&
-            config.notAcceptedAccuracy.includes(GeoPosition.getAccuracyQuality(position.coords.accuracy))) {
-            bUpdateCurrPos = false;
-            error = { name: 'AccuracyError', message: 'Accuracy is not good enough' };
-            warn('(PositionManager) Accuracy not good enough:', position.coords.accuracy);
+        error = getRejectedAccuracyError(nextPosition, config.notAcceptedAccuracy);
+        if (error) {
+            warn('(PositionManager) Accuracy not good enough:', nextPosition.coords.accuracy ?? Infinity);
+            this.rejectUpdate(error);
+            return;
         }
         // ── Distance OR time validation ───────────────────────────────────
-        if (this.lastPosition &&
-            this.lastPosition.latitude != null &&
-            this.lastPosition.longitude != null &&
-            position.coords) {
-            const distance = calculateDistance(this.lastPosition.latitude, this.lastPosition.longitude, position.coords.latitude, position.coords.longitude);
-            const timeElapsed = position.timestamp - (this.lastModified ?? 0);
-            const timeElapsedSeconds = (timeElapsed / 1000).toFixed(1);
-            const distanceExceeded = distance >= config.minimumDistanceChange;
-            const timeExceeded = timeElapsed >= config.minimumTimeChange;
-            if (!distanceExceeded && !timeExceeded) {
-                if (this._bypassDistanceRule) {
-                    log('(PositionManager) Distance/time gate bypassed (confirmation pending) — distance:', `${distance.toFixed(1)}m`, 'time:', `${timeElapsedSeconds}s`);
-                }
-                else {
-                    bUpdateCurrPos = false;
-                    error = {
-                        name: 'DistanceAndTimeError',
-                        message: `Neither distance (${distance.toFixed(1)}m < ${config.minimumDistanceChange}m)` +
-                            ` nor time (${timeElapsedSeconds}s < ${config.minimumTimeChange / 1000}s) threshold met`,
-                    };
-                    warn('(PositionManager) Update blocked — distance:', `${distance.toFixed(1)}m`, 'time:', `${timeElapsedSeconds}s`);
-                }
-            }
-            else {
-                if (distanceExceeded && timeExceeded) {
-                    log('(PositionManager) Update triggered — BOTH conditions met — distance:', `${distance.toFixed(1)}m`, 'time:', `${timeElapsedSeconds}s`);
-                }
-                else if (distanceExceeded) {
-                    log('(PositionManager) Update triggered by DISTANCE —', `${distance.toFixed(1)}m`, '(time:', `${timeElapsedSeconds}s)`);
-                }
-                else {
-                    log('(PositionManager) Update triggered by TIME —', `${timeElapsedSeconds}s`, '(distance:', `${distance.toFixed(1)}m)`);
-                }
-            }
-        }
-        if (!bUpdateCurrPos) {
-            this.notifyObservers(PositionManager.strCurrPosNotUpdate, null, error);
+        const gateResult = evaluateDistanceTimeGate({
+            lastPosition: this.lastPosition,
+            position: nextPosition,
+            lastModified: this.lastModified,
+            minimumDistanceChange: config.minimumDistanceChange,
+            minimumTimeChange: config.minimumTimeChange,
+            bypassDistanceRule: this._bypassDistanceRule,
+            calculateDistance,
+        });
+        this.logGateResult(gateResult);
+        if (!gateResult.accepted) {
+            error = gateResult.error;
+            this.rejectUpdate(error);
             return;
         }
         // ── Event classification ──────────────────────────────────────────
         let posEvent;
-        if (position.timestamp - (this.lastModified ?? 0) < config.trackingInterval) {
-            const msg = `Less than ${config.trackingInterval / 1000}s since last update: ` +
-                `${(position.timestamp - (this.lastModified ?? 0)) / 1000}s`;
-            error = { name: 'ElapseTimeError', message: msg };
-            warn('(PositionManager)', msg);
-            posEvent = PositionManager.strImmediateAddressUpdate;
-        }
-        else {
-            posEvent = PositionManager.strCurrPosUpdate;
-        }
-        this.lastPosition = new GeoPosition(position);
-        this.lastModified = position.timestamp;
+        const eventClassification = classifyPositionEvent(nextPosition.timestamp, this.lastModified, config.trackingInterval);
+        ({ posEvent, error } = this.resolvePositionEvent(eventClassification));
+        this.lastPosition = new GeoPosition(nextPosition);
+        this.lastModified = nextPosition.timestamp;
         this.notifyObservers(posEvent, null, error);
     }
     // ─── Bypass flag ────────────────────────────────────────────────────────
@@ -323,7 +338,7 @@ class PositionManager {
      * @param bypass - `true` to bypass the distance/time gate; `false` to
      *   restore normal behaviour.
      *
-     * @since 0.12.11-alpha
+     * @since 0.13.0-alpha
      */
     setBypassDistanceRule(bypass) {
         this._bypassDistanceRule = bypass;

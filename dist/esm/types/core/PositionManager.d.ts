@@ -57,7 +57,8 @@
  * @author Marcelo Pereira Barbosa
  */
 import GeoPosition from './GeoPosition.js';
-import type { AccuracyQuality } from './GeoPosition.js';
+import { type PositionManagerError } from './PositionManagerPolicy.js';
+import type { AccuracyQuality, GeoPositionInput } from './GeoPosition.js';
 /**
  * Configuration parameters for {@link PositionManager}.
  *
@@ -113,12 +114,8 @@ export declare function createPositionManagerConfig(): PositionManagerConfig;
  * @since 0.12.10-alpha
  */
 export declare function initializeConfig(newConfig: Partial<PositionManagerConfig>): void;
-interface PositionError {
-    name: string;
-    message: string;
-}
 /** Tuple forwarded to each observer on every notification. */
-type PositionObserverArgs = [PositionManager, string, unknown, PositionError | null];
+type PositionObserverArgs = [PositionManager, string, unknown, PositionManagerError | null];
 /**
  * Manages the current geolocation position using singleton and observer
  * design patterns.
@@ -152,7 +149,7 @@ declare class PositionManager {
      * progress (so the confirmation buffer fills quickly) and restored to `false`
      * once the confirmation buffers settle.
      *
-     * @since 0.12.11-alpha
+     * @since 0.13.0-alpha
      */
     private _bypassDistanceRule;
     subscribe: (observer: {
@@ -186,7 +183,8 @@ declare class PositionManager {
      * supplied and an instance already exists, it delegates to
      * {@link update}.
      *
-     * @param position - Optional HTML5 Geolocation API position object
+     * @param position - Optional position data in the library-owned
+     *   {@link GeoPositionInput} shape
      * @returns The singleton PositionManager instance
      *
      * @example
@@ -200,7 +198,7 @@ declare class PositionManager {
      *
      * @since 0.12.10-alpha
      */
-    static getInstance(position?: GeolocationPosition): PositionManager;
+    static getInstance(position?: GeoPositionInput): PositionManager;
     /**
      * Creates a new PositionManager instance.
      *
@@ -212,7 +210,7 @@ declare class PositionManager {
      *
      * @since 0.12.10-alpha
      */
-    constructor(position?: GeolocationPosition);
+    constructor(position?: GeoPositionInput);
     /**
      * Returns the current list of object-based observers.
      * @returns Read-only array of subscribed observers
@@ -234,6 +232,9 @@ declare class PositionManager {
     get speed(): number | null | undefined;
     /** Timestamp (ms) of the last accepted position. */
     get timestamp(): number | undefined;
+    private rejectUpdate;
+    private logGateResult;
+    private resolvePositionEvent;
     /**
      * Notifies all subscribed observers with the given event type and optional
      * payload.
@@ -242,12 +243,13 @@ declare class PositionManager {
      * @param data     - Optional payload (defaults to `null`)
      * @param error    - Optional error descriptor (defaults to `null`)
      */
-    notifyObservers(posEvent: string, data?: unknown, error?: PositionError | null): void;
+    notifyObservers(posEvent: string, data?: unknown, error?: PositionManagerError | null): void;
     /**
      * Updates the position with multi-layer validation and filtering rules.
      *
      * Validation layers (evaluated in order):
-     * 1. **Position validity** — must have a valid object with a timestamp.
+     * 1. **Position validity** — must have a valid object with a finite timestamp
+     *    and coordinates.
      * 2. **Accuracy requirement** — rejects quality labels listed in
      *    {@link PositionManagerConfig.notAcceptedAccuracy}.
      * 3. **Distance OR time threshold** — rejects updates where *neither*
@@ -258,22 +260,24 @@ declare class PositionManager {
      *
      * When validation passes, position properties are updated and observers
      * are notified.  When validation fails, observers receive
-     * {@link strCurrPosNotUpdate} with an error descriptor.
+     * {@link strCurrPosNotUpdate} with an error descriptor, including invalid
+     * input that cannot be processed.
      *
-     * @param position - New position data from the Geolocation API
+     * @param position - New position data in the library-owned
+     *   {@link GeoPositionInput} shape
      *
      * @fires PositionManager#strCurrPosUpdate        — position accepted
      * @fires PositionManager#strImmediateAddressUpdate — accepted but early
      * @fires PositionManager#strCurrPosNotUpdate     — position rejected
      *
      * @example
-     * navigator.geolocation.getCurrentPosition((pos) => {
-     *   PositionManager.getInstance().update(pos);
+     * navigator.geolocation.getCurrentPosition((rawPosition) => {
+     *   PositionManager.getInstance().update(rawPosition);
      * });
      *
      * @since 0.12.10-alpha
      */
-    update(position: GeolocationPosition): void;
+    update(position: GeoPositionInput): void;
     /**
      * Enables or disables the distance/time gate bypass.
      *
@@ -285,7 +289,7 @@ declare class PositionManager {
      * @param bypass - `true` to bypass the distance/time gate; `false` to
      *   restore normal behaviour.
      *
-     * @since 0.12.11-alpha
+     * @since 0.13.0-alpha
      */
     setBypassDistanceRule(bypass: boolean): void;
     /** Returns whether the distance/time gate bypass is currently active. */
