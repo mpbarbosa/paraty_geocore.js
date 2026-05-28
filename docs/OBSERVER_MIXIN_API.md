@@ -1,6 +1,6 @@
 # ObserverMixin API Documentation
 
-**Version:** 0.12.3-alpha (via `bessa_patterns.ts`)
+**Upstream package version:** 0.12.3-alpha (via `bessa_patterns.ts`)
 **Module:** `src/core/ObserverMixin.ts`
 **Pattern:** Observer (delegation via mixin)
 **Author:** Marcelo Pereira Barbosa

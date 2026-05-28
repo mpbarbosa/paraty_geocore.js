@@ -1,7 +1,7 @@
 # ReferencePlace — Functional Requirements
 
 **Module:** `paraty_geocore.js / src/core/ReferencePlace.ts`
-**Version:** 0.14.0-alpha
+**Since:** 0.14.0-alpha
 **Status:** ✅ Implemented
 
 ---

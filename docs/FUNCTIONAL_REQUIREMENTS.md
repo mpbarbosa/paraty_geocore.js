@@ -1,7 +1,7 @@
 # Functional Requirements — paraty_geocore.js
 
 **Project:** paraty_geocore.js
-**Current version:** 0.15.0-alpha
+**Current version:** 0.16.0-alpha
 **Author:** Marcelo Pereira Barbosa
 
 This document defines the top-level functional requirements and acceptance criteria for the library. Detailed per-module specifications are maintained separately and linked below.
@@ -336,7 +336,7 @@ This document defines the top-level functional requirements and acceptance crite
 
 ## 14. Out of Scope
 
-The following are explicitly **not** required for 0.15.0-alpha:
+The following are explicitly **not** required for 0.16.0-alpha:
 
 - npm package publication
 
@@ -350,7 +350,7 @@ The following are explicitly **not** required for 0.15.0-alpha:
 | ID | Source step | Description | File / Path | Priority | Status |
 |----|-------------|-------------|-------------|----------|--------|
 | RI-001 | step_02 | Broken See also links — TypeDoc path-rewriting limitation in generated copy | docs/api/media/API.md | Medium | skipped |
-| RI-002 | step_20 | addEventListener missing { once: true } — TypeDoc-owned asset in git-ignored dir | docs/api/assets/icons.js | Low | skipped |
+| RI-002 | step_20 | False-positive async warning on TypeDoc-owned asset — resolved upstream by excluding generated `docs/api/**` from runtime review scope | docs/api/assets/icons.js | Low | done |
 | RI-003 | step_05 | coverage/ directory not documented in directory tree | docs/ARCHITECTURE.md | Low | done |
 | RI-004 | step_05 | dist/ subdirectories not fully documented in directory tree | docs/ARCHITECTURE.md | Low | done |
 | RI-005 | step_05 | .github/skills/ tree missing from directory tree | docs/ARCHITECTURE.md | Medium | done |

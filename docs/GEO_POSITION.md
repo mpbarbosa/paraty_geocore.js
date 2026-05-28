@@ -3,7 +3,7 @@
 ## Source & Location
 
 **Source file:** `src/core/GeoPosition.ts`
-**Version:** 0.13.0-alpha
+**Documentation snapshot:** 0.13.0-alpha
 
 **CDN (ESM — for browsers):**
 ```ts

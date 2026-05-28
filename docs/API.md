@@ -165,4 +165,4 @@ Classifies a GPS accuracy value (in meters) into a human-readable quality tier.
 | `"good"`      | 11 – 30 m        | Good precision; suitable for most applications  |
 | `"medium"`    | 31 – 100 m       | Moderate; may be acceptable for some use cases  |
 | `"bad"`       | 101 – 200 m      | Poor precision; generally not recommended        |
-| `"very bad"`  | > 2
+| `"very bad"`  | > 200       | Very poor precision; not recommended            |

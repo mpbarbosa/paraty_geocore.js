@@ -76,6 +76,7 @@ Run `npm run docs:generate` to regenerate. **Do not edit files in this directory
 | `OBSERVER_SUBJECT_API.md` | `ObserverSubject` and `DualObserverSubject` API reference |
 | `OBSERVER_MIXIN_API.md` | `withObserver` mixin API reference |
 | `POSITION_MANAGER.md` | `PositionManager` singleton API reference |
+| `POSITION_MANAGER_POLICY.md` | Internal rule helpers used by `PositionManager` |
 | `GeoPosition-FRS.md` | Functional requirements spec — `GeoPosition` |
 | `async-FRS.md` | Functional requirements for the async utilities (`delay`) |
 | `distance-FRS.md` | Functional requirements for the Haversine distance utility |

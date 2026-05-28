@@ -1,7 +1,7 @@
 # Architecture
 
 **Package:** `paraty_geocore.js`
-**Language:** TypeScript → JavaScript (ESM)
+**Language:** TypeScript → JavaScript (CJS + ESM)
 **License:** MIT
 
 ---
@@ -42,6 +42,9 @@ paraty_geocore.js/
 │   │   ├── async.ts                 # General-purpose async utilities (delay)
 │   │   └── logger.ts                # Structured logging helpers (log, warn)
 │   └── index.ts                     # Public package entry point (re-exports all public API)
+├── .claude/
+│   ├── README.md                # Explains the local Claude/Copilot helper settings kept out of source code
+│   └── settings.local.json      # Developer-local agent permission overrides for this repository
 ├── .github/
 │   ├── SKILLS.md                # Skills index — catalogue of all Copilot CLI skills
 │   ├── copilot-instructions.md  # Copilot custom instructions for this repository
@@ -109,6 +112,8 @@ paraty_geocore.js/
 ├── LICENSE
 └── README.md
 ```
+
+The hidden `.claude/` directory is reserved for developer-local AI assistant settings used while working in this repository. Its contents are tooling metadata rather than runtime library code, build output, or published package assets.
 
 ---
 
@@ -213,7 +218,7 @@ The library uses **semantic versioning** (`MAJOR.MINOR.PATCH[-prerelease]`).
 | 0.14.1-alpha  | Dependency bump: `bessa_patterns.ts` → `v0.12.15-alpha` (`CallbackRegistry` added upstream) |
 | 0.14.2-alpha  | Dependency bump: `ibira.js` → `v0.4.22-alpha` (fixes `toString()` trailing `-` on empty prerelease) |
 | 0.14.3-alpha  | Docs: remove stale Known Limitations; add `ReferencePlace` to FRS |
-| 0.15.0-alpha  | `ReferencePlace` — expanded `referencePlaceMap` (24 entries, `leisure` class added) |
+| 0.16.0-alpha  | `ReferencePlace` — expanded `referencePlaceMap` (24 entries, `leisure` class added) |
 
 ---
 
