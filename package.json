@@ -1,13 +1,26 @@
 {
   "name": "paraty_geocore.js",
-  "version": "0.16.0-alpha",
+  "version": "0.17.0-alpha",
   "description": "Core JavaScript classes for geolocation applications",
   "main": "dist/src/index.js",
+  "types": "./dist/types/src/index.d.ts",
   "exports": {
-    ".": "./dist/src/index.js",
-    "./utils/distance": "./dist/src/utils/distance.js",
-    "./utils/async": "./dist/src/utils/async.js",
-    "./core/errors": "./dist/src/core/errors.js"
+    ".": {
+      "types": "./dist/types/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./utils/distance": {
+      "types": "./dist/types/src/utils/distance.d.ts",
+      "default": "./dist/src/utils/distance.js"
+    },
+    "./utils/async": {
+      "types": "./dist/types/src/utils/async.d.ts",
+      "default": "./dist/src/utils/async.js"
+    },
+    "./core/errors": {
+      "types": "./dist/types/src/core/errors.d.ts",
+      "default": "./dist/src/core/errors.js"
+    }
   },
   "scripts": {
     "build": "tsc --project tsconfig.json",

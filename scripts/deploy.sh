@@ -30,6 +30,7 @@ cd "${PROJECT_ROOT}"
 PACKAGE_VERSION="$(node -p "require('./package.json').version")"
 TAG="v${PACKAGE_VERSION}"
 MAIN_FILE="dist/src/index.js"
+TYPES_FILE="dist/types/src/index.d.ts"
 
 echo ""
 echo -e "${BLUE}╔════════════════════════════════════════════╗${NC}"
@@ -51,8 +52,21 @@ echo ""
 # ── 2. Commit build artifacts ─────────────────────────────────────────────────
 info "Step 2/5 — Committing build artifacts …"
 
-# Stage compiled output and delivery script (skip if nothing changed)
-git add dist/ cdn-delivery.sh 2>/dev/null || true
+# Validate that the types declaration file was produced by the build.
+# dist/src/index.d.ts does NOT exist — declarations land under dist/types/
+# because tsconfig.json sets declarationDir: "./dist/types" with rootDir: "."
+if [[ ! -f "${TYPES_FILE}" ]]; then
+  error "Types file not found: ${TYPES_FILE}"
+  error "Run 'npm run build' and verify tsconfig.json declarationDir is './dist/types'"
+  exit 1
+fi
+success "Types file present: ${TYPES_FILE}"
+
+# Generate cdn-urls.txt BEFORE the commit so it is included in the tagged version.
+bash cdn-delivery.sh > /dev/null 2>&1 || true
+
+# Stage compiled output, delivery script, and generated URL list
+git add dist/ cdn-delivery.sh cdn-urls.txt 2>/dev/null || true
 
 if git diff --cached --quiet; then
   warn "Nothing to commit — build artifacts are up to date"
@@ -88,15 +102,13 @@ git push origin "${CURRENT_BRANCH}" --tags
 success "Pushed to origin/${CURRENT_BRANCH}"
 echo ""
 
-# ── 4. Generate CDN URLs ──────────────────────────────────────────────────────
-info "Step 4/5 — Generating jsDelivr CDN URLs …"
-bash cdn-delivery.sh > /dev/null 2>&1 || true
+# ── 4. Print CDN URLs ─────────────────────────────────────────────────────────
+info "Step 4/5 — CDN URLs (generated in step 2 and committed with artifacts) …"
 if [[ -f "${PROJECT_ROOT}/cdn-urls.txt" ]]; then
   cat "${PROJECT_ROOT}/cdn-urls.txt"
 else
   warn "cdn-urls.txt not found"
 fi
-success "CDN URL list generated"
 echo ""
 
 success "Deployment of ${TAG} complete! 🚀"
@@ -142,12 +154,23 @@ _cdn_check() {
 }
 
 if command -v curl &>/dev/null; then
+  # Check JS entry point
   if _github_raw_check "${GITHUB_USER}" "${GITHUB_REPO}" "${TAG}" "${MAIN_FILE}"; then
     success "${MAIN_FILE} is committed and visible on GitHub ✓"
   else
     warn "${MAIN_FILE} not found on GitHub — CDN delivery will fail"
   fi
-  _cdn_check "${GITHUB_REPO} ${TAG}" "${CDN_URL}" || true
+
+  # Check types declaration file (path is dist/types/src/index.d.ts, NOT dist/src/index.d.ts)
+  if _github_raw_check "${GITHUB_USER}" "${GITHUB_REPO}" "${TAG}" "${TYPES_FILE}"; then
+    success "${TYPES_FILE} is committed and visible on GitHub ✓"
+  else
+    warn "${TYPES_FILE} not found on GitHub — TypeScript consumers will get 404 for types"
+  fi
+
+  TYPES_CDN_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${TYPES_FILE}"
+  _cdn_check "${GITHUB_REPO} ${TAG} (JS)" "${CDN_URL}" || true
+  _cdn_check "${GITHUB_REPO} ${TAG} (types)" "${TYPES_CDN_URL}" || true
 else
   warn "curl not found — skipping CDN check"
   echo "    Verify manually: ${CDN_URL}"

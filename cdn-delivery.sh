@@ -18,6 +18,7 @@ GITHUB_REPO="paraty_geocore.js"
 PACKAGE_VERSION=$(node -p "require('./package.json').version")
 [[ -n "${PACKAGE_VERSION}" ]] || { echo "Error: could not determine package version from package.json" >&2; exit 1; }
 MAIN_FILE="dist/src/index.js"
+TYPES_FILE="dist/types/src/index.d.ts"
 MAJOR="$(echo "${PACKAGE_VERSION}" | cut -d. -f1)"
 MINOR="$(echo "${PACKAGE_VERSION}" | cut -d. -f2 | sed 's/-.*//')"
 
@@ -37,6 +38,9 @@ echo ""
 section "📦 Version-Specific URLs:"
 echo "Load a specific version (recommended for production):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}"
+echo ""
+echo "TypeScript declaration file (types — note: NOT under dist/src/):"
+echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${TYPES_FILE}"
 echo ""
 echo "Load entire dist/src directory (specific version):"
 echo "https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/dist/src/"
@@ -160,6 +164,9 @@ Generated: $(date)
 
 PRODUCTION (Recommended - Specific Version):
 https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${MAIN_FILE}
+
+TYPESCRIPT DECLARATIONS (types are NOT under dist/src/ — see tsconfig.json):
+https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${PACKAGE_VERSION}/${TYPES_FILE}
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${CURRENT_BRANCH}/${MAIN_FILE}
