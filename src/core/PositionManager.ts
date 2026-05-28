@@ -68,6 +68,8 @@ import {
 	evaluateDistanceTimeGate,
 	getRejectedAccuracyError,
 	validatePositionInput,
+	type DistanceTimeGateResult,
+	type PositionEventClassification,
 	type PositionManagerError,
 } from './PositionManagerPolicy.js';
 import type { AccuracyQuality, GeoPositionInput } from './GeoPosition.js';
@@ -307,6 +309,84 @@ class PositionManager {
 	/** Timestamp (ms) of the last accepted position. */
 	get timestamp()       { return this.lastPosition?.timestamp; }
 
+	private rejectUpdate(error: PositionManagerError | null): void {
+		this.notifyObservers(PositionManager.strCurrPosNotUpdate, null, error);
+	}
+
+	private logGateResult(gateResult: DistanceTimeGateResult): void {
+		if (gateResult.distance == null) {
+			return;
+		}
+
+		const timeElapsedSeconds = (gateResult.timeElapsed / 1000).toFixed(1);
+		const distanceLabel = `${gateResult.distance.toFixed(1)}m`;
+		const timeLabel = `${timeElapsedSeconds}s`;
+
+		if (!gateResult.accepted) {
+			warn(
+				'(PositionManager) Update blocked — distance:',
+				distanceLabel,
+				'time:',
+				timeLabel,
+			);
+			return;
+		}
+
+		if (gateResult.bypassed) {
+			log(
+				'(PositionManager) Distance/time gate bypassed (confirmation pending) — distance:',
+				distanceLabel,
+				'time:',
+				timeLabel,
+			);
+			return;
+		}
+
+		if (gateResult.distanceExceeded && gateResult.timeExceeded) {
+			log(
+				'(PositionManager) Update triggered — BOTH conditions met — distance:',
+				distanceLabel,
+				'time:',
+				timeLabel,
+			);
+			return;
+		}
+
+		if (gateResult.distanceExceeded) {
+			log(
+				'(PositionManager) Update triggered by DISTANCE —',
+				distanceLabel,
+				'(time:',
+				`${timeLabel})`,
+			);
+			return;
+		}
+
+		log(
+			'(PositionManager) Update triggered by TIME —',
+			timeLabel,
+			'(distance:',
+			`${distanceLabel})`,
+		);
+	}
+
+	private resolvePositionEvent(
+		eventClassification: PositionEventClassification,
+	): { posEvent: string; error: PositionManagerError | null } {
+		if (eventClassification.immediate) {
+			warn('(PositionManager)', eventClassification.error!.message);
+			return {
+				posEvent: PositionManager.strImmediateAddressUpdate,
+				error: eventClassification.error,
+			};
+		}
+
+		return {
+			posEvent: PositionManager.strCurrPosUpdate,
+			error: null,
+		};
+	}
+
 	// ─── Core notification method ───────────────────────────────────────────
 
 	/**
@@ -369,11 +449,7 @@ class PositionManager {
 		const validation = validatePositionInput(position);
 		if (!validation.position || validation.error) {
 			warn('(PositionManager) Invalid position data:', position);
-			this.notifyObservers(
-				PositionManager.strCurrPosNotUpdate,
-				null,
-				validation.error,
-			);
+			this.rejectUpdate(validation.error);
 			return;
 		}
 		const nextPosition = validation.position;
@@ -385,7 +461,7 @@ class PositionManager {
 				'(PositionManager) Accuracy not good enough:',
 				nextPosition.coords.accuracy ?? Infinity,
 			);
-			this.notifyObservers(PositionManager.strCurrPosNotUpdate, null, error);
+			this.rejectUpdate(error);
 			return;
 		}
 
@@ -399,50 +475,11 @@ class PositionManager {
 			bypassDistanceRule: this._bypassDistanceRule,
 			calculateDistance,
 		});
-		if (gateResult.distance != null) {
-			const timeElapsedSeconds = (gateResult.timeElapsed / 1000).toFixed(1);
-
-			if (!gateResult.accepted) {
-				warn(
-					'(PositionManager) Update blocked — distance:',
-					`${gateResult.distance.toFixed(1)}m`,
-					'time:',
-					`${timeElapsedSeconds}s`,
-				);
-			} else if (gateResult.bypassed) {
-				log(
-					'(PositionManager) Distance/time gate bypassed (confirmation pending) — distance:',
-					`${gateResult.distance.toFixed(1)}m`,
-					'time:',
-					`${timeElapsedSeconds}s`,
-				);
-			} else if (gateResult.distanceExceeded && gateResult.timeExceeded) {
-				log(
-					'(PositionManager) Update triggered — BOTH conditions met — distance:',
-					`${gateResult.distance.toFixed(1)}m`,
-					'time:',
-					`${timeElapsedSeconds}s`,
-				);
-			} else if (gateResult.distanceExceeded) {
-				log(
-					'(PositionManager) Update triggered by DISTANCE —',
-					`${gateResult.distance.toFixed(1)}m`,
-					'(time:',
-					`${timeElapsedSeconds}s)`,
-				);
-			} else {
-				log(
-					'(PositionManager) Update triggered by TIME —',
-					`${timeElapsedSeconds}s`,
-					'(distance:',
-					`${gateResult.distance.toFixed(1)}m)`,
-				);
-			}
-		}
+		this.logGateResult(gateResult);
 
 		if (!gateResult.accepted) {
 			error = gateResult.error;
-			this.notifyObservers(PositionManager.strCurrPosNotUpdate, null, error);
+			this.rejectUpdate(error);
 			return;
 		}
 
@@ -454,14 +491,7 @@ class PositionManager {
 			this.lastModified,
 			config.trackingInterval,
 		);
-		if (eventClassification.immediate) {
-			error = eventClassification.error;
-			warn('(PositionManager)', eventClassification.error!.message);
-			posEvent = PositionManager.strImmediateAddressUpdate;
-		} else {
-			error = null;
-			posEvent = PositionManager.strCurrPosUpdate;
-		}
+		({ posEvent, error } = this.resolvePositionEvent(eventClassification));
 
 		this.lastPosition = new GeoPosition(nextPosition);
 		this.lastModified = nextPosition.timestamp;

@@ -53,31 +53,22 @@ describe('withObserver', () => {
             expect(host.observerSubject.getObserverCount()).toBe(0);
         });
 
-        it('should warn and skip subscribe when checkNull is true and observer is null', () => {
-            const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-            const host = new TestHost();
-            const mixin = withObserver<TestArgs>({ checkNull: true, className: 'TestHost' });
+        it.each([null, undefined])(
+            'should warn and skip subscribe when checkNull is true and observer is %p',
+            (observer) => {
+                const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+                const host = new TestHost();
+                const mixin = withObserver<TestArgs>({ checkNull: true, className: 'TestHost' });
 
-            mixin.subscribe.call(host, null);
+                mixin.subscribe.call(host, observer);
 
-            expect(host.observerSubject.getObserverCount()).toBe(0);
-            expect(warnSpy).toHaveBeenCalledWith(
-                '(TestHost) Attempted to subscribe a null observer.',
-            );
-            warnSpy.mockRestore();
-        });
-
-        it('should warn and skip subscribe when checkNull is true and observer is undefined', () => {
-            const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-            const host = new TestHost();
-            const mixin = withObserver<TestArgs>({ checkNull: true, className: 'TestHost' });
-
-            mixin.subscribe.call(host, undefined);
-
-            expect(host.observerSubject.getObserverCount()).toBe(0);
-            expect(warnSpy).toHaveBeenCalled();
-            warnSpy.mockRestore();
-        });
+                expect(host.observerSubject.getObserverCount()).toBe(0);
+                expect(warnSpy).toHaveBeenCalledWith(
+                    '(TestHost) Attempted to subscribe a null observer.',
+                );
+                warnSpy.mockRestore();
+            },
+        );
 
         it('should use default class name "Class" in warning when className is not provided', () => {
             const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});

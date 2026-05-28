@@ -4,7 +4,7 @@ project:
   name: "paraty_geocore.js"
   type: "nodejs-library"
   kind: "location_based_service"  # domain classification: geolocation/LBS library
-  version: "0.12.3-alpha"  # keep in sync with package.json
+  version: "0.16.0-alpha"  # keep in sync with package.json
   description: "TypeScript library providing core geolocation classes for location-based applications"
 
 tech_stack:
@@ -33,7 +33,7 @@ ai_personas:
     - test_engineer              # Jest + ts-jest, 80% coverage threshold, multiple suites (core/utils/integration/smoke/flaky/bench)
     - code_quality_analyst       # ESLint + @typescript-eslint; geolocation math correctness is critical
     - documentation_expert       # 80% API doc coverage required; TypeDoc generates docs/api/; 22+ markdown files
-    - technical_writer           # 22+ docs/ files including FRS, API, ARCHITECTURE, FuncSpec; markdownlint-cli2
+    - technical_writer           # 22+ docs/ files including FRS, API, ARCHITECTURE, FuncSpec; markdownlint-cli
     - git_specialist             # deploy.sh, semver tagging, CDN delivery, jsDelivr URL generation
     - devops_engineer            # tsc + tsconfig.esm.json (dual output), typedoc.json, jest.config.js, eslint.config.js
     - dependency_analyst         # bessa_patterns.ts + ibira.js prod deps + full devDep suite audit
@@ -116,7 +116,7 @@ workflow:
     - id: step_04
       name: "Config Validation"
       file: "step_04.js"
-      description: "Validate tsconfig.json, tsconfig.esm.json, typedoc.json, jest.config.js, eslint.config.js"
+      description: "Validate package manifests, workflow config, tsconfig*.json, typedoc.json, lint/test configs, editor/tooling configs, and CI workflows"
       phase: 1
       enabled: true
       can_parallelize: true
@@ -212,7 +212,7 @@ workflow:
     - id: step_13
       name: "Markdown Lint"
       file: "step_13.js"
-      description: "Lint all 22+ docs/ markdown files and README.md with markdownlint-cli2 (.markdownlint.json)"
+      description: "Lint all 22+ docs/ markdown files and README.md with markdownlint-cli (.markdownlint.json)"
       phase: 3
       enabled: true
       can_parallelize: true
@@ -367,10 +367,9 @@ validation:
     min_coverage: 80  # 80% line coverage threshold; enforced by jest --coverage (matches jest.config.js coverageThreshold)
 
 # Linting Configuration
-# md_linter: CLI tool used for markdown linting (must be installed in node_modules/.bin/).
-# Change this value to switch tools; scripts/lint-md.js reads it at runtime.
+# md_linter: CLI tool used for markdown linting (must stay in sync with package.json devDependencies and lint:md script).
 linting:
-  md_linter: "markdownlint-cli2"
+  md_linter: "markdownlint-cli"
   md_config: ".markdownlint.json"
   md_glob: "**/*.md"
   md_excludes:

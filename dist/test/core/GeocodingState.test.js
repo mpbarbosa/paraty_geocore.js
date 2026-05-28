@@ -40,10 +40,12 @@ describe('GeocodingState', () => {
             expect(state.getCurrentPosition()).toBeNull();
             expect(state.getCurrentCoordinates()).toBeNull();
         });
-        it('should throw TypeError for non-GeoPosition values', () => {
-            expect(() => state.setPosition({ latitude: 10, longitude: 20 })).toThrow(TypeError);
-            expect(() => state.setPosition('invalid')).toThrow(TypeError);
-            expect(() => state.setPosition(123)).toThrow(TypeError);
+        it.each([
+            [{ latitude: 10, longitude: 20 }],
+            ['invalid'],
+            [123],
+        ])('should throw TypeError for non-GeoPosition value: %p', (input) => {
+            expect(() => state.setPosition(input)).toThrow(TypeError);
         });
         it('should notify observers when position changes', () => {
             const observer = jest.fn();
@@ -119,9 +121,8 @@ describe('GeocodingState', () => {
             const unsubscribe = state.subscribe(jest.fn());
             expect(typeof unsubscribe).toBe('function');
         });
-        it('should throw TypeError for non-function observer', () => {
-            expect(() => state.subscribe(null)).toThrow(TypeError);
-            expect(() => state.subscribe('str')).toThrow(TypeError);
+        it.each([null, 'str'])('should throw TypeError for non-function observer: %p', (input) => {
+            expect(() => state.subscribe(input)).toThrow(TypeError);
         });
         it('should stop calling observer after unsubscribe', () => {
             const observer = jest.fn();

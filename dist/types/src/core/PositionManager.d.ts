@@ -232,6 +232,9 @@ declare class PositionManager {
     get speed(): number | null | undefined;
     /** Timestamp (ms) of the last accepted position. */
     get timestamp(): number | undefined;
+    private rejectUpdate;
+    private logGateResult;
+    private resolvePositionEvent;
     /**
      * Notifies all subscribed observers with the given event type and optional
      * payload.

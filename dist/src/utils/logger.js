@@ -22,7 +22,6 @@ exports.warn = warn;
  */
 function log(message, ...params) {
     const ts = new Date().toISOString();
-    // eslint-disable-next-line no-console
     console.log(`[${ts}] ${message}`, ...params);
 }
 /**
@@ -33,6 +32,5 @@ function log(message, ...params) {
  */
 function warn(message, ...params) {
     const ts = new Date().toISOString();
-    // eslint-disable-next-line no-console
     console.warn(`[${ts}] ${message}`, ...params);
 }

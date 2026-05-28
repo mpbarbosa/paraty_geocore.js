@@ -1,7 +1,7 @@
 # GitHub Skills
 
 **Package:** `paraty_geocore.js`
-**Language:** TypeScript → JavaScript (ESM)
+**Language:** TypeScript → JavaScript (CJS + ESM)
 **License:** MIT
 
 > **See also:** [API Reference](../docs/API.md) | [Architecture](../docs/ARCHITECTURE.md) | [Getting Started](../docs/GETTING_STARTED.md)
@@ -10,11 +10,10 @@
 
 ## Overview
 
-GitHub Skills are reusable GitHub Actions workflows that automate recurring
-engineering tasks for this repository. Each skill is a self-contained
-`.yml` file under `.github/workflows/` and is designed to be idempotent —
-running it multiple times with the same inputs always converges to the same
-repository state.
+This repository's automation surface includes both GitHub Actions workflows
+under `.github/workflows/` and Copilot CLI skills under `.github/skills/`.
+Each workflow or skill is designed to be idempotent — running it multiple
+times with the same inputs converges to the same repository state.
 
 ---
 

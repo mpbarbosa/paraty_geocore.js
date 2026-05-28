@@ -27,12 +27,8 @@ describe('DualObserverSubject', () => {
             expect(subject.observers).toContain(observer);
             expect(subject.getObserverCount()).toBe(1);
         });
-        it('should silently ignore null', () => {
-            subject.subscribe(null);
-            expect(subject.getObserverCount()).toBe(0);
-        });
-        it('should silently ignore undefined', () => {
-            subject.subscribe(undefined);
+        it.each([null, undefined])('should silently ignore %p', (observer) => {
+            subject.subscribe(observer);
             expect(subject.getObserverCount()).toBe(0);
         });
         it('should subscribe multiple observers', () => {
@@ -166,12 +162,8 @@ describe('DualObserverSubject', () => {
             expect(subject.functionObservers).toContain(fn);
             expect(subject.getFunctionObserverCount()).toBe(1);
         });
-        it('should silently ignore null', () => {
-            subject.subscribeFunction(null);
-            expect(subject.getFunctionObserverCount()).toBe(0);
-        });
-        it('should silently ignore undefined', () => {
-            subject.subscribeFunction(undefined);
+        it.each([null, undefined])('should silently ignore %p', (observer) => {
+            subject.subscribeFunction(observer);
             expect(subject.getFunctionObserverCount()).toBe(0);
         });
         it('should subscribe multiple function observers', () => {

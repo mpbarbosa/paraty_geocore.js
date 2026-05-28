@@ -2,7 +2,7 @@
 
 > Biblioteca JavaScript pública com classes principais para aplicações de geolocalização
 
-**Version:** 0.13.0-alpha
+**Version:** 0.16.0-alpha
 
 **Status:** 🚧 Early Development
 
@@ -42,7 +42,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ```html
 <script type="module">
-  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.13.0-alpha/dist/esm/index.js';
+  import { GeoPosition } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.16.0-alpha/dist/esm/index.js';
 
   navigator.geolocation.getCurrentPosition((rawPosition) => {
     const pos = new GeoPosition(rawPosition);
@@ -56,7 +56,7 @@ Load **paraty_geocore.js** directly from jsDelivr CDN without installation:
 
 ### Version Options
 
-- **Specific version:** `@0.13.0-alpha` (recommended for production)
+- **Specific version:** `@0.16.0-alpha` (recommended for production)
 - **Latest from branch:** `@main` (development, auto-updates)
 
 ## 🧪 Testing & Utilities
@@ -162,32 +162,32 @@ npm run cdn
 **Sample `cdn-urls.txt` output:**
 
 ```text
-jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.13.0-alpha
+jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.16.0-alpha
 Generated: Mon Mar  2 14:02:00 -03 2026
 =============================================================================
 
 PRODUCTION (Recommended - Specific Version):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.13.0-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.16.0-alpha/dist/src/index.js
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
 
 VERSION RANGE (Auto-update patches):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.12/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.15/dist/src/index.js
 
 NPM CDN (if published to npm):
-https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.13.0-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.16.0-alpha/dist/src/index.js
 
 HTML USAGE:
-<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.13.0-alpha/dist/src/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.16.0-alpha/dist/src/index.js"></script>
 
 ES MODULE:
 <script type="module">
-  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.13.0-alpha/dist/src/index.js';
+  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.16.0-alpha/dist/src/index.js';
 </script>
 
 PACKAGE INFO API:
-https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.13.0-alpha
+https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.16.0-alpha
 
 =============================================================================
 ```
@@ -207,24 +207,57 @@ Exports: `RED`, `GREEN`, `YELLOW`, `BLUE`, `NC` (no color/reset).
 
 ---
 
+### `scripts/run-tests-docker.sh` — Run the Jest suite inside Docker
+
+Builds the dedicated Docker test image from `Dockerfile.test`, runs `npm test -- --runInBand`
+inside an isolated container, and exits with the same status code as the test process.
+
+**Prerequisites:** Docker Engine or Docker Desktop with the daemon running.
+
+```bash
+bash scripts/run-tests-docker.sh
+# pass extra Jest args after --
+bash scripts/run-tests-docker.sh -- --coverage
+```
+
+**Output:** console progress for image build + container run; optional coverage files when you mount
+`coverage/` as described in [docs/DOCKER_TESTING.md](./docs/DOCKER_TESTING.md).
+
+---
+
+### `scripts/generate_ts_profile.sh` — Regenerate the TypeScript workflow profile
+
+Internal maintenance script that rebuilds `.ai_workflow/context/typescript_profile.md` from the
+live codebase so AI reviewers get current TypeScript-specific context.
+
+```bash
+bash scripts/generate_ts_profile.sh
+```
+
+**Output:** overwrites `.ai_workflow/context/typescript_profile.md` with an updated profile snapshot.
+
+---
+
 ### Script Permissions
 
 If the scripts are not executable, grant permissions first:
 
 ```bash
-chmod +x scripts/deploy.sh cdn-delivery.sh
+chmod +x scripts/deploy.sh scripts/run-tests-docker.sh scripts/generate_ts_profile.sh cdn-delivery.sh
 ```
 
 ### Error Handling
 
-Both scripts use `set -euo pipefail` for robust error handling. Exit code `0` indicates success; any nonzero exit code indicates an error and the script will abort immediately.
+`scripts/deploy.sh`, `scripts/run-tests-docker.sh`, and `cdn-delivery.sh` use `set -euo pipefail`
+for robust error handling. Exit code `0` indicates success; any nonzero exit code indicates an
+error and the script will abort immediately.
 
 ### Troubleshooting
 
 - **Missing dependencies:** Ensure Node.js, npm, and git are installed. `curl` is optional but required for CDN availability testing in `cdn-delivery.sh`.
 - **Git tag already exists:** The deploy script skips tag creation if the tag exists. To re-tag, delete the existing tag: `git tag -d v<version> && git push origin :refs/tags/v<version>`
-- **Permission denied:** Ensure scripts are executable (`chmod +x scripts/deploy.sh cdn-delivery.sh`).
-- **Unclean working tree:** `scripts/deploy.sh` requires a clean git working tree. Commit or stash changes before running.
+- **Permission denied:** Ensure scripts are executable (`chmod +x scripts/deploy.sh scripts/run-tests-docker.sh scripts/generate_ts_profile.sh cdn-delivery.sh`).
+- **Local changes before deploy:** `scripts/deploy.sh` stages build artifacts and runs `git pull --rebase`, so run it from a branch whose local changes are intentional and safe to rebase.
 
 ### CI/CD Integration
 
@@ -317,4 +350,3 @@ MIT License - Copyright (c) 2025 Marcelo Pereira Barbosa
 
 - **Repository:** [github.com/mpbarbosa/paraty_geocore.js](https://github.com/mpbarbosa/paraty_geocore.js)
 - **Documentation:** [API Reference](./docs/API.md)
-

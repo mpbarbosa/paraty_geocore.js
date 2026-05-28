@@ -30,7 +30,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.15.0-alpha] — 2026-03-27
+## [0.16.0-alpha] — 2026-03-27
 
 ### Added
 

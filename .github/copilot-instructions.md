@@ -10,14 +10,14 @@ Active development. The project has TypeScript source, Jest tests, CI/CD (GitHub
 
 - **Source:** `src/core/` (GeoPosition, errors) and `src/utils/` (distance, async)
 - **Tests:** `test/` — unit and integration tests via Jest + ts-jest
-- **Build:** TypeScript → ESM (`dist/`)
+- **Build:** TypeScript → JavaScript (`dist/src/` for CJS, `dist/esm/` for ESM)
 - **CI/CD:** `.github/workflows/ci.yml` (Node.js 18.x, 20.x matrix)
 - **Quality:** `.pre-commit-config.yaml` (pre-commit hooks), `.markdownlint.json` (docs linting)
 - **Docs:** `docs/` — API reference, architecture, functional requirements
 
 ## Intended Purpose
 
-- TypeScript-authored, ESM-distributed geolocation utility library
+- TypeScript-authored geolocation utility library with dual CJS + ESM distribution
 - Intended to be consumed as a library by geolocation applications
 - Licensed under MIT
 

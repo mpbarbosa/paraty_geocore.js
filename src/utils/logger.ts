@@ -19,7 +19,6 @@
  */
 export function log(message: string, ...params: unknown[]): void {
 	const ts = new Date().toISOString();
-	// eslint-disable-next-line no-console
 	console.log(`[${ts}] ${message}`, ...params);
 }
 
@@ -31,6 +30,5 @@ export function log(message: string, ...params: unknown[]): void {
  */
 export function warn(message: string, ...params: unknown[]): void {
 	const ts = new Date().toISOString();
-	// eslint-disable-next-line no-console
 	console.warn(`[${ts}] ${message}`, ...params);
 }
