@@ -1,5 +1,5 @@
 jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.17.0-alpha
-Generated: qui. 28 mai 2026 12:03:18 -03
+Generated: qui. 28 mai 2026 12:24:14 -03
 =============================================================================
 
 PRODUCTION (Recommended - Specific Version):
@@ -12,7 +12,7 @@ DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
 
 VERSION RANGE (Auto-update patches):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.16/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17/dist/src/index.js
 
 NPM CDN (if published to npm):
 https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.17.0-alpha/dist/src/index.js
