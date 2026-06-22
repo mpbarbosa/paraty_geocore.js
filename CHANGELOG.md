@@ -84,7 +84,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Updated `ibira.js` dependency to `v0.4.22-alpha` (fixes `toString()` trailing `-` when prerelease is empty)
+- Updated `ibira.js` dependency to `v0.4.48` (fixes `toString()` trailing `-` when prerelease is empty)
 
 ---
 
