@@ -1,12 +1,12 @@
-jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.17.0-alpha
-Generated: qua. 22 jul 2026 00:18:28 -03
+jsDelivr CDN URLs for mpbarbosa/paraty_geocore.js v0.17.1-alpha
+Generated: qua. 22 jul 2026 00:41:57 -03
 =============================================================================
 
 PRODUCTION (Recommended - Specific Version):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.0-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.1-alpha/dist/src/index.js
 
 TYPESCRIPT DECLARATIONS (types are NOT under dist/src/ — see tsconfig.json):
-https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.0-alpha/dist/types/src/index.d.ts
+https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.1-alpha/dist/types/src/index.d.ts
 
 DEVELOPMENT (Latest from branch):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@main/dist/src/index.js
@@ -15,17 +15,17 @@ VERSION RANGE (Auto-update patches):
 https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17/dist/src/index.js
 
 NPM CDN (if published to npm):
-https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.17.0-alpha/dist/src/index.js
+https://cdn.jsdelivr.net/npm/paraty_geocore.js@0.17.1-alpha/dist/src/index.js
 
 HTML USAGE:
-<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.0-alpha/dist/src/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.1-alpha/dist/src/index.js"></script>
 
 ES MODULE:
 <script type="module">
-  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.0-alpha/dist/src/index.js';
+  import { GeoPosition, calculateDistance } from 'https://cdn.jsdelivr.net/gh/mpbarbosa/paraty_geocore.js@0.17.1-alpha/dist/src/index.js';
 </script>
 
 PACKAGE INFO API:
-https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.17.0-alpha
+https://data.jsdelivr.com/v1/package/gh/mpbarbosa/paraty_geocore.js@0.17.1-alpha
 
 =============================================================================
