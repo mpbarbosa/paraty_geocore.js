@@ -2,7 +2,7 @@
 /**
  * DualObserverSubject
  * @module core/DualObserverSubject
- * @description Re-exports DualObserverSubject from bessa_patterns.ts (GitHub install).
+ * @description Re-exports DualObserverSubject from bessa_patterns.ts (npm registry).
  * @see https://github.com/mpbarbosa/bessa_patterns.ts
  */
 Object.defineProperty(exports, "__esModule", { value: true });
