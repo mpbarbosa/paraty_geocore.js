@@ -97,6 +97,6 @@
   },
   "dependencies": {
     "bessa_patterns.ts": "^0.13.0",
-    "ibira.js": "^0.5.0"
+    "ibira.js": "https://github.com/mpbarbosa/ibira.js/archive/refs/tags/v0.5.0.tar.gz"
   }
 }
