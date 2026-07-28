@@ -96,7 +96,7 @@
     "typescript": "^5.4.0"
   },
   "dependencies": {
-    "bessa_patterns.ts": "^0.13.0",
+    "bessa_patterns.ts": "https://github.com/mpbarbosa/bessa_patterns.ts/archive/refs/tags/v0.13.0.tar.gz",
     "ibira.js": "^0.5.0"
   }
 }
